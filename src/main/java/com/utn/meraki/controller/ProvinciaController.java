@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.utn.meraki.model.EstadoSolicitudModel;
 import com.utn.meraki.model.ProvinciaModel;
 import com.utn.meraki.service.ProvinciaService;
 
@@ -44,5 +46,21 @@ public class ProvinciaController {
 	public ProvinciaModel habilitarProvincia(@RequestParam(value="id",required=true)String id) {
 		return provinciaService.habilitarProvincia(id);
 	}
+	
+	@PutMapping("/deshabilitarProvincia")
+    public ProvinciaModel deshabilitarProvina(@RequestParam(value="id",required=true)String id) {
+        return provinciaService.deshabilitarProvincia(id);
+    }
+	
+	
+	@GetMapping("/listAllProvincia")
+    public List<ProvinciaModel> listAllProvincia(){
+        return provinciaService.listProvinciaTodas();
+    }
+	
+	@GetMapping
+    public ProvinciaModel getProvinciaById(@RequestParam(value="id",required=true)String id){
+        return provinciaService.getProvinciaById(id);
+    }
 
 }
