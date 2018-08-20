@@ -1,11 +1,14 @@
 package com.utn.meraki.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.ProvinciaConverter;
+import com.utn.meraki.entity.EstadoSolicitud;
 import com.utn.meraki.entity.Provincia;
+import com.utn.meraki.model.EstadoSolicitudModel;
 import com.utn.meraki.model.ProvinciaModel;
 import com.utn.meraki.repository.ProvinciaRepository;
 import com.utn.meraki.service.ProvinciaService;
@@ -53,5 +56,32 @@ public class ProvinciaServiceImpl implements ProvinciaService{
 		provinciaRepository.save(provincia);
 		return provinciaConverter.convertProvinciaToProvinciaModel(provincia);
 	}
+	
+	//Me deshabilita una provincia que habia sido dado de alta
+	@Override
+    public ProvinciaModel deshabilitarProvincia(String id) {
+        Provincia provincia = provinciaRepository.findProvinciaById(id);
+        provincia.setFechaBaja(new Date());
+        provinciaRepository.save(provincia);
+        return provinciaConverter.convertProvinciaToProvinciaModel(provincia);
+    }
+	
+	//busqueda de provincia por id
+	 @Override
+	    public ProvinciaModel getProvinciaById(String id) {
+	        if(id !=null){
+	            return provinciaConverter.convertProvinciaToProvinciaModel(provinciaRepository.findProvinciaById(id));
+	        }
+	        return new ProvinciaModel();
+	    }
+	 
+	 @Override
+	    public List<ProvinciaModel> listProvinciaTodas() {
+	        List<ProvinciaModel> listProvincia = new ArrayList<>();
+	        for(Provincia provincia : provinciaRepository.findAll()) {
+	            listProvincia.add(provinciaConverter.convertProvinciaToProvinciaModel(provincia));
+	        }
+	        return listProvincia;
+	    }
 
 }
