@@ -12,47 +12,67 @@ import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.service.TipoRubroService;
 
 @Service("tipoRubroService")
-
 public class TipoRubroServiceImpl implements TipoRubroService{
 
-	//CONVERTER
+
 	@Autowired
-	TipoRubroConverter tipoRubroConverter;
-	
-	//REPOSITORY
+	private TipoRubroConverter tipoRubroConverter;
 	@Autowired
-	TipoRubroRepository tipoRubroRepository;
-	
-	//SERVICIOS
-	@Override //Me crea un nuevo tipo de rubro
+	private TipoRubroRepository tipoRubroRepository;
+
+	@Override
 	public TipoRubroModel crearTipoRubro(TipoRubroModel tipoRubroModel) {
-		TipoRubro tipoRubro= tipoRubroConverter.convertTipoRubroModelToTipoRubro(tipoRubroModel);
+		TipoRubro tipoRubro = tipoRubroConverter.convertTipoRubroModelToTipoRubro(tipoRubroModel);
 		return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro);
 	}
 
-	@Override //Me edita un tipo de rubro existente
+	@Override
 	public TipoRubroModel editarTipoRubro(TipoRubroModel tipoRubroModel) {
-		TipoRubro tipoRubro = tipoRubroConverter.convertTipoRubroModelToTipoRubroEditado(tipoRubroModel);
+		TipoRubro tipoRubro = tipoRubroConverter.convertTipoRubroModelToTipoRubro(tipoRubroModel);
 		return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro);
 	}
 
-	@Override //Me muestra todos los tipos de rubros que esten vigentes
+	@Override
 	public List<TipoRubroModel> listTipoRubroVigente() {
-		List<TipoRubroModel> listTipoRubro = new ArrayList<>();
+		List<TipoRubroModel> listEstadosSolicitud = new ArrayList<>();
 		for(TipoRubro tipoRubro : tipoRubroRepository.findAll()) {
 			if(tipoRubro.getFechaBaja()==null) {
-				listTipoRubro.add(tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro));
+				listEstadosSolicitud.add(tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro));
 			}
 		}
-		return listTipoRubro;
+		return listEstadosSolicitud;
 	}
 
-	@Override //Me da de baja un tipo de rubro
-	public TipoRubroModel bajaTipoRubro(TipoRubroModel tipoRubroModel) {
-		TipoRubro tipoRubro = tipoRubroRepository.findTipoRubroById(tipoRubroModel.getId());
-		tipoRubro.setFechaBaja(new Date(System.currentTimeMillis()));
+	@Override
+	public TipoRubroModel habilitarTipoRubro(String id) {
+		TipoRubro tipoRubro = tipoRubroRepository.findTipoRubroById(id);
+		tipoRubro.setFechaBaja(null);
 		tipoRubroRepository.save(tipoRubro);
 		return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro);
 	}
 
+	@Override
+	public List<TipoRubroModel> listTipoRubroTodas() {
+		List<TipoRubroModel> listEstadosSolicitud = new ArrayList<>();
+		for(TipoRubro tipoRubro : tipoRubroRepository.findAll()) {
+			listEstadosSolicitud.add(tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro));
+		}
+		return listEstadosSolicitud;
+	}
+
+	@Override
+	public TipoRubroModel getTipoRubroById(String id) {
+		if(id !=null){
+			return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubroRepository.findTipoRubroById(id));
+		}
+		return new TipoRubroModel();
+	}
+
+	@Override
+	public TipoRubroModel deshabilitarTipoRubro(String id) {
+		TipoRubro tipoRubro = tipoRubroRepository.findTipoRubroById(id);
+		tipoRubro.setFechaBaja(new java.util.Date());
+		tipoRubroRepository.save(tipoRubro);
+		return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro);
+	}
 }
