@@ -69,6 +69,14 @@ public class TipoRubroServiceImpl implements TipoRubroService{
 	}
 
 	@Override
+	public TipoRubroModel getTipoRubroByNombre(String nombreTipoRubro) {
+		if(nombreTipoRubro !=null){
+			return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubroRepository.findTipoRubroByNombreTipoRubro(nombreTipoRubro));
+		}
+		return new TipoRubroModel();
+	}
+
+	@Override
 	public TipoRubroModel deshabilitarTipoRubro(String id) {
 		TipoRubro tipoRubro = tipoRubroRepository.findTipoRubroById(id);
 		tipoRubro.setFechaBaja(new java.util.Date());

@@ -11,12 +11,13 @@ import com.utn.meraki.repository.TipoRubroRepository;
 @Component("rubroConverter")
 
 public class RubroConverter {
-	
-	//REPOSITORY
+
 	@Autowired
 	RubroRepository rubroRepository;
 	@Autowired
 	TipoRubroRepository tipoRubroRepository;
+	@Autowired
+	TipoRubroConverter tipoRubroConverter;
 	
 	public Rubro convertRubroModelToRubro(RubroModel rubroModel) {
 		Rubro rubro = null;
@@ -26,7 +27,7 @@ public class RubroConverter {
 			rubro = new Rubro();
 		}
 		rubro.setNombreRubro(rubroModel.getNombreRubro());
-		rubro.setTipoRubro(tipoRubroRepository.findTipoRubroByNombreTipoRubro(rubroModel.getNombreTipoRubro()));
+		rubro.setTipoRubro(tipoRubroRepository.findTipoRubroByNombreTipoRubro(rubroModel.getTipoRubro()));
 		rubro.setDescripcion(rubroModel.getDescripcion());
 		rubroRepository.save(rubro);
 		return rubro;
@@ -38,7 +39,7 @@ public class RubroConverter {
 		rubroModel.setDescripcion(rubro.getDescripcion());
 		rubroModel.setFechaBaja(rubro.getFechaBaja());
 		rubroModel.setNombreRubro(rubro.getNombreRubro());
-		rubroModel.setNombreTipoRubro(rubro.getTipoRubro().getNombreTipoRubro());
+		rubroModel.setTipoRubro(rubro.getTipoRubro().getNombreTipoRubro());
 		return rubroModel;
 	}
 

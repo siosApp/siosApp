@@ -1,6 +1,6 @@
 package com.utn.meraki.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class RubroModel {
 	
@@ -13,7 +13,7 @@ public class RubroModel {
 	
 	private String descripcion;
 	
-	private String nombreTipoRubro;
+	private String tipoRubro;
 	
 	//CONSTRUCTOR
 	public RubroModel() {
@@ -52,12 +52,11 @@ public class RubroModel {
 		this.descripcion = descripcion;
 	}
 
-	public String getNombreTipoRubro() {
-		return nombreTipoRubro;
+	public String getTipoRubro() {
+		return tipoRubro;
 	}
 
-	public void setNombreTipoRubro(String nombreTipoRubro) {
-		this.nombreTipoRubro = nombreTipoRubro;
+	public void setTipoRubro(String tipoRubro) {
+		this.tipoRubro = tipoRubro;
 	}
-	
 }
