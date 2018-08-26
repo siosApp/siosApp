@@ -8,13 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.utn.meraki.converter.EstadoRequerimientoConverter;
-import com.utn.meraki.converter.EstadoSolicitudConverter;
 import com.utn.meraki.entity.EstadoRequerimiento;
-import com.utn.meraki.entity.EstadoSolicitud;
 import com.utn.meraki.model.EstadoRequerimientoModel;
-import com.utn.meraki.model.EstadoSolicitudModel;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
-import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.service.EstadoRequerimientoService;
 
 @Service("EstadoRequerimientoService")
