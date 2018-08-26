@@ -9,7 +9,6 @@ import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 
 @Component("rubroConverter")
-
 public class RubroConverter {
 
 	@Autowired
