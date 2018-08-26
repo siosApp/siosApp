@@ -25,25 +25,39 @@ public class EstadoRequerimientoController {
 	@Autowired
 	EstadoRequerimientoService estadoRequerimientoService;
 	
-	//CONTROLADORES
-	@PostMapping("/crearEstadoRequerimiento")
-	public EstadoRequerimientoModel crearEstadoRequerimiento(@RequestBody EstadoRequerimientoModel estadoRequerimientoModel) {
-		return estadoRequerimientoService.crearEstadoRequerimiento(estadoRequerimientoModel);
-	}
-	
-	@PutMapping("/editarEstadoRequerimiento")
-	public EstadoRequerimientoModel editarEstadoRequerimiento(@RequestBody EstadoRequerimientoModel estadoRequerimientoModel) {
-		return estadoRequerimientoService.editarEstadoRequerimiento(estadoRequerimientoModel);
-	}
-	
-	@GetMapping("/listEstadoRequerimientoVigente")
-	public List<EstadoRequerimientoModel> listEstadoRequerimientoVigente(){
-		return estadoRequerimientoService.listaEstadoRequerimientoVigente();
-	}
-	
-	@PutMapping("/habilitarEstadoRequerimiento")
-	public EstadoRequerimientoModel habilitarEstadoRequerimiento(@RequestParam(value="id",required=true)String id) {
-		return estadoRequerimientoService.habilitarEstadoRequerimiento(id);
-	}
+    //CONTROLADORES
+    @PostMapping("/crearEstadoRequerimiento")
+    public EstadoRequerimientoModel crearEstadoRequerimiento(@RequestBody EstadoRequerimientoModel estadoRequerimientoModel) {
+        return estadoRequerimientoService.crearEstadoRequerimiento(estadoRequerimientoModel);
+    }
+
+    @PutMapping("/editarEstadoRequerimiento")
+    public EstadoRequerimientoModel editarEstadoRequerimiento(@RequestBody EstadoRequerimientoModel estadoRequerimientoModel) {
+        return estadoRequerimientoService.editarEstadoRequerimiento(estadoRequerimientoModel);
+    }
+
+    @GetMapping("/listEstadoRequerimientoVigente")
+    public List<EstadoRequerimientoModel> listEstadoRequerimientoVigente(){
+        return estadoRequerimientoService.listEstadoRequerimientoVigente();
+    }
+
+    @PutMapping("/habilitarEstadoRequerimiento")
+    public EstadoRequerimientoModel habilitarEstadoRequerimiento(@RequestParam(value="id",required=true)String id) {
+        return estadoRequerimientoService.habilitarEstadoRequerimiento(id);
+    }
+
+    @GetMapping("/listAllEstadoRequerimiento")
+    public List<EstadoRequerimientoModel> listAllEstadoRequerimiento(){
+        return estadoRequerimientoService.listEstadoRequerimientoTodas();
+    }
+
+    @GetMapping
+    public EstadoRequerimientoModel getEstadoById(@RequestParam(value="id",required=true)String id){
+        return estadoRequerimientoService.getEstadoById(id);
+    }
+    @PutMapping("/deshabilitarEstadoRequerimiento")
+    public EstadoRequerimientoModel deshabilitarEstadoRequerimiento(@RequestParam(value="id",required=true)String id) {
+        return estadoRequerimientoService.deshabilitarEstadoRequerimiento(id);
+    }
 
 }
