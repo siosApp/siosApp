@@ -13,4 +13,11 @@ public interface DepartamentoService {
 	public abstract DepartamentoModel habilitarDepartamento(String id);
 	
 	public abstract List<DepartamentoModel> listDepartamentoVigente();
+
+	public abstract List<DepartamentoModel> listDepartamentoTodos();
+
+	public abstract DepartamentoModel getDepartamentoById(String id);
+
+	public abstract DepartamentoModel deshabilitarDepartamento(String id);
+
 }

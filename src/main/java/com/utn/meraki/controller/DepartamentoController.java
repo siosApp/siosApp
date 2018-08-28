@@ -46,4 +46,18 @@ public class DepartamentoController {
 		return departamentoService.listDepartamentoVigente();
 	}
 
+	@GetMapping("/listAllDepartamentos")
+	public List<DepartamentoModel> listAllDepartamentos(){
+		return departamentoService.listDepartamentoTodos();
+	}
+
+	@GetMapping
+	public DepartamentoModel getDepartamentoById(@RequestParam(value="id",required=true)String id){
+		return departamentoService.getDepartamentoById(id);
+	}
+	@PutMapping("/deshabilitarDepartamento")
+	public DepartamentoModel deshabilitarDepartamento(@RequestParam(value="id",required=true)String id) {
+		return departamentoService.deshabilitarDepartamento(id);
+	}
+
 }

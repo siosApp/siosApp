@@ -41,9 +41,13 @@ public class TipoRubroController {
 		return tipoRubroService.listTipoRubroTodas();
 	}
 
-	@GetMapping
-	public TipoRubroModel getTipoRubroById(@RequestParam(value="id",required=true)String id){
+	@GetMapping("/{id}")
+	public TipoRubroModel getTipoRubroById(@PathVariable String id){
 		return tipoRubroService.getTipoRubroById(id);
+	}
+	@GetMapping
+	public TipoRubroModel getTipoRubroByNombre(@RequestParam(value="nombreTipoRubro") String nombreTipoRubro){
+		return tipoRubroService.getTipoRubroByNombre(nombreTipoRubro);
 	}
 	@PutMapping("/deshabilitarTipoRubro")
 	public TipoRubroModel deshabilitarTipoRubro(@RequestParam(value="id",required=true)String id) {
