@@ -9,10 +9,8 @@ import com.utn.meraki.repository.TipoUsuarioRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 @Component("usuarioConverter")
 public class UsuarioConverter {
@@ -74,9 +72,13 @@ public class UsuarioConverter {
         usuarioModel.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioModel.setFechaUltIngreso(usuario.getFechaUltIngreso());
         usuarioModel.setFechaBaja(usuario.getFechaBaja());
-        usuarioModel.setOferente(usuario.getOferente());
+        if(usuario.getOferente()!=null) {
+        	usuarioModel.setOferente(usuario.getOferente());
+        }
         usuarioModel.setUsuarioRubros(null);
-        usuarioModel.setTipoUsuario(usuario.getTipoUsuario().getNombreTipoUsuario());
+        if(usuario.getTipoUsuario()!=null) {
+        	usuarioModel.setTipoUsuario(usuario.getTipoUsuario().getNombreTipoUsuario());
+        }
         if(usuario.getDomicilio()!=null){
             usuarioModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
         }
