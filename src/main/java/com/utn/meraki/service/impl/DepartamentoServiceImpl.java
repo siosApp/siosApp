@@ -54,4 +54,29 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 		return listDepartamentos;
 	}
 
+	@Override
+	public List<DepartamentoModel> listDepartamentoTodos() {
+		List<DepartamentoModel> listDepartamentos = new ArrayList<>();
+		for(Departamento departamento : departamentoRepository.findAll()) {
+			listDepartamentos.add(departamentoConverter.convertDepartamentoToDepartamentoModel(departamento));
+		}
+		return listDepartamentos;
+	}
+
+	@Override
+	public DepartamentoModel getDepartamentoById(String id) {
+		if(id !=null){
+			return departamentoConverter.convertDepartamentoToDepartamentoModel(departamentoRepository.findDepartamentoById(id));
+		}
+		return new DepartamentoModel();
+	}
+
+	@Override
+	public DepartamentoModel deshabilitarDepartamento(String id) {
+		Departamento departamento = departamentoRepository.findDepartamentoById(id);
+		departamento.setFechaBaja(new java.util.Date());
+		departamentoRepository.save(departamento);
+		return departamentoConverter.convertDepartamentoToDepartamentoModel(departamento);
+	}
+
 }

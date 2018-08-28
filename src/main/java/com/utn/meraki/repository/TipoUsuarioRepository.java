@@ -9,4 +9,5 @@ import java.io.Serializable;
 @Repository("tipoUsuarioRepository")
 public interface TipoUsuarioRepository extends JpaRepository<TipoUsuario,Serializable> {
     TipoUsuario findTipoUsuarioById(String id);
+    TipoUsuario findByNombreTipoUsuario(String nombreTipoUsuario);
 }
