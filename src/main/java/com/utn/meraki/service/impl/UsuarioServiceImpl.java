@@ -88,4 +88,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
 	}
+
+    @Override
+    public UsuarioModel existeUsuario(String username) {
+        Usuario usuario=usuarioRepository.findUsuarioByUsername(username);
+        if(usuario!=null){
+            return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+        }
+        return new UsuarioModel();
+    }
 }
