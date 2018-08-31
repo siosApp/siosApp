@@ -46,8 +46,20 @@ public class UsuarioController {
     public UsuarioModel getUsuarioById(@RequestParam(value="id",required=true)String id){
         return usuarioService.getUsuarioById(id);
     }
+    
     @PutMapping("/deshabilitarUsuario")
     public UsuarioModel deshabilitarUsuario(@RequestParam(value="id",required=true)String id) {
         return usuarioService.deshabilitarUsuario(id);
+    }
+    
+    @GetMapping("/loguearUsuario")
+    public UsuarioModel loguearUsuario(@RequestParam(value="username",required=true)String username,
+    									@RequestParam(value="password",required=true)String password) {
+    	return usuarioService.loguearUsuario(username, password);
+    }
+    
+    @GetMapping("/existeUsuario")
+    public UsuarioModel existeUsuario(@RequestParam(value="username",required=true)String username){
+        return usuarioService.existeUsuario(username);
     }
 }

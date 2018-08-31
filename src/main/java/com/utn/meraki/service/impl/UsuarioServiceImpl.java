@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("usuarioService")
 public class UsuarioServiceImpl implements UsuarioService {
+	
     @Autowired
     private UsuarioConverter usuarioConverter;
     @Autowired
@@ -72,5 +74,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setFechaBaja(new java.util.Date());
         usuarioRepository.save(usuario);
         return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+    }
+
+	@Override //Loguea usuario, si existe devuelve modelo y setea ultima fecha de ingreso
+	public UsuarioModel loguearUsuario(String username, String password) {
+		Usuario usuario = null;
+		if(usuarioRepository.findUsuarioByusernameAndPassword(username, password)!=null) {
+			usuario = usuarioRepository.findUsuarioByusernameAndPassword(username, password);
+			usuario.setFechaUltIngreso(new Date());
+			usuarioRepository.save(usuario);
+		}else {
+			usuario = new Usuario();
+		}
+		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
+
+    @Override
+    public UsuarioModel existeUsuario(String username) {
+        Usuario usuario=usuarioRepository.findUsuarioByUsername(username);
+        if(usuario!=null){
+            return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+        }
+        return new UsuarioModel();
     }
 }
