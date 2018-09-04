@@ -26,7 +26,7 @@ public class RubroConverter {
 			rubro = new Rubro();
 		}
 		rubro.setNombreRubro(rubroModel.getNombreRubro());
-		rubro.setTipoRubro(tipoRubroRepository.findTipoRubroByNombreTipoRubro(rubroModel.getTipoRubro()));
+		rubro.setTipoRubro(tipoRubroRepository.findTipoRubroByNombreTipoRubro(rubroModel.getNombreTipoRubro()));
 		rubro.setDescripcion(rubroModel.getDescripcion());
 		rubroRepository.save(rubro);
 		return rubro;
@@ -38,7 +38,7 @@ public class RubroConverter {
 		rubroModel.setDescripcion(rubro.getDescripcion());
 		rubroModel.setFechaBaja(rubro.getFechaBaja());
 		rubroModel.setNombreRubro(rubro.getNombreRubro());
-		rubroModel.setTipoRubro(rubro.getTipoRubro().getNombreTipoRubro());
+		rubroModel.setNombreTipoRubro(rubro.getTipoRubro().getNombreTipoRubro());
 		return rubroModel;
 	}
 
