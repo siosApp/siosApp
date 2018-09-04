@@ -16,33 +16,27 @@ public class DepartamentoConverter {
 	ProvinciaRepository provinciaRepository;
 	@Autowired
 	DepartamentoRepository departamentoRepository;
+	@Autowired
+	ProvinciaConverter provinciaConverter;
 	
-	//CONVERTER
-	//Me crea un nuevo departamento
 	public Departamento convertDepartamentoModelToDepartamento(DepartamentoModel departamentoModel) {
-		Departamento departamento = new Departamento();
+		Departamento departamento = null;
+		if(departamentoModel.getId()!= null) {
+			departamento = departamentoRepository.findDepartamentoById(departamentoModel.getId());
+		}else {
+			departamento = new Departamento();
+		}
 		departamento.setNombreDepartamento(departamentoModel.getNombreDepartamento());
-		departamento.setProvincia(provinciaRepository.findProvinciaByNombreProvincia(departamentoModel.getNombreDepartamento()));
+		departamento.setProvincia(provinciaRepository.findProvinciaByNombreProvincia(departamentoModel.getNombreProvincia()));
 		departamentoRepository.save(departamento);
 		return departamento;
 	}
 	
-	//Me edita un nuevo departamento
-	public Departamento convertDepartamentoModelToDepartamentoEditado(DepartamentoModel departamentoModel) {
-		Departamento departamento = new Departamento();
-		departamento.setNombreDepartamento(departamentoModel.getNombreDepartamento());
-		departamento.setProvincia(provinciaRepository.findProvinciaByNombreProvincia(departamentoModel.getNombreDepartamento()));
-		departamento.setFechaBaja(departamentoModel.getFechaBaja());
-		departamentoRepository.save(departamento);
-		return departamento;
-	}
-	
-	//Me muestra un departamento en pantalla
 	public DepartamentoModel convertDepartamentoToDepartamentoModel(Departamento departamento) {
 		DepartamentoModel departamentoModel = new DepartamentoModel();
 		departamentoModel.setId(departamento.getId());
-		departamentoModel.setNombreDepartamento(departamento.getNombreDepartamento());
 		departamentoModel.setFechaBaja(departamento.getFechaBaja());
+		departamentoModel.setNombreDepartamento(departamento.getNombreDepartamento());
 		departamentoModel.setNombreProvincia(departamento.getProvincia().getNombreProvincia());
 		return departamentoModel;
 	}

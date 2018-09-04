@@ -19,4 +19,8 @@ public interface UsuarioService {
     public abstract UsuarioModel getUsuarioById(String id);
 
     public abstract UsuarioModel deshabilitarUsuario(String id);
+    
+    public abstract UsuarioModel loguearUsuario(String username, String password);
+
+    public abstract UsuarioModel existeUsuario(String username);
 }
