@@ -31,12 +31,15 @@ public class UsuarioDestacadoConverter {
 	//CONVERTER
 	@Autowired
 	RubroConverter rubroConverter;
+	@Autowired
+	DomicilioConverter domicilioConverter;
 	
 	public UsuarioDestacadoModel convertDestacadoToUsuarioDestacadoModel(Destacado destacado) {
 		UsuarioDestacadoModel usuarioDestacadoModel = new UsuarioDestacadoModel();
 		usuarioDestacadoModel.setIdUsuario(destacado.getUsuario().getId());
 		usuarioDestacadoModel.setNombre(destacado.getUsuario().getNombre());
 		usuarioDestacadoModel.setApellido(destacado.getUsuario().getApellido());
+		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(destacado.getUsuario().getDomicilio()));
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(destacado.getUsuario().getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
 			usuarioDestacadoModel.getRubros().add(rubroModel);
