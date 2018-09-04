@@ -58,5 +58,8 @@ public class UsuarioController {
     	return usuarioService.loguearUsuario(username, password);
     }
     
-    
+    @GetMapping("/existeUsuario")
+    public UsuarioModel existeUsuario(@RequestParam(value="username",required=true)String username){
+        return usuarioService.existeUsuario(username);
+    }
 }
