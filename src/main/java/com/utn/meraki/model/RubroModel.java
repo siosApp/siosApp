@@ -13,7 +13,7 @@ public class RubroModel {
 	
 	private String descripcion;
 	
-	private String tipoRubro;
+	private String nombreTipoRubro;
 	
 	//CONSTRUCTOR
 	public RubroModel() {
@@ -52,11 +52,12 @@ public class RubroModel {
 		this.descripcion = descripcion;
 	}
 
-	public String getTipoRubro() {
-		return tipoRubro;
+	public String getNombreTipoRubro() {
+		return nombreTipoRubro;
 	}
 
-	public void setTipoRubro(String tipoRubro) {
-		this.tipoRubro = tipoRubro;
+	public void setNombreTipoRubro(String nombreTipoRubro) {
+		this.nombreTipoRubro = nombreTipoRubro;
 	}
+
 }
