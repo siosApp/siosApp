@@ -12,6 +12,8 @@ public class UsuarioDestacadoModel {
 	
 	private String apellido;
 	
+	private DomicilioModel domicilio;
+	
 	private List<RubroModel> rubros = new ArrayList<>();
 	
 	//CONSTRUCTOR
@@ -50,5 +52,13 @@ public class UsuarioDestacadoModel {
 	public void setRubros(List<RubroModel> rubros) {
 		this.rubros = rubros;
 	}
-	
+
+	public DomicilioModel getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(DomicilioModel domicilio) {
+		this.domicilio = domicilio;
+	}
+
 }
