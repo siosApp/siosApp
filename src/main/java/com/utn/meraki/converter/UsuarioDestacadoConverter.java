@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.utn.meraki.entity.Destacado;
+import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.RubroModel;
@@ -41,6 +42,19 @@ public class UsuarioDestacadoConverter {
 		usuarioDestacadoModel.setApellido(destacado.getUsuario().getApellido());
 		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(destacado.getUsuario().getDomicilio()));
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(destacado.getUsuario().getId()).getUsuarioRubros()) {
+			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
+			usuarioDestacadoModel.getRubros().add(rubroModel);
+		}
+		return usuarioDestacadoModel;
+	}
+	
+	public UsuarioDestacadoModel convertUsuarioToUsuarioDestacadoModel(Usuario usuario) {
+		UsuarioDestacadoModel usuarioDestacadoModel = new UsuarioDestacadoModel();
+		usuarioDestacadoModel.setIdUsuario(usuario.getId());
+		usuarioDestacadoModel.setNombre(usuario.getNombre());
+		usuarioDestacadoModel.setApellido(usuario.getApellido());
+		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
+		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(usuario.getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
 			usuarioDestacadoModel.getRubros().add(rubroModel);
 		}
