@@ -2,6 +2,8 @@ package com.utn.meraki.repository;
 
 
 import com.utn.meraki.entity.Usuario;
+import com.utn.meraki.entity.UsuarioRubro;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +19,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Serializable> {
     public Usuario findUsuarioByusernameAndPassword(String username, String password);
 
     public Usuario findUsuarioByUsername(String username);
+    
+    public Usuario findUsuarioByUsuarioRubros(UsuarioRubro usuarioRubro);
 
 }
