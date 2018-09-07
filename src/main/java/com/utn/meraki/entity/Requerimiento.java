@@ -38,6 +38,9 @@ public class Requerimiento {
 	@Column(name = "precio_a_pagar")
 	private Float precioApagar;
 	
+	@Column(name = "tiempo_estimado")
+	private Integer tiempoEstimado;
+
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_estado")
 	private EstadoRequerimiento estadoRequerimiento;
@@ -55,6 +58,13 @@ public class Requerimiento {
 	}
 
 	//GET AND SET
+	public Integer getTiempoEstimado() {
+		return tiempoEstimado;
+	}
+
+	public void setTiempoEstimado(Integer tiempoEstimado) {
+		this.tiempoEstimado = tiempoEstimado;
+	}
 	public String getId() {
 		return id;
 	}
