@@ -61,5 +61,8 @@ public class ProvinciaController {
     public ProvinciaModel getProvinciaById(@RequestParam(value="id",required=true)String id){
         return provinciaService.getProvinciaById(id);
     }
-
+	@GetMapping("/nombre")
+	public ProvinciaModel getProvinciaByNombre(@RequestParam(value="nombre",required=true)String nombre){
+		return provinciaService.getProvinciaByNombre(nombre);
+	}
 }

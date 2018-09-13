@@ -14,9 +14,15 @@ public interface DepartamentoService {
 	
 	public abstract List<DepartamentoModel> listDepartamentoVigente();
 
+	public abstract List<DepartamentoModel> listDepartamentoVigenteByProvincia(String provincia);
+
 	public abstract List<DepartamentoModel> listDepartamentoTodos();
 
 	public abstract DepartamentoModel getDepartamentoById(String id);
+
+	public abstract DepartamentoModel getDepartamentoByNombre(String nombreDepartamento);
+
+	public abstract DepartamentoModel getDepartamentoByNombreAndProvincia(String depto,String provincia);
 
 	public abstract DepartamentoModel deshabilitarDepartamento(String id);
 

@@ -12,6 +12,7 @@ import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 import com.utn.meraki.repository.UsuarioRubroRepository;
+import com.utn.meraki.service.MailService;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private TipoRubroRepository tipoRubroRepository;
     @Autowired
     private RubroRepository rubroRepository;
+    @Autowired
+    private MailService mailService;
 
     @Override
     public UsuarioModel crearUsuario(UsuarioModel usuarioModel) {
@@ -114,7 +117,20 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioModel();
     }
 
-	@Override
+    @Override
+    public UsuarioModel validarMail(String mail) {
+        Usuario usuario=usuarioRepository.findUsuarioByMail(mail);
+        if(usuario !=null){
+            //Crear atributos codigoValidacion y fechaCodigoValidacion. Que sean persistentes por 48 hs.
+            String mensaje= "Hace click en el enlace de abajo para recuperar tu contraseña."
+                    +"";
+            mailService.enviarMail(mail,"Recuperacion de contraseña",mensaje);
+            return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+        }
+        return new UsuarioModel();
+    }
+
+    @Override
 	public List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel) {
 		List<UsuarioDestacadoModel> listUsuario = new ArrayList<>();
 		//Seteo atributos el filtro

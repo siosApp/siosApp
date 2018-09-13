@@ -25,6 +25,8 @@ public interface UsuarioService {
     public abstract UsuarioModel loguearUsuario(String username, String password);
 
     public abstract UsuarioModel existeUsuario(String username);
+
+    public abstract UsuarioModel validarMail(String mail);
     
     public abstract List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel);
     

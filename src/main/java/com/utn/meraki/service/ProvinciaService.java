@@ -17,6 +17,8 @@ public interface ProvinciaService {
 	public abstract ProvinciaModel deshabilitarProvincia(String id);
 	
 	public abstract ProvinciaModel getProvinciaById(String id);
+
+	public abstract ProvinciaModel getProvinciaByNombre(String nombre);
 	
 	public abstract List<ProvinciaModel> listProvinciaTodas();
 

@@ -3,14 +3,7 @@ package com.utn.meraki.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.utn.meraki.model.DepartamentoModel;
 import com.utn.meraki.service.DepartamentoService;
@@ -46,6 +39,11 @@ public class DepartamentoController {
 		return departamentoService.listDepartamentoVigente();
 	}
 
+	@GetMapping("/listDepartamentosVigente")
+	public List<DepartamentoModel> listDepartamentosVigentesByProvincia(@RequestParam(value="provincia",required=true)String provincia){
+		return departamentoService.listDepartamentoVigenteByProvincia(provincia);
+	}
+
 	@GetMapping("/listAllDepartamentos")
 	public List<DepartamentoModel> listAllDepartamentos(){
 		return departamentoService.listDepartamentoTodos();
@@ -54,6 +52,14 @@ public class DepartamentoController {
 	@GetMapping
 	public DepartamentoModel getDepartamentoById(@RequestParam(value="id",required=true)String id){
 		return departamentoService.getDepartamentoById(id);
+	}
+	@GetMapping("/departamento")
+	public DepartamentoModel getDepartamentoByNombreAndProvincia(@RequestParam(value="nombre",required=true)String departamento,@RequestParam(value="provincia",required=true)String nombreProvincia){
+		return departamentoService.getDepartamentoByNombreAndProvincia(departamento,nombreProvincia);
+	}
+	@GetMapping("/departamentoByNombre")
+	public DepartamentoModel getDepartamentoByNombre(@RequestParam(value="nombre",required=true)String nombre){
+		return departamentoService.getDepartamentoByNombre(nombre);
 	}
 	@PutMapping("/deshabilitarDepartamento")
 	public DepartamentoModel deshabilitarDepartamento(@RequestParam(value="id",required=true)String id) {

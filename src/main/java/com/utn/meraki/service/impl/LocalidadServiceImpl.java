@@ -3,6 +3,8 @@ package com.utn.meraki.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.utn.meraki.entity.Departamento;
+import com.utn.meraki.repository.DepartamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +25,20 @@ public class LocalidadServiceImpl implements LocalidadService{
 	//REPOSITORY
 	@Autowired
 	LocalidadRepository localidadRepository;
+
+	@Autowired
+	DepartamentoRepository departamentoRepository;
 	
 	//SERVICIOS
 	@Override //Me crea una nueva Localidad
 	public LocalidadModel crearLocalidad(LocalidadModel localidadModel) {
-		Localidad localidad = localidadConverter.convertLocalidadModelToLocalidad(localidadModel);
-		return localidadConverter.convertLocalidadToLocalidadModel(localidad);
+		Departamento departamento= departamentoRepository.findDepartamentoById(localidadModel.getDepartamento().getId());
+		if(departamento!=null){
+			Localidad localidad=localidadConverter.convertLocalidadModelToLocalidad(localidadModel);
+			localidadRepository.save(localidad);
+			return localidadConverter.convertLocalidadToLocalidadModel(localidad);
+		}
+		return new LocalidadModel();
 	}
 
 	@Override //Me edita una Localidad existente
@@ -49,6 +59,19 @@ public class LocalidadServiceImpl implements LocalidadService{
 	public List<LocalidadModel> listLocalidadVigente() {
 		List<LocalidadModel> listLocalidad = new ArrayList<>();
 		for(Localidad localidad : localidadRepository.findAll()) {
+			if(localidad.getFechaBaja()==null) {
+				listLocalidad.add(localidadConverter.convertLocalidadToLocalidadModel(localidad));
+			}
+		}
+		return listLocalidad;
+	}
+
+	@Override
+	public List<LocalidadModel> listLocalidadesVigenteByDepartamento(String departamento) {
+		//Obtengo departamento
+		Departamento depto= departamentoRepository.findDepartamentoByNombreDepartamento(departamento);
+		List<LocalidadModel> listLocalidad = new ArrayList<>();
+		for(Localidad localidad : localidadRepository.findLocalidadByDepartamento(depto)) {
 			if(localidad.getFechaBaja()==null) {
 				listLocalidad.add(localidadConverter.convertLocalidadToLocalidadModel(localidad));
 			}

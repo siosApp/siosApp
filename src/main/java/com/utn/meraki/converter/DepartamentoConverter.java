@@ -27,7 +27,7 @@ public class DepartamentoConverter {
 			departamento = new Departamento();
 		}
 		departamento.setNombreDepartamento(departamentoModel.getNombreDepartamento());
-		departamento.setProvincia(provinciaRepository.findProvinciaByNombreProvincia(departamentoModel.getNombreProvincia()));
+		departamento.setProvincia(provinciaRepository.findProvinciaByNombreProvincia(departamentoModel.getProvincia().getId()));
 		departamentoRepository.save(departamento);
 		return departamento;
 	}
@@ -37,7 +37,7 @@ public class DepartamentoConverter {
 		departamentoModel.setId(departamento.getId());
 		departamentoModel.setFechaBaja(departamento.getFechaBaja());
 		departamentoModel.setNombreDepartamento(departamento.getNombreDepartamento());
-		departamentoModel.setNombreProvincia(departamento.getProvincia().getNombreProvincia());
+		departamentoModel.setProvincia(provinciaConverter.convertProvinciaToProvinciaModel(departamento.getProvincia()));
 		return departamentoModel;
 	}
 

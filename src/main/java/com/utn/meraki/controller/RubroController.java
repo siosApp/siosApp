@@ -58,4 +58,8 @@ public class RubroController {
 		return rubroService.deshabilitarRubro(id);
 	}
 
+	@GetMapping("/listRubrosByTipoRubro")
+	public List<RubroModel> getRubrosByTipoRubro(@RequestParam(value="tipoRubro",required=true)String tipoRubro){
+		return rubroService.listRubroVigenteByTipoRubro(tipoRubro);
+	}
 }

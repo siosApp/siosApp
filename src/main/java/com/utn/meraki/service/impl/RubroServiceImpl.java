@@ -3,7 +3,9 @@ package com.utn.meraki.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import com.utn.meraki.converter.RubroConverter;
+import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.repository.RubroRepository;
+import com.utn.meraki.repository.TipoRubroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.entity.Rubro;
@@ -18,6 +20,8 @@ public class RubroServiceImpl implements RubroService{
 	private RubroConverter rubroConverter;
 	@Autowired
 	private RubroRepository rubroRepository;
+	@Autowired
+	private TipoRubroRepository tipoRubroRepository;
 
 	@Override
 	public RubroModel crearRubro(RubroModel rubroModel) {
@@ -73,5 +77,18 @@ public class RubroServiceImpl implements RubroService{
 		Rubro.setFechaBaja(new java.util.Date());
 		rubroRepository.save(Rubro);
 		return rubroConverter.convertRubroToRubroModel(Rubro);
+	}
+
+	@Override
+	public List<RubroModel> listRubroVigenteByTipoRubro(String tipoRubro) {
+		TipoRubro tipoRubroEntity = tipoRubroRepository.findTipoRubroByNombreTipoRubro(tipoRubro);
+		List<Rubro> rubros=rubroRepository.findRubroByTipoRubro(tipoRubroEntity);
+		List<RubroModel> models= new ArrayList<>();
+		for(Rubro rubro: rubros){
+			if(rubro.getFechaBaja()==null){
+				models.add(rubroConverter.convertRubroToRubroModel(rubro));
+			}
+		}
+		return models;
 	}
 }

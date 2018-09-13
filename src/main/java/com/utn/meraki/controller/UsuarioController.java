@@ -62,4 +62,8 @@ public class UsuarioController {
     public UsuarioModel existeUsuario(@RequestParam(value="username",required=true)String username){
         return usuarioService.existeUsuario(username);
     }
+    @GetMapping("/validarMail")
+    public UsuarioModel validarMail(@RequestParam(value="mail",required=true)String mail){
+        return usuarioService.validarMail(mail);
+    }
 }

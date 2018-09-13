@@ -14,6 +14,8 @@ public interface LocalidadService {
 	
 	public abstract List<LocalidadModel> listLocalidadVigente();
 
+	public abstract List<LocalidadModel> listLocalidadesVigenteByDepartamento(String departamento);
+
 	public abstract List<LocalidadModel> listLocalidadTodos();
 
 	public abstract LocalidadModel getLocalidadById(String id);
