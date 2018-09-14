@@ -45,8 +45,7 @@ public class MailServiceImpl implements MailService {
 
             // Create the html part
             messageBodyPart = new MimeBodyPart();
-            String htmlMessage = "" +
-                    "<h1>"+ cuerpo+"</h1>";
+            String htmlMessage = cuerpo;
             messageBodyPart.setContent(htmlMessage, "text/html");
 
 

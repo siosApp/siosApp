@@ -26,8 +26,12 @@ public interface UsuarioService {
 
     public abstract UsuarioModel existeUsuario(String username);
 
+    public abstract UsuarioModel existeMail(String mail);
+
     public abstract UsuarioModel validarMail(String mail);
     
     public abstract List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel);
+
+    public abstract UsuarioModel cambiarContrasena(String mail,String password,String codigo);
     
 }

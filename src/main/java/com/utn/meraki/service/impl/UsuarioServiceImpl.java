@@ -1,5 +1,6 @@
 package com.utn.meraki.service.impl;
 
+import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.entity.TipoRubro;
@@ -12,11 +13,17 @@ import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 import com.utn.meraki.repository.UsuarioRubroRepository;
+import com.utn.meraki.service.GeneracionCodigo;
 import com.utn.meraki.service.MailService;
 import com.utn.meraki.service.UsuarioService;
+import org.joda.time.Days;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +45,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private RubroRepository rubroRepository;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private GeneracionCodigo generacionCodigo;
 
     @Override
     public UsuarioModel crearUsuario(UsuarioModel usuarioModel) {
@@ -118,12 +127,26 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public UsuarioModel existeMail(String mail) {
+        Usuario usuario=usuarioRepository.findUsuarioByMail(mail);
+        if(usuario!=null){
+            return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+        }
+        return new UsuarioModel();
+    }
+
+    @Override
     public UsuarioModel validarMail(String mail) {
         Usuario usuario=usuarioRepository.findUsuarioByMail(mail);
+        String codigo= generacionCodigo.generarCodigo();
         if(usuario !=null){
+            usuario.setCodigoValidacion(codigo);
+            usuario.setFechaCodigoValidacion(new Date());
+            usuarioRepository.save(usuario);
             //Crear atributos codigoValidacion y fechaCodigoValidacion. Que sean persistentes por 48 hs.
-            String mensaje= "Hace click en el enlace de abajo para recuperar tu contraseña."
-                    +"";
+            String mensaje= "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
+                     +"</p>"
+                    +"<a href='http://localhost:4200/newPassword/"+codigo+"'>Click aqui para recuperar su contraseña</a>";
             mailService.enviarMail(mail,"Recuperacion de contraseña",mensaje);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
         }
@@ -191,4 +214,25 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return listUsuario;
 	}
+
+    @Override
+    public UsuarioModel cambiarContrasena(String mail, String password, String codigo) {
+        Usuario usuario=usuarioRepository.findUsuarioByMail(mail);
+        if(usuario!=null &&  usuario.getFechaCodigoValidacion()!=null){
+            //Calculando diferencia dias
+            LocalDateTime hasta = LocalDateTime.now();
+            LocalDateTime desde = new LocalDateTime(usuario.getFechaCodigoValidacion());
+            Period period = new Period(hasta, desde);
+            long diasDiferencia = Math.abs(period.getDays());
+            //
+            if(diasDiferencia<=2 && codigo.equals(usuario.getCodigoValidacion())){
+                usuario.setPassword(password);
+                usuario.setFechaCodigoValidacion(null);
+                usuario.setCodigoValidacion(null);
+                usuarioRepository.save(usuario);
+                return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+            }
+        }
+        return new UsuarioModel();
+    }
 }
