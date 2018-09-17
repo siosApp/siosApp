@@ -28,7 +28,7 @@ public class TipoRubroServiceImpl implements TipoRubroService{
 
 	@Override
 	public TipoRubroModel editarTipoRubro(TipoRubroModel tipoRubroModel) {
-		TipoRubro tipoRubro = tipoRubroConverter.convertTipoRubroModelToTipoRubro(tipoRubroModel);
+		TipoRubro tipoRubro = tipoRubroConverter.convertTipoRubroModelToTipoRubroEditado(tipoRubroModel);
 		return tipoRubroConverter.convertTipoRubroToTipoRubroModel(tipoRubro);
 	}
 
