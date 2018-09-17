@@ -29,6 +29,9 @@ public class Requerimiento {
 	@GeneratedValue(generator = "uuid")
 	private String id;
 	
+	@Column(name = "titulo")
+	private String titulo;
+	
 	@Column(name = "descripcion")
 	private String descripcion;
 	
@@ -65,6 +68,15 @@ public class Requerimiento {
 	public void setTiempoEstimado(Integer tiempoEstimado) {
 		this.tiempoEstimado = tiempoEstimado;
 	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
 	public String getId() {
 		return id;
 	}
