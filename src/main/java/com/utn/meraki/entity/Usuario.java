@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import sun.print.resources.serviceui_zh_TW;
 
 @Entity
 @Table(name = "usuarios")
@@ -56,7 +57,13 @@ public class Usuario {
 	
 	@Column(name = "sexo")
 	private String sexo;
-	
+
+	@Column
+	private String codigoValidacion;
+
+	@Column
+	private Date fechaCodigoValidacion;
+
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_domicilio")
 	private Domicilio domicilio;
@@ -68,7 +75,8 @@ public class Usuario {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "id_usuario_rubro")
 	private List<UsuarioRubro> usuarioRubros = new ArrayList<>();
-	
+
+
 	//CONSTRUCTOR
 	public Usuario() {
 	}
@@ -185,5 +193,20 @@ public class Usuario {
 	public void setUsuarioRubros(List<UsuarioRubro> usuarioRubros) {
 		this.usuarioRubros = usuarioRubros;
 	}
-	
+
+	public void setCodigoValidacion(String codigoValidacion) {
+		this.codigoValidacion = codigoValidacion;
+	}
+
+	public void setFechaCodigoValidacion(Date fechaCodigoValidacion) {
+		this.fechaCodigoValidacion = fechaCodigoValidacion;
+	}
+
+	public String getCodigoValidacion() {
+		return codigoValidacion;
+	}
+
+	public Date getFechaCodigoValidacion() {
+		return fechaCodigoValidacion;
+	}
 }
