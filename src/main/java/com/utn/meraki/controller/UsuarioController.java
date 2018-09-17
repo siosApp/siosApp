@@ -62,4 +62,18 @@ public class UsuarioController {
     public UsuarioModel existeUsuario(@RequestParam(value="username",required=true)String username){
         return usuarioService.existeUsuario(username);
     }
+    @GetMapping("/existeMail")
+    public UsuarioModel existeMail(@RequestParam(value="mail",required=true)String mail){
+        return usuarioService.existeMail(mail);
+    }
+    @GetMapping("/validarMail")
+    public UsuarioModel validarMail(@RequestParam(value="mail",required=true)String mail){
+        return usuarioService.validarMail(mail);
+    }
+    @PostMapping("/change")
+    public UsuarioModel validarMail(@RequestParam(value="mail",required=true)String mail,
+                                    @RequestParam(value="password",required=true)String password,
+                                    @RequestParam(value="codigo",required=true)String codigo){
+        return usuarioService.cambiarContrasena(mail,password,codigo);
+    }
 }
