@@ -22,4 +22,6 @@ public interface LocalidadService {
 
 	public abstract LocalidadModel deshabilitarLocalidad(String id);
 
+	public abstract List<LocalidadModel> findLocalidadesByProvinciaAndDepartamento(String nombreProvincia,String nombreDepartamento);
+
 }
