@@ -11,7 +11,7 @@ public class DepartamentoModel {
 	
 	private Date fechaBaja;
 	
-	private String nombreProvincia;
+	private ProvinciaModel provincia;
 	
 	//CONSTRUCTRO
 	public DepartamentoModel() {
@@ -42,12 +42,12 @@ public class DepartamentoModel {
 		this.fechaBaja = fechaBaja;
 	}
 
-	public String getNombreProvincia() {
-		return nombreProvincia;
+	public ProvinciaModel getProvincia() {
+		return provincia;
 	}
 
-	public void setNombreProvincia(String nombreProvincia) {
-		this.nombreProvincia = nombreProvincia;
+	public void setProvincia(ProvinciaModel provincia) {
+		this.provincia = provincia;
 	}
 	
 }

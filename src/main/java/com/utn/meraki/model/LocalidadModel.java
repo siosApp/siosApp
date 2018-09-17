@@ -11,7 +11,7 @@ public class LocalidadModel {
 	
 	private Date fechaBaja;
 	
-	private String nombreDepartamento;
+	private DepartamentoModel departamento;
 	
 	//CONSTRUCTOR
 	public LocalidadModel() {
@@ -42,12 +42,12 @@ public class LocalidadModel {
 		this.fechaBaja = fechaBaja;
 	}
 
-	public String getNombreDepartamento() {
-		return nombreDepartamento;
+	public DepartamentoModel getDepartamento() {
+		return departamento;
 	}
 
-	public void setNombreDepartamento(String nombreDepartamento) {
-		this.nombreDepartamento = nombreDepartamento;
+	public void setDepartamento(DepartamentoModel departamento) {
+		this.departamento = departamento;
 	}
 	
 }

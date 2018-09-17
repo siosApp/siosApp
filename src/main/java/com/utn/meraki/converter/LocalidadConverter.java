@@ -28,7 +28,7 @@ public class LocalidadConverter {
 			localidad = new Localidad();
 		}
 		localidad.setNombreLocalidad(localidadModel.getNombreLocalidad());
-		localidad.setDepartamento(departamentoRepository.findDepartamentoByNombreDepartamento(localidadModel.getNombreDepartamento()));
+		localidad.setDepartamento(departamentoRepository.findDepartamentoById(localidadModel.getDepartamento().getId()));
 		localidadRepository.save(localidad);
 		return localidad;
 	}
@@ -38,7 +38,7 @@ public class LocalidadConverter {
 		localidadModel.setId(localidad.getId());
 		localidadModel.setFechaBaja(localidad.getFechaBaja());
 		localidadModel.setNombreLocalidad(localidad.getNombreLocalidad());
-		localidadModel.setNombreDepartamento(localidad.getDepartamento().getNombreDepartamento());
+		localidadModel.setDepartamento(departamentoConverted.convertDepartamentoToDepartamentoModel(localidad.getDepartamento()));
 		return localidadModel;
 	}
 

@@ -3,6 +3,11 @@ package com.utn.meraki.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.utn.meraki.entity.Departamento;
+import com.utn.meraki.entity.Provincia;
+import com.utn.meraki.repository.DepartamentoRepository;
+import com.utn.meraki.repository.ProvinciaRepository;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +28,22 @@ public class LocalidadServiceImpl implements LocalidadService{
 	//REPOSITORY
 	@Autowired
 	LocalidadRepository localidadRepository;
-	
+
+	@Autowired
+	DepartamentoRepository departamentoRepository;
+	@Autowired
+	ProvinciaRepository provinciaRepository;
+
 	//SERVICIOS
 	@Override //Me crea una nueva Localidad
 	public LocalidadModel crearLocalidad(LocalidadModel localidadModel) {
-		Localidad localidad = localidadConverter.convertLocalidadModelToLocalidad(localidadModel);
-		return localidadConverter.convertLocalidadToLocalidadModel(localidad);
+		Departamento departamento= departamentoRepository.findDepartamentoById(localidadModel.getDepartamento().getId());
+		if(departamento!=null){
+			Localidad localidad=localidadConverter.convertLocalidadModelToLocalidad(localidadModel);
+			localidadRepository.save(localidad);
+			return localidadConverter.convertLocalidadToLocalidadModel(localidad);
+		}
+		return new LocalidadModel();
 	}
 
 	@Override //Me edita una Localidad existente
@@ -49,6 +64,19 @@ public class LocalidadServiceImpl implements LocalidadService{
 	public List<LocalidadModel> listLocalidadVigente() {
 		List<LocalidadModel> listLocalidad = new ArrayList<>();
 		for(Localidad localidad : localidadRepository.findAll()) {
+			if(localidad.getFechaBaja()==null) {
+				listLocalidad.add(localidadConverter.convertLocalidadToLocalidadModel(localidad));
+			}
+		}
+		return listLocalidad;
+	}
+
+	@Override
+	public List<LocalidadModel> listLocalidadesVigenteByDepartamento(String departamento) {
+		//Obtengo departamento
+		Departamento depto= departamentoRepository.findDepartamentoById(departamento);
+		List<LocalidadModel> listLocalidad = new ArrayList<>();
+		for(Localidad localidad : localidadRepository.findLocalidadByDepartamento(depto)) {
 			if(localidad.getFechaBaja()==null) {
 				listLocalidad.add(localidadConverter.convertLocalidadToLocalidadModel(localidad));
 			}
@@ -79,6 +107,19 @@ public class LocalidadServiceImpl implements LocalidadService{
 		localidad.setFechaBaja(new java.util.Date());
 		localidadRepository.save(localidad);
 		return localidadConverter.convertLocalidadToLocalidadModel(localidad);
+	}
+
+	@Override
+	public List<LocalidadModel> findLocalidadesByProvinciaAndDepartamento(String nombreProvincia, String nombreDepartamento) {
+		List<LocalidadModel> localidadModels= new ArrayList<>();
+		Provincia provincia=provinciaRepository.findProvinciaByNombreProvincia(nombreProvincia);
+		Departamento departamento=departamentoRepository.findDepartamentoByNombreDepartamentoAndProvincia(nombreDepartamento,provincia);
+		for(Localidad localidad:localidadRepository.findLocalidadByDepartamento(departamento)){
+			if(localidad.getFechaBaja()==null){
+				localidadModels.add(localidadConverter.convertLocalidadToLocalidadModel(localidad));
+			}
+		}
+		return localidadModels;
 	}
 
 }
