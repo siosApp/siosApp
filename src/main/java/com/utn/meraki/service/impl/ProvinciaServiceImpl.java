@@ -72,8 +72,16 @@ public class ProvinciaServiceImpl implements ProvinciaService{
 	        }
 	        return new ProvinciaModel();
 	    }
-	 
-	 @Override
+
+	@Override
+	public ProvinciaModel getProvinciaByNombre(String nombre) {
+		if(nombre !=null){
+			return provinciaConverter.convertProvinciaToProvinciaModel(provinciaRepository.findProvinciaByNombreProvincia(nombre));
+		}
+		return new ProvinciaModel();
+	}
+
+	@Override
 	    public List<ProvinciaModel> listProvinciaTodas() {
 	        List<ProvinciaModel> listProvincia = new ArrayList<>();
 	        for(Provincia provincia : provinciaRepository.findAll()) {

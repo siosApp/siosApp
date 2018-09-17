@@ -42,5 +42,58 @@ public class Destacado {
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_medio_pago")
 	private MedioPago medioPago;
+	
+	//CONSTRUCTOR
+	public Destacado() {
+		
+	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Float getMonto() {
+		return monto;
+	}
+
+	public void setMonto(Float monto) {
+		this.monto = monto;
+	}
+
+	public Date getFechaDestacado() {
+		return fechaDestacado;
+	}
+
+	public void setFechaDestacado(Date fechaDestacado) {
+		this.fechaDestacado = fechaDestacado;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public EstadoDestacado getEstadoDestacado() {
+		return estadoDestacado;
+	}
+
+	public void setEstadoDestacado(EstadoDestacado estadoDestacado) {
+		this.estadoDestacado = estadoDestacado;
+	}
+
+	public MedioPago getMedioPago() {
+		return medioPago;
+	}
+
+	public void setMedioPago(MedioPago medioPago) {
+		this.medioPago = medioPago;
+	}
+	
 }

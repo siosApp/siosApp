@@ -46,6 +46,13 @@ public class LocalidadController {
 		return localidadService.listLocalidadVigente();
 	}
 
+	@GetMapping("/listLocalidades")
+	public List<LocalidadModel> listLocalidadesVigenteByDepartamento(
+			@RequestParam(value="provincia",required=true)String provincia,
+			@RequestParam(value="departamento",required=true)String departamento){
+		return localidadService.findLocalidadesByProvinciaAndDepartamento(provincia,departamento);
+	}
+
 	@GetMapping("/listAllLocalidades")
 	public List<LocalidadModel> listAllLocalidades(){
 		return localidadService.listLocalidadTodos();

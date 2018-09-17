@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/meraki?useSSL=false
+    url: jdbc:mysql://localhost:3306/sios?useSSL=false
     username: root 
-    password: root
+    password: leyenda_10
   jpa:
     show-sql: false 
     hibernate:

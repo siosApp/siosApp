@@ -2,6 +2,9 @@ package com.utn.meraki.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.utn.meraki.entity.Provincia;
+import com.utn.meraki.repository.ProvinciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.DepartamentoConverter;
@@ -21,6 +24,8 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	//REPOSITORY
 	@Autowired
 	DepartamentoRepository departamentoRepository;
+	@Autowired
+	ProvinciaRepository provinciaRepository;
 	
 	//SERVICIOS
 	@Override //Me crea un nuevo departamento
@@ -55,6 +60,19 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 	}
 
 	@Override
+	public List<DepartamentoModel> listDepartamentoVigenteByProvincia(String provincia) {
+		//Obtengo provincia por medio del id.
+		Provincia prov = provinciaRepository.findProvinciaById(provincia);
+		List<DepartamentoModel> listDepartamentos = new ArrayList<>();
+		for(Departamento departamento : departamentoRepository.findDepartamentoByProvincia(prov)) {
+			if(departamento.getFechaBaja()==null) {
+				listDepartamentos.add(departamentoConverter.convertDepartamentoToDepartamentoModel(departamento));
+			}
+		}
+		return listDepartamentos;
+	}
+
+	@Override
 	public List<DepartamentoModel> listDepartamentoTodos() {
 		List<DepartamentoModel> listDepartamentos = new ArrayList<>();
 		for(Departamento departamento : departamentoRepository.findAll()) {
@@ -69,6 +87,18 @@ public class DepartamentoServiceImpl implements DepartamentoService{
 			return departamentoConverter.convertDepartamentoToDepartamentoModel(departamentoRepository.findDepartamentoById(id));
 		}
 		return new DepartamentoModel();
+	}
+
+	@Override
+	public DepartamentoModel getDepartamentoByNombre(String nombreDepartamento) {
+		return departamentoConverter.convertDepartamentoToDepartamentoModel(departamentoRepository.findDepartamentoByNombreDepartamento(nombreDepartamento));
+	}
+
+	@Override
+	public DepartamentoModel getDepartamentoByNombreAndProvincia(String depto, String nombreProvincia) {
+		Provincia provincia=provinciaRepository.findProvinciaByNombreProvincia(nombreProvincia);
+		return  departamentoConverter.convertDepartamentoToDepartamentoModel(departamentoRepository.findDepartamentoByNombreDepartamentoAndProvincia(depto,provincia));
+
 	}
 
 	@Override
