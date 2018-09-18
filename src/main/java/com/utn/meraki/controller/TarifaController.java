@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utn.meraki.model.TarifaModel;
 import com.utn.meraki.service.TarifaService;
 
 @RequestMapping("/tarifa")
@@ -25,28 +26,33 @@ public class TarifaController {
 	TarifaService tarifaService;
 	
 	@PostMapping("/crearTarifa")
-	public Integer crearTarifa(@RequestParam(value="montoTarifa",required=true)Integer montoTarifa) {
+	public TarifaModel crearTarifa(@RequestParam(value="montoTarifa",required=true)Integer montoTarifa) {
 		return tarifaService.crearTarifa(montoTarifa);
 	}
 	
 	@PutMapping("/editarTarifa")
-	public Integer editarTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa,
+	public TarifaModel editarTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa,
 			@RequestParam(value="montoTarifa",required=true)Integer montoTarifa) {
 		return tarifaService.editarTarifa(idTarifa, montoTarifa);
 	}
 	
 	@PutMapping("/bajaTarifa")
-	public String bajaTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa) {
+	public TarifaModel bajaTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa) {
 		return tarifaService.bajaTarifa(idTarifa);
 	}
 	
 	@PutMapping("/habilitarTarifa")
-	public String habilitarTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa) {
+	public TarifaModel habilitarTarifa(@RequestParam(value="idTarifa",required=true)String idTarifa) {
 		return tarifaService.altaTarifa(idTarifa);
 	}
 	
 	@GetMapping("/getListTarifa")
-	public List<Integer> getListTarifa(){
+	public List<TarifaModel> getListTarifa(){
 		return tarifaService.getListTarifas();
+	}
+	
+	@GetMapping("/findTarifaById")
+	public TarifaModel findTarifaById(@RequestParam(value="idTarifa",required=true)String idTarifa) {
+		return tarifaService.findTarifaById(idTarifa);
 	}
 }
