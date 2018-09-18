@@ -9,4 +9,6 @@ import com.utn.meraki.entity.Tarifa;
 
 public interface TarifaRepository extends JpaRepository<Tarifa, Serializable>{
 	
+	public Tarifa findTarifaById(String idTarifa);
+	
 }

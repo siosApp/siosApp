@@ -22,7 +22,7 @@ public class Tarifa {
 	private String id;
 	
 	@Column(name = "monto")
-	private Float monto;
+	private Integer monto;
 	
 	@Column(name = "fecha_baja")
 	private Date fechaBaja;
@@ -39,11 +39,11 @@ public class Tarifa {
 		this.id = id;
 	}
 
-	public Float getMonto() {
+	public Integer getMonto() {
 		return monto;
 	}
 
-	public void setMonto(Float monto) {
+	public void setMonto(Integer monto) {
 		this.monto = monto;
 	}
 
