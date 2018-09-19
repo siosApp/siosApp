@@ -144,9 +144,10 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setFechaCodigoValidacion(new Date());
             usuarioRepository.save(usuario);
             //Crear atributos codigoValidacion y fechaCodigoValidacion. Que sean persistentes por 48 hs.
-            String mensaje= "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
+            String mensaje= "<h4>Código para recuperar tu contraseña: "+codigo+"</h4><br/>"+
+                    "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
                      +"</p>"
-                    +"<a href='http://localhost:4200/newPassword/"+codigo+"'>Click aqui para recuperar su contraseña</a>";
+                    +"<a href='http://localhost:4200/newPassword'>Click aqui para recuperar su contraseña</a>";
             mailService.enviarMail(mail,"Recuperacion de contraseña",mensaje);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
         }
