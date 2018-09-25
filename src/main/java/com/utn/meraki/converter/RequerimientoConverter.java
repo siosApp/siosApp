@@ -46,5 +46,7 @@ public class RequerimientoConverter {
 		//requerimiento.getArchivos();
 		return requerimientoModel;		
 	}
+	
+	
 
 }

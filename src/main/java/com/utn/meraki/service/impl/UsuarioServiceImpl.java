@@ -3,12 +3,14 @@ package com.utn.meraki.service.impl;
 import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
+import com.utn.meraki.converter.UsuarioRubroConverter;
 import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
 import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
+import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -35,6 +37,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioConverter usuarioConverter;
     @Autowired
     private UsuarioDestacadoConverter usuarioDestacadoConverter;
+    @Autowired
+    private UsuarioRubroConverter usuarioRubroConverter;
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -144,10 +148,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setFechaCodigoValidacion(new Date());
             usuarioRepository.save(usuario);
             //Crear atributos codigoValidacion y fechaCodigoValidacion. Que sean persistentes por 48 hs.
-            String mensaje= "<h4>Código para recuperar tu contraseña: "+codigo+"</h4><br/>"+
-                    "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
+            String mensaje= "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
                      +"</p>"
-                    +"<a href='http://localhost:4200/newPassword'>Click aqui para recuperar su contraseña</a>";
+                    +"<a href='http://localhost:4200/newPassword/"+codigo+"'>Click aqui para recuperar su contraseña</a>";
             mailService.enviarMail(mail,"Recuperacion de contraseña",mensaje);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
         }
@@ -236,4 +239,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         return new UsuarioModel();
     }
+
+	@Override
+	public UsuarioModel asignarOferente(UsuarioModel usuarioModel) {
+		Usuario usuario = usuarioRepository.findUsuarioById(usuarioModel.getId());
+		usuario.setOferente(true);
+		for(UsuarioRubroModel usuarioRubroModel : usuarioModel.getUsuarioRubros()) {
+			UsuarioRubro usuarioRubro = usuarioRubroConverter.convertUsuarioRubroModelToUsuarioRubro(usuarioRubroModel);
+			usuarioRubroRepository.save(usuarioRubro);
+			usuario.getUsuarioRubros().add(usuarioRubro);
+		}
+		usuarioRepository.save(usuario);
+		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
 }

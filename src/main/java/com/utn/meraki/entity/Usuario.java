@@ -57,6 +57,9 @@ public class Usuario {
 	
 	@Column(name = "sexo")
 	private String sexo;
+	
+	@Column(name = "imagen")
+	private String imagen;
 
 	@Column
 	private String codigoValidacion;
@@ -73,7 +76,7 @@ public class Usuario {
 	private TipoUsuario tipoUsuario;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "id_usuario_rubro")
+	@JoinColumn(name = "id_usuario")
 	private List<UsuarioRubro> usuarioRubros = new ArrayList<>();
 
 
@@ -209,4 +212,13 @@ public class Usuario {
 	public Date getFechaCodigoValidacion() {
 		return fechaCodigoValidacion;
 	}
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+	
 }

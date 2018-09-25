@@ -10,5 +10,7 @@ import com.utn.meraki.entity.Requerimiento;
 @Repository("requerimientoRepository")
 
 public interface RequerimientoRepository extends JpaRepository<Requerimiento, Serializable>{
+	
+	public Requerimiento findRequerimientoById(String id);
 
 }
