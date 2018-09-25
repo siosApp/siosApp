@@ -158,66 +158,132 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-	public List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel) {
-		List<UsuarioDestacadoModel> listUsuario = new ArrayList<>();
-		//Seteo atributos el filtro
-		String rubro = filtroModel.getNombreRubro();
-		String tipoRubro = filtroModel.getNombreTipoRubro();
-		String localidad = filtroModel.getNombreLocalidad();
-		String departamento = filtroModel.getNombreDepartamento();
-		String provincia = filtroModel.getNombreProvincia();
-		//Filtro según elementos de búsqueda
-		if(tipoRubro==null&&provincia==null) {
-			for(Usuario usuario : usuarioRepository.findAll()) {
-				listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
-			}
-		}else {
-			if(tipoRubro!=null&&provincia==null) {
-				if(rubro!=null) {
-					for(Usuario usuario : usuarioRepository.findAll()) {
-						for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubroRepository.findRubroByNombreRubro(rubro))) {
-							listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuarioRepository.
-									findUsuarioByUsuarioRubros(usuarioRubro)));
-						}
-					}
-				}else {
-					for(Usuario usuario : usuarioRepository.findAll()) {
-						for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubroRepository.findRubroByNombreRubro(rubro))) {
-							if(usuarioRubro.getRubro().getTipoRubro().getNombreTipoRubro().equals(tipoRubro)) {
-								listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuarioRepository.
-										findUsuarioByUsuarioRubros(usuarioRubro)));
-							}
-						}
-					}
-				}
-			}else if(tipoRubro==null&&provincia!=null) {
-				if(localidad==null&&departamento==null) {
-					for(Usuario usuario : usuarioRepository.findAll()) {
-						if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().equals(provincia)) {
-							listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
-						}
-					}
-				}else if(departamento!=null&&localidad==null){
-					for(Usuario usuario : usuarioRepository.findAll()) {
-						if(usuario.getDomicilio().getLocalidad().getDepartamento().equals(departamento)) {
-							listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
-						}
-					}
-				}else {
-					for(Usuario usuario : usuarioRepository.findAll()) {
-						if(usuario.getDomicilio().getLocalidad().equals(localidad)) {
-							listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
-						}
-					}
-				}
-			}else {
-				//Falta desarrollar para el caso de que seleccione tipo de rubro y provincia
-				//A partir de aqui ver todas las posibilidades para ver si selecciona rubro, localidad, departamentos
-				//Y filtrar con todas las combinaciones posibles
-			}
-		}
-		return listUsuario;
-	}
+    public List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel) {
+        List<UsuarioDestacadoModel> listUsuario = new ArrayList<>();
+        //Seteo atributos el filtro
+        String rubro = filtroModel.getNombreRubro();
+        String tipoRubro = filtroModel.getNombreTipoRubro();
+        String localidad = filtroModel.getNombreLocalidad();
+        String departamento = filtroModel.getNombreDepartamento();
+        String provincia = filtroModel.getNombreProvincia();
+        //Filtro según elementos de búsqueda
+        if(tipoRubro==null&&provincia==null) {
+            for(Usuario usuario : usuarioRepository.findAll()) {
+                if(usuario.getOferente()) {
+                    listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                }
+            }
+        }else {
+            if(tipoRubro!=null&&provincia==null) {
+                if(rubro!=null) {
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubroRepository.findRubroByNombreRubro(rubro))) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuarioRepository.
+                                        findUsuarioByUsuarioRubros(usuarioRubro)));
+                            }
+                        }
+                    }
+                }else {
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+                                if(usuarioRubro.getRubro().getTipoRubro().getNombreTipoRubro().equals(tipoRubro)) {
+                                    listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuarioRepository.
+                                            findUsuarioByUsuarioRubros(usuarioRubro)));
+                                }
+                            }
+                        }
+                    }
+                }
+            }else if(tipoRubro==null&&provincia!=null) {
+                if(localidad==null&&departamento==null) {
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().equals(provincia)) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                            }
+                        }
+                    }
+                }else if(departamento!=null&&localidad==null){
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().equals(departamento)) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                            }
+                        }
+                    }
+                }else {
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            if(usuario.getDomicilio().getLocalidad().equals(localidad)) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                            }
+                        }
+                    }
+                }
+            }else {
+                if(rubro==null&&departamento==null) {
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
+                            for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+                                if(usuarioRubro.getRubro().getTipoRubro().getNombreTipoRubro().equals(tipoRubro)) {
+
+                                }
+                            }
+                        }
+                    }
+                }else if(rubro==null&&departamento!=null) {
+                    if(localidad==null) {
+                        for(Usuario usuario : usuarioRepository.findAll()) {
+                            if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getDepartamento().getNombreDepartamento().equals(departamento)) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                            }
+                        }
+                    }else {
+                        for(Usuario usuario : usuarioRepository.findAll()) {
+                            if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getNombreLocalidad().equals(localidad)) {
+                                listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                            }
+                        }
+                    }
+                }else if(rubro!=null&&departamento==null){
+                    for(Usuario usuario : usuarioRepository.findAll()) {
+                        if(usuario.getOferente()) {
+                            for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+                                if(usuarioRubro.getRubro().getNombreRubro().equals(rubro)) {
+                                    listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    if(localidad!=null) {
+                        for(Usuario usuario : usuarioRepository.findAll()) {
+                            if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getNombreLocalidad().equals(localidad)) {
+                                for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+                                    if(usuarioRubro.getRubro().getNombreRubro().equals(rubro)) {
+                                        listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                                    }
+                                }
+                            }
+                        }
+                    }else {
+                        for(Usuario usuario : usuarioRepository.findAll()) {
+                            if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getDepartamento().getNombreDepartamento().equals(departamento)) {
+                                for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+                                    if(usuarioRubro.getRubro().getNombreRubro().equals(rubro)) {
+                                        listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return listUsuario;
+    }
 
     @Override
     public UsuarioModel cambiarContrasena(String mail, String password, String codigo) {
