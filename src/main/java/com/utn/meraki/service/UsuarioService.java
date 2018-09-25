@@ -1,5 +1,6 @@
 package com.utn.meraki.service;
 
+import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
@@ -32,6 +33,8 @@ public interface UsuarioService {
     
     public abstract List<UsuarioDestacadoModel> filtrarUsuarios(FiltroModel filtroModel);
 
-    public abstract UsuarioModel cambiarContrasena(String mail,String password,String codigo);
+    public abstract UsuarioModel cambiarContrasena(String mail, String password, String codigo);
+    
+    public abstract UsuarioModel asignarOferente(UsuarioModel usuarioModel);
     
 }

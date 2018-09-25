@@ -22,6 +22,8 @@ public class UsuarioModel {
     private String mail;
 
     private boolean oferente;
+    
+    private String imagen;
 
     private String username;
 
@@ -155,4 +157,13 @@ public class UsuarioModel {
     public void setUsuarioRubros(List<UsuarioRubroModel> usuarioRubros) {
         this.usuarioRubros = usuarioRubros;
     }
+
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+    
 }

@@ -1,5 +1,6 @@
 package com.utn.meraki.controller;
 
+import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,10 +71,16 @@ public class UsuarioController {
     public UsuarioModel validarMail(@RequestParam(value="mail",required=true)String mail){
         return usuarioService.validarMail(mail);
     }
+    
     @PostMapping("/change")
     public UsuarioModel validarMail(@RequestParam(value="mail",required=true)String mail,
                                     @RequestParam(value="password",required=true)String password,
                                     @RequestParam(value="codigo",required=true)String codigo){
         return usuarioService.cambiarContrasena(mail,password,codigo);
+    }
+    
+    @PostMapping("/asignarOferente")
+    public UsuarioModel asignarOferente(@RequestBody UsuarioModel usuarioModel) {
+    	return usuarioService.asignarOferente(usuarioModel);
     }
 }

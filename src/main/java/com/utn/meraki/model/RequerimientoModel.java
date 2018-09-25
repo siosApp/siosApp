@@ -8,8 +8,7 @@ public class RequerimientoModel {
 	private String id;
 	
 	private String titulo;
-	
-	
+		
 	private String descripcion;
 	
 	private Date fechaPublicacion;

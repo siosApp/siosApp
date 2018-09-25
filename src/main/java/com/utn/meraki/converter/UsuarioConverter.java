@@ -39,6 +39,7 @@ public class UsuarioConverter {
         if(usuarioModel.getDomicilio()!=null){
             usuario.setDomicilio(domicilioConverter.convertDomicilioModelToDomicilio(usuarioModel.getDomicilio()));
         }
+        usuario.setImagen(usuarioModel.getImagen());
         usuario.setFechaBaja(usuarioModel.getFechaBaja());
         usuario.setFechaNacimiento(usuarioModel.getFechaNacimiento());
         usuario.setFechaUltIngreso(usuarioModel.getFechaUltIngreso());
@@ -65,6 +66,7 @@ public class UsuarioConverter {
         usuarioModel.setId(usuario.getId());
         usuarioModel.setApellido(usuario.getApellido());
         usuarioModel.setUsername(usuario.getUsername());
+        usuarioModel.setImagen(usuario.getImagen());
         usuarioModel.setSexo(usuario.getSexo());
         usuarioModel.setMail(usuario.getMail());
         usuarioModel.setNombre(usuario.getNombre());
@@ -75,7 +77,11 @@ public class UsuarioConverter {
         if(usuario.getOferente()!=null) {
         	usuarioModel.setOferente(usuario.getOferente());
         }
-        usuarioModel.setUsuarioRubros(null);
+        if(usuario.getUsuarioRubros()!=null) {
+        	for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
+        		usuarioModel.getUsuarioRubros().add(usuarioRubroConverter.convertUsuarioRubroToUsuarioRubroModel(usuarioRubro));
+        	}
+        }
         if(usuario.getTipoUsuario()!=null) {
         	usuarioModel.setTipoUsuario(usuario.getTipoUsuario().getNombreTipoUsuario());
         }

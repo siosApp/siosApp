@@ -10,4 +10,6 @@ import java.io.Serializable;
 public interface EstadoSolicitudRepository extends JpaRepository<EstadoSolicitud,Serializable> {
 
     EstadoSolicitud findEstadoSolicitudById(String id);
+    
+    EstadoSolicitud findEstadoSolicitudByNombreEstadoSolicitud(String nombreEstadoSolicitud);
 }
