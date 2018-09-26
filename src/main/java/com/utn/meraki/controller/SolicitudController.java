@@ -32,5 +32,10 @@ public class SolicitudController {
 	public SolicitudModel rechazarSolicitud(@RequestParam(value="idSolicitud",required=true)String idSolicitud) {
 		return solicitudService.rechazarSolicitud(idSolicitud);
 	}
+	
+	@PutMapping("/aceptarSolicitud")
+	public SolicitudModel aceptarSolicitud(@RequestParam(value="idSolicitud",required=true)String idSolicitud) {
+		return solicitudService.aceptarSolicitud(idSolicitud);
+	}
 
 }

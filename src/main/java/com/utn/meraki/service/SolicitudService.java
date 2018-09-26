@@ -11,4 +11,6 @@ public interface SolicitudService {
 	
 	public SolicitudModel rechazarSolicitud(String idSolicitud);
 	
+	public SolicitudModel aceptarSolicitud(String idSolicitud);
+	
 }
