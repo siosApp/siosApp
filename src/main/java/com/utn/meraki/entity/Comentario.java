@@ -30,11 +30,10 @@ public class Comentario {
 	//CONSTRUCTOR
 	public Comentario() {
 	}
-
-	public Comentario(String descripcion, Date fechaBaja) {
+	
+	public Comentario(String descripcion) {
 		super();
 		this.descripcion = descripcion;
-		this.fechaBaja = fechaBaja;
 	}
 
 	//GET AND SET
