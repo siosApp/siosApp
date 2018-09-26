@@ -56,4 +56,16 @@ public class SolicitudServiceImpl implements SolicitudService{
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}
 
+	@Override
+	public SolicitudModel rechazarSolicitud(String idSolicitud) {
+		Solicitud solicitud = solicitudRepository.findSolicitudById(idSolicitud);
+		SolicitudEstado solicitudEstado = new SolicitudEstado();
+		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Rechazada"));
+		solicitudEstadoRepository.save(solicitudEstado);
+		solicitud.getSolicitudEstados().add(solicitudEstado);
+		solicitudRepository.save(solicitud);
+		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
 }

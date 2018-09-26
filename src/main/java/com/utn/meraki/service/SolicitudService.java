@@ -8,5 +8,7 @@ public interface SolicitudService {
 	public SolicitudEstado ultimoEstadoSolicitud(String idSolicitud);
 	
 	public SolicitudModel solicitarServicio(SolicitudModel solicitudModel);
-
+	
+	public SolicitudModel rechazarSolicitud(String idSolicitud);
+	
 }
