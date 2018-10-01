@@ -62,4 +62,9 @@ public class RubroController {
 	public List<RubroModel> getRubrosByTipoRubro(@RequestParam(value="tipoRubro",required=true)String tipoRubro){
 		return rubroService.listRubroVigenteByTipoRubro(tipoRubro);
 	}
+	
+	@GetMapping("/getRubroByNombre")
+	public RubroModel getRubroByNombre(@RequestParam(value="nombreRubro",required=true)String nombreRubro) {
+		return rubroService.getRubroByNombreRubro(nombreRubro);
+	}
 }

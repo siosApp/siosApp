@@ -20,5 +20,7 @@ public interface RubroService {
 	public abstract RubroModel deshabilitarRubro(String id);
 
 	public abstract List<RubroModel> listRubroVigenteByTipoRubro(String tipoRubro);
+	
+	public abstract RubroModel getRubroByNombreRubro(String nombreRubro);
 
 }
