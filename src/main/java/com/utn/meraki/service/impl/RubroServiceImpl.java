@@ -91,4 +91,10 @@ public class RubroServiceImpl implements RubroService{
 		}
 		return models;
 	}
+
+	@Override
+	public RubroModel getRubroByNombreRubro(String nombreRubro) {
+		Rubro rubro = rubroRepository.findRubroByNombreRubro(nombreRubro);
+		return rubroConverter.convertRubroToRubroModel(rubro);
+	}
 }

@@ -5,11 +5,13 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.utn.meraki.entity.Archivo;
 import com.utn.meraki.entity.OfertaRequerimiento;
 import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.repository.ArchivoRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
 import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.repository.RequerimientoRepository;
@@ -31,6 +33,8 @@ public class SolicitudConverter {
 	UsuarioRepository usuarioRepository;
 	@Autowired
 	EstadoSolicitudRepository estadoSolicitudRepository;
+	@Autowired
+	ArchivoRepository archivoRepository;
 	@Autowired
 	EstadoRequerimientoRepository estadoRequerimientoRepository;
 	@Autowired
@@ -65,7 +69,9 @@ public class SolicitudConverter {
 		solicitudModel.setUsuarioOferente(solicitud.getUsuarioOferente().getUsername());
 		solicitudModel.setNombreEstadoSolicitud(solicitudService.ultimoEstadoSolicitud(solicitud.getId())
 				.getEstadoSolicitud().getNombreEstadoSolicitud());
-		//solicitudModel.setArchivos(archivos);
+		for(Archivo archivo : solicitud.getArchivos()) {
+			solicitudModel.getUrlArchivos().add(archivo.getUrlArchivo());
+		}
 		return solicitudModel;
 	}
 	
@@ -75,7 +81,11 @@ public class SolicitudConverter {
 		solicitud.setFechaSolicitud(new Date(System.currentTimeMillis()));
 		solicitud.setUsuarioDemandante(usuarioRepository.findUsuarioByUsername(solicitudModel.getUsuarioDemandante()));
 		solicitud.setUsuarioOferente(usuarioRepository.findUsuarioByUsername(solicitudModel.getUsuarioOferente()));
-		//solicitud.setArchivos();
+		for(String urlArchivo : solicitudModel.getUrlArchivos()) {
+			Archivo archivo = new Archivo(urlArchivo);
+			archivoRepository.save(archivo);
+			solicitud.getArchivos().add(archivo);
+		}
 		return solicitud;
 	}
 

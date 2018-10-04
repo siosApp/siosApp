@@ -16,7 +16,7 @@ public class SolicitudModel {
 	
 	private String nombreEstadoSolicitud;
 	
-	private List<Archivo> archivos = new ArrayList<>();
+	private List<String> urlArchivos = new ArrayList<>();
 	
 	private String usuarioOferente;
 	
@@ -60,12 +60,12 @@ public class SolicitudModel {
 		this.nombreEstadoSolicitud = nombreEstadoSolicitud;
 	}
 
-	public List<Archivo> getArchivos() {
-		return archivos;
+	public List<String> getUrlArchivos() {
+		return urlArchivos;
 	}
 
-	public void setArchivos(List<Archivo> archivos) {
-		this.archivos = archivos;
+	public void setUrlArchivos(List<String> urlArchivos) {
+		this.urlArchivos = urlArchivos;
 	}
 
 	public String getUsuarioOferente() {

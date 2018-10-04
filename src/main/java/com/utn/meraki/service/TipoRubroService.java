@@ -21,5 +21,5 @@ public interface TipoRubroService {
 	public abstract TipoRubroModel getTipoRubroByNombre(String nombreTipoRubro);
 
 	public abstract TipoRubroModel deshabilitarTipoRubro(String id);
-
+	
 }

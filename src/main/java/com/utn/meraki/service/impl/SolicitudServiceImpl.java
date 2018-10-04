@@ -1,14 +1,14 @@
 package com.utn.meraki.service.impl;
 
-import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.utn.meraki.converter.SolicitudConverter;
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.repository.SolicitudEstadoRepository;
 import com.utn.meraki.repository.SolicitudRepository;
 import com.utn.meraki.service.SolicitudService;
@@ -22,6 +22,8 @@ public class SolicitudServiceImpl implements SolicitudService{
 	SolicitudRepository solicitudRepository;
 	@Autowired
 	SolicitudEstadoRepository solicitudEstadoRepository;
+	@Autowired
+	EstadoSolicitudRepository estadoSolicitudRepository;
 	
 	//CONVERTER
 	@Autowired
@@ -45,6 +47,35 @@ public class SolicitudServiceImpl implements SolicitudService{
 	@Override
 	public SolicitudModel solicitarServicio(SolicitudModel solicitudModel) {
 		Solicitud solicitud = solicitudConverter.convertSolicitudModelToSolicitud(solicitudModel);
+		SolicitudEstado solicitudEstado = new SolicitudEstado();
+		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Creada"));
+		solicitudEstadoRepository.save(solicitudEstado);
+		solicitud.getSolicitudEstados().add(solicitudEstado);
+		solicitudRepository.save(solicitud);
+		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
+	@Override
+	public SolicitudModel rechazarSolicitud(String idSolicitud) {
+		Solicitud solicitud = solicitudRepository.findSolicitudById(idSolicitud);
+		SolicitudEstado solicitudEstado = new SolicitudEstado();
+		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Rechazada"));
+		solicitudEstadoRepository.save(solicitudEstado);
+		solicitud.getSolicitudEstados().add(solicitudEstado);
+		solicitudRepository.save(solicitud);
+		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
+	@Override
+	public SolicitudModel aceptarSolicitud(String idSolicitud) {
+		Solicitud solicitud = solicitudRepository.findSolicitudById(idSolicitud);
+		SolicitudEstado solicitudEstado = new SolicitudEstado();
+		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Aceptada"));
+		solicitudEstadoRepository.save(solicitudEstado);
+		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}

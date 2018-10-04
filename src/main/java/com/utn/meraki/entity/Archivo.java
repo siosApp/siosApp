@@ -20,8 +20,13 @@ public class Archivo {
 	@GeneratedValue(generator = "uuid")
 	private String id;
 	
+	@Column(name = "url_archivo")
+	private String urlArchivo;
+	
 	//CONSTRUCTOR
-	public Archivo() {
+	public Archivo(String urlArchivo) {
+		super();
+		this.urlArchivo = urlArchivo;
 	}
 
 	//GET AND SET
@@ -31,6 +36,14 @@ public class Archivo {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getUrlArchivo() {
+		return urlArchivo;
+	}
+
+	public void setUrlArchivo(String urlArchivo) {
+		this.urlArchivo = urlArchivo;
 	}
 	
 }
