@@ -5,8 +5,10 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.utn.meraki.entity.Archivo;
 import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.model.RequerimientoModel;
+import com.utn.meraki.repository.ArchivoRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 
@@ -19,6 +21,8 @@ public class RequerimientoConverter {
 	EstadoRequerimientoRepository estadoRequerimientoRepository;
 	@Autowired
 	UsuarioRepository usuarioRepository;
+	@Autowired
+	ArchivoRepository archivoRepository;
 	
 	public Requerimiento convertRequerimientoModelToRequerimiento(RequerimientoModel requerimientoModel) {
 		Requerimiento requerimiento = new Requerimiento();
@@ -29,7 +33,11 @@ public class RequerimientoConverter {
 		requerimiento.setTiempoEstimado(requerimientoModel.getTiempoEstimado());
 		requerimiento.setTitulo(requerimientoModel.getTitulo());
 		requerimiento.setUsuario(usuarioRepository.findUsuarioById(requerimientoModel.getIdUsuario()));
-		//requerimiento.setArchivos(archivos);
+		for(String urlArchivo : requerimientoModel.getUrlArchivos()) {
+			Archivo archivo = new Archivo(urlArchivo);
+			archivoRepository.save(archivo);
+			requerimiento.getArchivos().add(archivo);
+		}
 		return requerimiento;
 	}
 	
@@ -43,7 +51,9 @@ public class RequerimientoConverter {
 		requerimientoModel.setTiempoEstimado(requerimiento.getTiempoEstimado());
 		requerimientoModel.setIdUsuario(requerimiento.getUsuario().getId());
 		requerimientoModel.setNombreEstadoRequerimiento(requerimiento.getEstadoRequerimiento().getNombreEstado());
-		//requerimiento.getArchivos();
+		for(Archivo archivo : requerimiento.getArchivos()) {
+			requerimientoModel.getUrlArchivos().add(archivo.getUrlArchivo());
+		}
 		return requerimientoModel;		
 	}
 	

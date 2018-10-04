@@ -1,6 +1,8 @@
 package com.utn.meraki.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RequerimientoModel {
 	
@@ -21,7 +23,7 @@ public class RequerimientoModel {
 	
 	private int tiempoEstimado;
 	
-	//private List<Archivo> archivos = new ArrayList<>();
+	private List<String> urlArchivos = new ArrayList<>();
 	
 	public int getTiempoEstimado() {
 		return tiempoEstimado;
@@ -93,6 +95,12 @@ public class RequerimientoModel {
 		this.nombreEstadoRequerimiento = nombreEstadoRequerimiento;
 	}
 
-	
-	
+	public List<String> getUrlArchivos() {
+		return urlArchivos;
+	}
+
+	public void setUrlArchivos(List<String> urlArchivos) {
+		this.urlArchivos = urlArchivos;
+	}
+
 }
