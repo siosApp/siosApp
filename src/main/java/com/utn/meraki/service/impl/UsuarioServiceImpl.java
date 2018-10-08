@@ -95,6 +95,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioModel getUsuarioById(String id) {
         if(id !=null){
+        	System.out.println(id);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
         }
         return new UsuarioModel();
@@ -200,7 +201,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 if(localidad==null&&departamento==null) {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().equals(provincia)) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
@@ -208,7 +209,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 }else if(departamento!=null&&localidad==null){
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().getDepartamento().equals(departamento)) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getNombreDepartamento().equals(departamento)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
@@ -216,7 +217,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 }else {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().equals(localidad)) {
+                            if(usuario.getDomicilio().getLocalidad().getNombreLocalidad().equals(localidad)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
