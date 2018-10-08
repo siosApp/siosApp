@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/siosapp?useSSL=false
+    url: jdbc:mysql://localhost:3306/prueba4?useSSL=false
     username: root 
-    password: david133
+    password: dante.canizo
   jpa:
     show-sql: false 
     hibernate:

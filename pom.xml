@@ -98,7 +98,42 @@
         	<version>0.3.4</version>
    		</dependency>
    		
-	</dependencies>
+   		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-java</artifactId>
+		    <version>3.14.0</version>
+		</dependency>
+
+
+
+<!-- 		<dependency>
+	        <groupId>org.seleniumhq.selenium</groupId>
+	        <artifactId>htmlunit-driver</artifactId>
+	        <version>2.29.0</version>
+	    </dependency>  
+
+		<dependency>
+		    <groupId>org.seleniumhq.selenium</groupId>
+		    <artifactId>selenium-remote-driver</artifactId>
+		    <version>3.6.0</version>
+		</dependency>
+   		-->
+   		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>26.0-jre</version>
+</dependency>
+   		
+
+	</dependencies> 
  		
 	<build>
 		<plugins>
