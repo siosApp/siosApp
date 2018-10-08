@@ -4,6 +4,7 @@ import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
+import com.utn.meraki.model.UsuariosByRubro;
 
 import java.util.List;
 
@@ -36,5 +37,7 @@ public interface UsuarioService {
     public abstract UsuarioModel cambiarContrasena(String mail, String password, String codigo);
     
     public abstract UsuarioModel asignarOferente(UsuarioModel usuarioModel);
+    
+    public abstract List<UsuariosByRubro> cantidadUsuariosByRubro();
     
 }

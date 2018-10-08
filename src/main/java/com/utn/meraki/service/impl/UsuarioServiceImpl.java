@@ -4,6 +4,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.converter.UsuarioRubroConverter;
+import com.utn.meraki.entity.Rubro;
 import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
@@ -11,6 +12,7 @@ import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuarioRubroModel;
+import com.utn.meraki.model.UsuariosByRubro;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -318,5 +320,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		usuarioRepository.save(usuario);
 		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
+
+	@Override
+	public List<UsuariosByRubro> cantidadUsuariosByRubro() {
+		List<UsuariosByRubro> listUsuariosByRubro = new ArrayList<>();
+		for(Rubro rubro : rubroRepository.findAll()) {
+			UsuariosByRubro usuariosByRubro = new UsuariosByRubro();
+			usuariosByRubro.setNombreRubro(rubro.getNombreRubro());
+			Integer cantUsuario = 0;
+			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
+				cantUsuario += 1;
+			}
+			usuariosByRubro.setCantidadUsuarios(cantUsuario);
+			listUsuariosByRubro.add(usuariosByRubro);
+		}
+		return listUsuariosByRubro;
 	}
 }

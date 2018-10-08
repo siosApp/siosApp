@@ -2,6 +2,7 @@ package com.utn.meraki.controller;
 
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.UsuarioModel;
+import com.utn.meraki.model.UsuariosByRubro;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -82,5 +83,10 @@ public class UsuarioController {
     @PostMapping("/asignarOferente")
     public UsuarioModel asignarOferente(@RequestBody UsuarioModel usuarioModel) {
     	return usuarioService.asignarOferente(usuarioModel);
+    }
+    
+    @GetMapping("/cantidadUsuariosByRubro")
+    public List<UsuariosByRubro> cantidadUsuariosByRubro(){
+    	return usuarioService.cantidadUsuariosByRubro();
     }
 }
