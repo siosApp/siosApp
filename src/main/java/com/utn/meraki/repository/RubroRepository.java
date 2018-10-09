@@ -19,4 +19,6 @@ public interface RubroRepository extends JpaRepository<Rubro, Serializable>{
 
 	public List<Rubro> findRubroByTipoRubro(TipoRubro tipoRubro);
 
+	public Rubro findRubroByNombreRubroAndTipoRubro(String nombreRubro,TipoRubro tipoRubro);
+
 }

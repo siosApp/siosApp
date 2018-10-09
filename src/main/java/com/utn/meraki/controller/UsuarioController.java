@@ -84,7 +84,19 @@ public class UsuarioController {
     public UsuarioModel asignarOferente(@RequestBody UsuarioModel usuarioModel) {
     	return usuarioService.asignarOferente(usuarioModel);
     }
-    
+
+    @PostMapping("/addRubro")
+    public UsuarioModel añadirRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
+                                    @RequestParam(value="rubro",required=true)String rubro,
+                                    @RequestParam(value="tipoRubro",required=true)String tipoRubro) {
+        return usuarioService.addRubro(idUsuario,rubro,tipoRubro);
+    }
+    @PostMapping("/deleteRubro")
+    public UsuarioModel añadirRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
+                                    @RequestParam(value="usuarioRubro",required=true)String usuarioRubro) {
+        return usuarioService.eliminarRubro(idUsuario,usuarioRubro);
+
+    }
     @GetMapping("/cantidadUsuariosByRubro")
     public List<UsuariosByRubro> cantidadUsuariosByRubro(){
     	return usuarioService.cantidadUsuariosByRubro();

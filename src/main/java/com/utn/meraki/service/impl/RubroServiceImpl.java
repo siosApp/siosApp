@@ -2,10 +2,19 @@ package com.utn.meraki.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.utn.meraki.converter.CertificadoConverter;
 import com.utn.meraki.converter.RubroConverter;
+import com.utn.meraki.converter.UsuarioRubroConverter;
+import com.utn.meraki.entity.Certificado;
 import com.utn.meraki.entity.TipoRubro;
+import com.utn.meraki.entity.UsuarioRubro;
+import com.utn.meraki.model.CertificadoModel;
+import com.utn.meraki.model.UsuarioRubroModel;
+import com.utn.meraki.repository.CertificadoRepository;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
+import com.utn.meraki.repository.UsuarioRubroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.entity.Rubro;
@@ -22,6 +31,14 @@ public class RubroServiceImpl implements RubroService{
 	private RubroRepository rubroRepository;
 	@Autowired
 	private TipoRubroRepository tipoRubroRepository;
+	@Autowired
+	private UsuarioRubroRepository usuarioRubroRepository;
+	@Autowired
+	private CertificadoConverter certificadoConverter;
+	@Autowired
+	private UsuarioRubroConverter usuarioRubroConverter;
+	@Autowired
+	private CertificadoRepository certificadoRepository;
 
 	@Override
 	public RubroModel crearRubro(RubroModel rubroModel) {
@@ -96,5 +113,20 @@ public class RubroServiceImpl implements RubroService{
 	public RubroModel getRubroByNombreRubro(String nombreRubro) {
 		Rubro rubro = rubroRepository.findRubroByNombreRubro(nombreRubro);
 		return rubroConverter.convertRubroToRubroModel(rubro);
+	}
+
+	@Override
+	public UsuarioRubroModel anadirOrEliminarCertificado(String idUsuarioRubro, CertificadoModel certificadoModel) {
+		UsuarioRubro usuarioRubro=usuarioRubroRepository.findById(idUsuarioRubro);
+		if(certificadoModel.getId()!=null){
+			Certificado certificado=certificadoRepository.findCertificadoById(certificadoModel.getId());
+			usuarioRubro.eliminarCertificado(certificado);
+			certificadoRepository.delete(certificado);
+		}
+		else{
+			usuarioRubro.addCertificado(certificadoConverter.convertCertificadoModelToCertificado(certificadoModel));
+		}
+		usuarioRubroRepository.save(usuarioRubro);
+		return usuarioRubroConverter.convertUsuarioRubroToUsuarioRubroModel(usuarioRubro);
 	}
 }

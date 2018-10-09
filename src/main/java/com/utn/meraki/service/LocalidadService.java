@@ -20,8 +20,13 @@ public interface LocalidadService {
 
 	public abstract LocalidadModel getLocalidadById(String id);
 
+	public abstract LocalidadModel getLocalidadByDomicilio(String id);
+
 	public abstract LocalidadModel deshabilitarLocalidad(String id);
 
 	public abstract List<LocalidadModel> findLocalidadesByProvinciaAndDepartamento(String nombreProvincia,String nombreDepartamento);
+
+	public abstract LocalidadModel findLocalidadesByNombreLocalidadProvinciaAndDepartamento(String nombreLocalidad,String nombreProvincia,String nombreDepartamento);
+
 
 }

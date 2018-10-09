@@ -322,6 +322,32 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
 	}
 
+
+    @Override
+    public UsuarioModel addRubro(String idUsuario, String nombreRubro, String nombreTipoRubro) {
+        Usuario  usuario = usuarioRepository.findUsuarioById(idUsuario);
+        TipoRubro tipoRubro=tipoRubroRepository.findTipoRubroByNombreTipoRubro(nombreTipoRubro);
+        Rubro rubro= rubroRepository.findRubroByNombreRubroAndTipoRubro(nombreRubro,tipoRubro);
+        //Asignar Rubro al oferente.
+        UsuarioRubro usuarioRubro= new UsuarioRubro();
+        usuarioRubro.setRubro(rubro);
+        usuarioRubro.setFechaAsignacion(new Date());
+        usuario.addRubro(usuarioRubro);
+        usuarioRubroRepository.save(usuarioRubro);
+        usuarioRepository.save(usuario);
+        return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+    }
+
+    @Override
+    public UsuarioModel eliminarRubro(String idUsuario, String idUsuarioRubro) {
+        Usuario usuario= usuarioRepository.findUsuarioById(idUsuario);
+        UsuarioRubro usuarioRubro=usuarioRubroRepository.findById(idUsuarioRubro);
+        usuario.eliminarRubro(usuarioRubro);
+        usuarioRubroRepository.delete(usuarioRubro);
+        usuarioRepository.save(usuario);
+        return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+    }
+
 	@Override
 	public List<UsuariosByRubro> cantidadUsuariosByRubro() {
 		List<UsuariosByRubro> listUsuariosByRubro = new ArrayList<>();
@@ -337,4 +363,5 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return listUsuariosByRubro;
 	}
+
 }

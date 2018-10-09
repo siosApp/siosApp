@@ -220,5 +220,11 @@ public class Usuario {
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
-	
+
+	public void addRubro(UsuarioRubro usuarioRubro){
+		usuarioRubros.add(usuarioRubro);
+	}
+	public void eliminarRubro(UsuarioRubro usuarioRubro){
+		usuarioRubros.remove(usuarioRubro);
+	}
 }

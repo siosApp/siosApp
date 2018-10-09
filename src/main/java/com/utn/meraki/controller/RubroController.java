@@ -1,6 +1,9 @@
 package com.utn.meraki.controller;
 
 import java.util.List;
+
+import com.utn.meraki.model.CertificadoModel;
+import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.service.RubroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -66,5 +69,11 @@ public class RubroController {
 	@GetMapping("/getRubroByNombre")
 	public RubroModel getRubroByNombre(@RequestParam(value="nombreRubro",required=true)String nombreRubro) {
 		return rubroService.getRubroByNombreRubro(nombreRubro);
+	}
+
+	@PostMapping("/anadirOrEliminarCertificado")
+	public UsuarioRubroModel addCertificado(@RequestParam(value="idUsuarioRubro",required=true) String idUsuarioRubro,
+											@RequestBody CertificadoModel certificadoModel){
+		return rubroService.anadirOrEliminarCertificado(idUsuarioRubro,certificadoModel);
 	}
 }

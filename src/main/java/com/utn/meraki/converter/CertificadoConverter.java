@@ -24,6 +24,7 @@ public class CertificadoConverter {
 		}else {
 			certificado = new Certificado();
 		}
+		certificado.setIdAdjunto(certificadoModel.getIdAdjunto());
 		certificado.setNombreCertificado(certificadoModel.getNombreCertificado());
 		certificado.setFechaCertificado(certificadoModel.getFechaCertificado());
 		certificadoRepository.save(certificado);
@@ -34,6 +35,7 @@ public class CertificadoConverter {
 	public CertificadoModel convertCertificadoToCertificadoModel(Certificado certificado) {
 		CertificadoModel certificadoModel = new CertificadoModel();
 		certificadoModel.setId(certificado.getId());
+		certificadoModel.setIdAdjunto(certificado.getIdAdjunto());
 		certificadoModel.setNombreCertificado(certificado.getNombreCertificado());
 		certificadoModel.setFechaCertificado(certificado.getFechaCertificado());
 		return certificadoModel;

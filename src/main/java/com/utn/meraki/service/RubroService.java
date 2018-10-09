@@ -1,7 +1,10 @@
 package com.utn.meraki.service;
 
 import java.util.List;
+
+import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.RubroModel;
+import com.utn.meraki.model.UsuarioRubroModel;
 
 public interface RubroService {
 
@@ -22,5 +25,7 @@ public interface RubroService {
 	public abstract List<RubroModel> listRubroVigenteByTipoRubro(String tipoRubro);
 	
 	public abstract RubroModel getRubroByNombreRubro(String nombreRubro);
+
+	public abstract UsuarioRubroModel anadirOrEliminarCertificado(String idUsuarioRubro, CertificadoModel certificadoModel);
 
 }

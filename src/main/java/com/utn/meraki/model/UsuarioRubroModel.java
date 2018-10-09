@@ -1,5 +1,6 @@
 package com.utn.meraki.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,8 @@ public class UsuarioRubroModel {
     
     //CONSTRUCTOR
     public UsuarioRubroModel(){
-
+        certificados=new ArrayList<>();
+        experiencias=new ArrayList<>();
     }
 
     //GET AND SET

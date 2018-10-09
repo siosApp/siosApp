@@ -17,7 +17,7 @@ public class DomicilioModel {
 	
 	private String longitud;
 	
-	private String nombreLocalidad;
+	private String idLocalidad;
 	
 	//CONSTRUCTOR
 	public DomicilioModel() {
@@ -80,12 +80,12 @@ public class DomicilioModel {
 		this.longitud = longitud;
 	}
 
-	public String getNombreLocalidad() {
-		return nombreLocalidad;
+	public String getIdLocalidad() {
+		return idLocalidad;
 	}
 
-	public void setNombreLocalidad(String nombreLocalidad) {
-		this.nombreLocalidad = nombreLocalidad;
+	public void setIdLocalidad(String idLocalidad) {
+		this.idLocalidad = idLocalidad;
 	}
 	
 }

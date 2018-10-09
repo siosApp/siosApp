@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.utn.meraki.entity.Departamento;
+import com.utn.meraki.entity.Domicilio;
 import com.utn.meraki.entity.Provincia;
 import com.utn.meraki.repository.DepartamentoRepository;
+import com.utn.meraki.repository.DomicilioRepository;
 import com.utn.meraki.repository.ProvinciaRepository;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class LocalidadServiceImpl implements LocalidadService{
 	DepartamentoRepository departamentoRepository;
 	@Autowired
 	ProvinciaRepository provinciaRepository;
+	@Autowired
+	DomicilioRepository domicilioRepository;
 
 	//SERVICIOS
 	@Override //Me crea una nueva Localidad
@@ -102,6 +106,15 @@ public class LocalidadServiceImpl implements LocalidadService{
 	}
 
 	@Override
+	public LocalidadModel getLocalidadByDomicilio(String id) {
+		Domicilio domicilio= domicilioRepository.findDomicilioById(id);
+		if(domicilio !=null){
+			return localidadConverter.convertLocalidadToLocalidadModel(domicilio.getLocalidad());
+		}
+		return new LocalidadModel();
+	}
+
+	@Override
 	public LocalidadModel deshabilitarLocalidad(String id) {
 		Localidad localidad = localidadRepository.findLocalidadById(id);
 		localidad.setFechaBaja(new java.util.Date());
@@ -120,6 +133,13 @@ public class LocalidadServiceImpl implements LocalidadService{
 			}
 		}
 		return localidadModels;
+	}
+
+	@Override
+	public LocalidadModel findLocalidadesByNombreLocalidadProvinciaAndDepartamento(String nombreLocalidad, String nombreProvincia, String nombreDepartamento) {
+		Provincia provincia=provinciaRepository.findProvinciaByNombreProvincia(nombreProvincia);
+		Departamento departamento=departamentoRepository.findDepartamentoByNombreDepartamentoAndProvincia(nombreDepartamento,provincia);
+		return localidadConverter.convertLocalidadToLocalidadModel(localidadRepository.findLocalidadByNombreLocalidadAndDepartamento(nombreLocalidad,departamento));
 	}
 
 }
