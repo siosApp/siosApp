@@ -39,7 +39,7 @@ public class Requerimiento {
 	private Date fechaPublicacion;
 	
 	@Column(name = "precio_a_pagar")
-	private Float precioApagar;
+	private Integer precioApagar;
 	
 	@Column(name = "tiempo_estimado")
 	private Integer tiempoEstimado;
@@ -101,11 +101,11 @@ public class Requerimiento {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public Float getPrecioApagar() {
+	public Integer getPrecioApagar() {
 		return precioApagar;
 	}
 
-	public void setPrecioApagar(Float precioApagar) {
+	public void setPrecioApagar(Integer precioApagar) {
 		this.precioApagar = precioApagar;
 	}
 

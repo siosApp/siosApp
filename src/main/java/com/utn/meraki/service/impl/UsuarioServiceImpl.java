@@ -12,6 +12,7 @@ import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuarioRubroModel;
+import com.utn.meraki.model.UsuariosByRubro;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -96,6 +97,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioModel getUsuarioById(String id) {
         if(id !=null){
+        	System.out.println(id);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
         }
         return new UsuarioModel();
@@ -201,7 +203,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 if(localidad==null&&departamento==null) {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().equals(provincia)) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
@@ -209,7 +211,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 }else if(departamento!=null&&localidad==null){
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().getDepartamento().equals(departamento)) {
+                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getNombreDepartamento().equals(departamento)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
@@ -217,7 +219,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 }else {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().equals(localidad)) {
+                            if(usuario.getDomicilio().getLocalidad().getNombreLocalidad().equals(localidad)) {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
@@ -320,6 +322,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
 	}
 
+
     @Override
     public UsuarioModel addRubro(String idUsuario, String nombreRubro, String nombreTipoRubro) {
         Usuario  usuario = usuarioRepository.findUsuarioById(idUsuario);
@@ -344,4 +347,21 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.save(usuario);
         return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
     }
+
+	@Override
+	public List<UsuariosByRubro> cantidadUsuariosByRubro() {
+		List<UsuariosByRubro> listUsuariosByRubro = new ArrayList<>();
+		for(Rubro rubro : rubroRepository.findAll()) {
+			UsuariosByRubro usuariosByRubro = new UsuariosByRubro();
+			usuariosByRubro.setNombreRubro(rubro.getNombreRubro());
+			Integer cantUsuario = 0;
+			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
+				cantUsuario += 1;
+			}
+			usuariosByRubro.setCantidadUsuarios(cantUsuario);
+			listUsuariosByRubro.add(usuariosByRubro);
+		}
+		return listUsuariosByRubro;
+	}
+
 }

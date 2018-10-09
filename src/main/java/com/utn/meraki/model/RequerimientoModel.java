@@ -15,7 +15,7 @@ public class RequerimientoModel {
 	
 	private Date fechaPublicacion;
 	
-	private Float precioApagar;
+	private Integer precioApagar;
 	
 	private String nombreEstadoRequerimiento;
 	
@@ -79,11 +79,11 @@ public class RequerimientoModel {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public Float getPrecioApagar() {
+	public Integer getPrecioApagar() {
 		return precioApagar;
 	}
 
-	public void setPrecioApagar(Float precioApagar) {
+	public void setPrecioApagar(Integer precioApagar) {
 		this.precioApagar = precioApagar;
 	}
 

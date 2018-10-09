@@ -30,11 +30,12 @@ public class UsuarioConverter {
         Usuario usuario = null;
         if(usuarioModel.getId()!=null) {
             usuario = usuarioRepository.findUsuarioById(usuarioModel.getId());
+            usuario.setTipoUsuario(tipoUsuarioRepository.findByNombreTipoUsuario(usuarioModel.getTipoUsuario()));
         }else {
             usuario = new Usuario();
+            usuario.setTipoUsuario(tipoUsuarioRepository.findByNombreTipoUsuario("Modo Usuario"));
         }
         usuario.setNombre(usuarioModel.getNombre());
-        usuario.setTipoUsuario(tipoUsuarioRepository.findByNombreTipoUsuario(usuarioModel.getTipoUsuario()));
         usuario.setApellido(usuarioModel.getApellido());
         if(usuarioModel.getDomicilio()!=null){
             usuario.setDomicilio(domicilioConverter.convertDomicilioModelToDomicilio(usuarioModel.getDomicilio()));

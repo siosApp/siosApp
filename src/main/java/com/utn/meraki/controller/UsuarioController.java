@@ -2,6 +2,7 @@ package com.utn.meraki.controller;
 
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.UsuarioModel;
+import com.utn.meraki.model.UsuariosByRubro;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -83,6 +84,7 @@ public class UsuarioController {
     public UsuarioModel asignarOferente(@RequestBody UsuarioModel usuarioModel) {
     	return usuarioService.asignarOferente(usuarioModel);
     }
+
     @PostMapping("/addRubro")
     public UsuarioModel añadirRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
                                     @RequestParam(value="rubro",required=true)String rubro,
@@ -93,5 +95,10 @@ public class UsuarioController {
     public UsuarioModel añadirRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
                                     @RequestParam(value="usuarioRubro",required=true)String usuarioRubro) {
         return usuarioService.eliminarRubro(idUsuario,usuarioRubro);
+
+    }
+    @GetMapping("/cantidadUsuariosByRubro")
+    public List<UsuariosByRubro> cantidadUsuariosByRubro(){
+    	return usuarioService.cantidadUsuariosByRubro();
     }
 }

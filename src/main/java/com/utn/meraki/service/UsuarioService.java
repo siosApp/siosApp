@@ -4,6 +4,7 @@ import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
+import com.utn.meraki.model.UsuariosByRubro;
 
 import java.util.List;
 
@@ -41,5 +42,6 @@ public interface UsuarioService {
 
     public abstract UsuarioModel eliminarRubro(String idUsuario,String idUsuarioRubro);
 
-
+    public abstract List<UsuariosByRubro> cantidadUsuariosByRubro();
+    
 }
