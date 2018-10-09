@@ -36,5 +36,10 @@ public interface UsuarioService {
     public abstract UsuarioModel cambiarContrasena(String mail, String password, String codigo);
     
     public abstract UsuarioModel asignarOferente(UsuarioModel usuarioModel);
-    
+
+    public abstract UsuarioModel addRubro(String idUsuario,String nombreRubro,String nombreTipoRubro);
+
+    public abstract UsuarioModel eliminarRubro(String idUsuario,String idUsuarioRubro);
+
+
 }

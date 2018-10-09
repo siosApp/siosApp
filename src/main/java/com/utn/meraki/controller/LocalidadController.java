@@ -67,4 +67,15 @@ public class LocalidadController {
 		return localidadService.deshabilitarLocalidad(id);
 	}
 
+	@GetMapping("/domicilio")
+	public LocalidadModel getLocalidadByDomicilio(@RequestParam(value="id",required=true)String id){
+		return localidadService.getLocalidadByDomicilio(id);
+	}
+	@GetMapping("/localidad")
+	public LocalidadModel findLocalidadByNombreLocalidadAndProvinciaAndDepartamento(
+			@RequestParam(value="nombreLocalidad",required=true)String nombreLocalidad,
+			@RequestParam(value="provincia",required=true)String provincia,
+			@RequestParam(value="departamento",required=true)String departamento){
+		return localidadService.findLocalidadesByNombreLocalidadProvinciaAndDepartamento(nombreLocalidad,provincia,departamento);
+	}
 }

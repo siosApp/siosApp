@@ -26,7 +26,9 @@ public class Certificado {
 	
 	@Column(name = "fecha_certificado")
 	private Date fechaCertificado;
-		
+
+	@Column
+	private String idAdjunto;
 	//CONSTRUCTOR
 	public Certificado() {
 	}
@@ -61,5 +63,12 @@ public class Certificado {
 	public void setFechaCertificado(Date fechaCertificado) {
 		this.fechaCertificado = fechaCertificado;
 	}
-	
+
+	public void setIdAdjunto(String idAdjunto) {
+		this.idAdjunto = idAdjunto;
+	}
+
+	public String getIdAdjunto() {
+		return idAdjunto;
+	}
 }

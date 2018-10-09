@@ -1,5 +1,6 @@
 package com.utn.meraki.converter;
 
+import com.utn.meraki.repository.LocalidadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.utn.meraki.entity.Domicilio;
@@ -13,7 +14,8 @@ public class DomicilioConverter {
 	//REPOSITORY
 	@Autowired
 	DomicilioRepository domicilioRepository;
-	
+	@Autowired
+	LocalidadRepository localidadRepository;
 	//CONVERTER
 	//Me crea o edita un domicilio
 	public Domicilio convertDomicilioModelToDomicilio(DomicilioModel domicilioModel) {
@@ -30,6 +32,7 @@ public class DomicilioConverter {
 		domicilio.setLongitud(domicilioModel.getLongitud());
 		domicilio.setNumero(domicilioModel.getNumero());
 		domicilio.setPiso(domicilioModel.getPiso());
+		domicilio.setLocalidad(localidadRepository.findLocalidadById(domicilioModel.getIdLocalidad()));
 		domicilioRepository.save(domicilio);
 		return domicilio;
 	}

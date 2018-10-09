@@ -18,4 +18,7 @@ public interface LocalidadRepository extends JpaRepository<Localidad, Serializab
 
 	public List<Localidad> findLocalidadByDepartamento(Departamento departamento);
 
+	public Localidad findLocalidadByNombreLocalidadAndDepartamento(String nombreLocalidad,Departamento departamento);
+
+
 }

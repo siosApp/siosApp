@@ -96,5 +96,23 @@ public class UsuarioRubro {
 	public void setRubro(Rubro rubro) {
 		this.rubro = rubro;
 	}
-	
+
+	public void addCertificado(Certificado certificado){
+		certificados.add(certificado);
+	}
+	public void eliminarCertificado(Certificado certificado){
+		certificados.remove(certificado);
+	}
+	public void addExperiencia(Experiencia experiencia){
+		experiencias.add(experiencia);
+	}
+	public void eliminarExperiencia(Experiencia experiencia){
+		experiencias.remove(experiencia);
+	}
+	public boolean existeCertificado(Certificado certificado){
+		return certificados.contains(certificado);
+	}
+	public boolean existeExperiencia(Experiencia experiencia){
+		return  experiencias.contains(experiencia);
+	}
 }

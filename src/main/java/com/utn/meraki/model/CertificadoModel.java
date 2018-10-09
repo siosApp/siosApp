@@ -10,7 +10,8 @@ public class CertificadoModel {
 	private String nombreCertificado;
 	
 	private Date fechaCertificado;
-	
+
+	private String idAdjunto;
 	//CONSTRUCTOR
 	public CertificadoModel() {
 	}
@@ -39,5 +40,12 @@ public class CertificadoModel {
 	public void setFechaCertificado(Date fechaCertificado) {
 		this.fechaCertificado = fechaCertificado;
 	}
-	
+
+	public String getIdAdjunto() {
+		return idAdjunto;
+	}
+
+	public void setIdAdjunto(String idAdjunto) {
+		this.idAdjunto = idAdjunto;
+	}
 }
