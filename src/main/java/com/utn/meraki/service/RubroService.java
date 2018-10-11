@@ -3,6 +3,7 @@ package com.utn.meraki.service;
 import java.util.List;
 
 import com.utn.meraki.model.CertificadoModel;
+import com.utn.meraki.model.ExperienciaModel;
 import com.utn.meraki.model.RubroModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 
@@ -27,5 +28,7 @@ public interface RubroService {
 	public abstract RubroModel getRubroByNombreRubro(String nombreRubro);
 
 	public abstract UsuarioRubroModel anadirOrEliminarCertificado(String idUsuarioRubro, CertificadoModel certificadoModel);
+
+	public abstract UsuarioRubroModel anadirOrEliminarExperiencia(String idUsuarioRubro, ExperienciaModel experienciaModel);
 
 }

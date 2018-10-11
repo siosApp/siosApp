@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.utn.meraki.converter.CertificadoConverter;
+import com.utn.meraki.converter.ExperienciaConverter;
 import com.utn.meraki.converter.RubroConverter;
 import com.utn.meraki.converter.UsuarioRubroConverter;
-import com.utn.meraki.entity.Certificado;
-import com.utn.meraki.entity.TipoRubro;
-import com.utn.meraki.entity.UsuarioRubro;
+import com.utn.meraki.entity.*;
 import com.utn.meraki.model.CertificadoModel;
+import com.utn.meraki.model.ExperienciaModel;
 import com.utn.meraki.model.UsuarioRubroModel;
-import com.utn.meraki.repository.CertificadoRepository;
-import com.utn.meraki.repository.RubroRepository;
-import com.utn.meraki.repository.TipoRubroRepository;
-import com.utn.meraki.repository.UsuarioRubroRepository;
+import com.utn.meraki.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.utn.meraki.entity.Rubro;
 import com.utn.meraki.model.RubroModel;
 import com.utn.meraki.service.RubroService;
 
@@ -39,6 +35,10 @@ public class RubroServiceImpl implements RubroService{
 	private UsuarioRubroConverter usuarioRubroConverter;
 	@Autowired
 	private CertificadoRepository certificadoRepository;
+	@Autowired
+	private ExperienciaRepository experienciaRepository;
+	@Autowired
+	private ExperienciaConverter experienciaConverter;
 
 	@Override
 	public RubroModel crearRubro(RubroModel rubroModel) {
@@ -125,6 +125,21 @@ public class RubroServiceImpl implements RubroService{
 		}
 		else{
 			usuarioRubro.addCertificado(certificadoConverter.convertCertificadoModelToCertificado(certificadoModel));
+		}
+		usuarioRubroRepository.save(usuarioRubro);
+		return usuarioRubroConverter.convertUsuarioRubroToUsuarioRubroModel(usuarioRubro);
+	}
+
+	@Override
+	public UsuarioRubroModel anadirOrEliminarExperiencia(String idUsuarioRubro, ExperienciaModel experienciaModel) {
+		UsuarioRubro usuarioRubro=usuarioRubroRepository.findById(idUsuarioRubro);
+		if(experienciaModel.getId()!=null){
+			Experiencia experiencia=experienciaRepository.findExperienciaById(experienciaModel.getId());
+			usuarioRubro.eliminarExperiencia(experiencia);
+			experienciaRepository.delete(experiencia);
+		}
+		else{
+			usuarioRubro.addExperiencia(experienciaConverter.convertExperienciaModelToExperiencia(experienciaModel));
 		}
 		usuarioRubroRepository.save(usuarioRubro);
 		return usuarioRubroConverter.convertUsuarioRubroToUsuarioRubroModel(usuarioRubro);
