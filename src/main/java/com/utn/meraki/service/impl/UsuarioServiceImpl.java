@@ -333,6 +333,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRubro.setRubro(rubro);
         usuarioRubro.setFechaAsignacion(new Date());
         usuario.addRubro(usuarioRubro);
+        usuario.setOferente(tieneRubros(usuario));
         usuarioRubroRepository.save(usuarioRubro);
         usuarioRepository.save(usuario);
         return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
@@ -343,6 +344,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario= usuarioRepository.findUsuarioById(idUsuario);
         UsuarioRubro usuarioRubro=usuarioRubroRepository.findById(idUsuarioRubro);
         usuario.eliminarRubro(usuarioRubro);
+        usuario.setOferente(tieneRubros(usuario));
         usuarioRubroRepository.delete(usuarioRubro);
         usuarioRepository.save(usuario);
         return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
@@ -364,4 +366,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return listUsuariosByRubro;
 	}
 
+	private boolean tieneRubros(Usuario usuario){
+        if(usuario.getUsuarioRubros()==null || usuario.getUsuarioRubros().isEmpty()){
+            return false;
+        }
+        return true;
+    }
 }
