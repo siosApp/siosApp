@@ -15,7 +15,11 @@ public class UsuarioDestacadoModel {
 	private DomicilioModel domicilio;
 	
 	private List<RubroModel> rubros = new ArrayList<>();
-	
+
+	private String experiencia;
+
+	private String imagen;
+
 	//CONSTRUCTOR
 	public UsuarioDestacadoModel() {
 		
@@ -61,4 +65,19 @@ public class UsuarioDestacadoModel {
 		this.domicilio = domicilio;
 	}
 
+	public String getExperiencia() {
+		return experiencia;
+	}
+
+	public void setExperiencia(String experiencia) {
+		this.experiencia = experiencia;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+	public String getImagen() {
+		return imagen;
+	}
 }

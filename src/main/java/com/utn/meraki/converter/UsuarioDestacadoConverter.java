@@ -40,6 +40,7 @@ public class UsuarioDestacadoConverter {
 		usuarioDestacadoModel.setIdUsuario(destacado.getUsuario().getId());
 		usuarioDestacadoModel.setNombre(destacado.getUsuario().getNombre());
 		usuarioDestacadoModel.setApellido(destacado.getUsuario().getApellido());
+		usuarioDestacadoModel.setExperiencia(getExperienciaString(destacado.getUsuario()));
 		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(destacado.getUsuario().getDomicilio()));
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(destacado.getUsuario().getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
@@ -47,12 +48,19 @@ public class UsuarioDestacadoConverter {
 		}
 		return usuarioDestacadoModel;
 	}
-	
+	public String getExperienciaString(Usuario usuario){
+		if(!usuario.getUsuarioRubros().get(0).getExperiencias().isEmpty()){
+			return usuario.getUsuarioRubros().get(0).getPrimerExperiencia().getDescripcion();
+		}
+		return "Sin experiencia previa";
+	}
 	public UsuarioDestacadoModel convertUsuarioToUsuarioDestacadoModel(Usuario usuario) {
 		UsuarioDestacadoModel usuarioDestacadoModel = new UsuarioDestacadoModel();
 		usuarioDestacadoModel.setIdUsuario(usuario.getId());
 		usuarioDestacadoModel.setNombre(usuario.getNombre());
 		usuarioDestacadoModel.setApellido(usuario.getApellido());
+		usuarioDestacadoModel.setExperiencia(getExperienciaString(usuario));
+		usuarioDestacadoModel.setImagen(usuario.getImagen());
 		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(usuario.getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
