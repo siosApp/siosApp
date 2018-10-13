@@ -115,4 +115,10 @@ public class UsuarioRubro {
 	public boolean existeExperiencia(Experiencia experiencia){
 		return  experiencias.contains(experiencia);
 	}
+	public Experiencia getPrimerExperiencia(){
+		if (!experiencias.isEmpty()){
+			return experiencias.get(0);
+		}
+		return new Experiencia();
+	}
 }
