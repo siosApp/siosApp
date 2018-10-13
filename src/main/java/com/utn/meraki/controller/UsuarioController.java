@@ -92,7 +92,7 @@ public class UsuarioController {
         return usuarioService.addRubro(idUsuario,rubro,tipoRubro);
     }
     @PostMapping("/deleteRubro")
-    public UsuarioModel añadirRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
+    public UsuarioModel deleteRubro(@RequestParam(value="idUsuario",required=true)String idUsuario,
                                     @RequestParam(value="usuarioRubro",required=true)String usuarioRubro) {
         return usuarioService.eliminarRubro(idUsuario,usuarioRubro);
 
