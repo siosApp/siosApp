@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.utn.meraki.entity.Solicitud;
+import com.utn.meraki.entity.Usuario;
 
 @Repository("solicitudRepository")
 
@@ -14,6 +15,6 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Serializab
 	
 	public Solicitud findSolicitudById(String idSolicitud);
 	
-	public List<Solicitud> findSolicitudByUsuarioOferente(String idUsuarioOferente);
+	public List<Solicitud> findSolicitudByUsuarioOferente(Usuario usuario);
 
 }

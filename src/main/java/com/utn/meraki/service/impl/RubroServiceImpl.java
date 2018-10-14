@@ -161,7 +161,7 @@ public class RubroServiceImpl implements RubroService{
 			Integer cantidad = 0;
 			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
 				Usuario usuario = usuarioRepository.findUsuarioByUsuarioRubros(usuarioRubro);
-				for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuario.getId())) {
+				for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuario)) {
 					if(solicitud.getFechaSolicitud().after(fechaDesde)&&solicitud.getFechaSolicitud().before(fechaHasta)) {
 						cantidad += 1;
 						rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
