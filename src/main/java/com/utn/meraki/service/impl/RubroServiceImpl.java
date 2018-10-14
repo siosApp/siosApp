@@ -1,5 +1,6 @@
 package com.utn.meraki.service.impl;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.utn.meraki.converter.UsuarioRubroConverter;
 import com.utn.meraki.entity.*;
 import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.ExperienciaModel;
+import com.utn.meraki.model.RubroMasDemandadoModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class RubroServiceImpl implements RubroService{
 	private RubroConverter rubroConverter;
 	@Autowired
 	private RubroRepository rubroRepository;
+	@Autowired
+	private SolicitudRepository solicitudRepository;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private TipoRubroRepository tipoRubroRepository;
 	@Autowired
@@ -143,5 +149,28 @@ public class RubroServiceImpl implements RubroService{
 		}
 		usuarioRubroRepository.save(usuarioRubro);
 		return usuarioRubroConverter.convertUsuarioRubroToUsuarioRubroModel(usuarioRubro);
+	}
+
+	@Override //ME TRAE LOS RUBROS DEMANDADOS ENTRE 2 FECHAS DETERMINADAS
+	public List<RubroMasDemandadoModel> rubrosMasDemandados(Date fechaDesde, Date fechaHasta) {
+		List<RubroMasDemandadoModel> rubrosDemandados = new ArrayList<>();
+		for(Rubro rubro : rubroRepository.findAll()) {
+			RubroMasDemandadoModel rubroMasDemandadoModel = new RubroMasDemandadoModel();
+			rubroMasDemandadoModel.setNombreRubro(rubro.getNombreRubro());
+			Integer cantidad = 0;
+			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
+				Usuario usuario = usuarioRepository.findUsuarioByUsuarioRubros(usuarioRubro);
+				for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuario.getId())) {
+					if(solicitud.getFechaSolicitud().after(fechaDesde)&&solicitud.getFechaSolicitud().before(fechaHasta)) {
+						cantidad += 1;
+						rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
+					}
+				}
+			}
+			if(cantidad>0) {
+				rubrosDemandados.add(rubroMasDemandadoModel);
+			}
+		}
+		return rubrosDemandados;
 	}
 }

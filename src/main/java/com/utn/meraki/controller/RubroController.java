@@ -1,9 +1,11 @@
 package com.utn.meraki.controller;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.ExperienciaModel;
+import com.utn.meraki.model.RubroMasDemandadoModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.service.RubroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +84,11 @@ public class RubroController {
 	public UsuarioRubroModel addExperiencia(@RequestParam(value="idUsuarioRubro",required=true) String idUsuarioRubro,
 											@RequestBody ExperienciaModel experienciaModel ){
 		return rubroService.anadirOrEliminarExperiencia(idUsuarioRubro,experienciaModel);
+	}
+	
+	@GetMapping("/rubrosMasDemandados")
+	public List<RubroMasDemandadoModel> rubrosMasDemandados(@RequestParam(value="fechaDesde",required=true)Date fechaDesde,
+				@RequestParam(value="fechaHasta",required=true)Date fechaHasta){
+		return rubroService.rubrosMasDemandados(fechaDesde, fechaHasta);
 	}
 }
