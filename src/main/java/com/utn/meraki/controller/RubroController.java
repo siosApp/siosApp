@@ -6,6 +6,7 @@ import java.util.List;
 import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.ExperienciaModel;
 import com.utn.meraki.model.RubroMasDemandadoModel;
+import com.utn.meraki.model.RubroMasOfrecidoModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.service.RubroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,11 @@ public class RubroController {
 	public List<RubroMasDemandadoModel> rubrosMasDemandados(@RequestParam(value="fechaDesde",required=true)Date fechaDesde,
 				@RequestParam(value="fechaHasta",required=true)Date fechaHasta){
 		return rubroService.rubrosMasDemandados(fechaDesde, fechaHasta);
+	}
+	
+	@GetMapping("/rubrosMasOfrecidos")
+	public List<RubroMasOfrecidoModel> rubrosMasOfrecidos(@RequestParam(value="fechaDesde",required=true)Date fechaDesde,
+			@RequestParam(value="fechaHasta",required=true)Date fechaHasta){
+		return rubroService.rubrosMasOfrecidos(fechaDesde, fechaHasta);
 	}
 }

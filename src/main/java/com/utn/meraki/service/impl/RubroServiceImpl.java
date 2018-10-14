@@ -12,6 +12,7 @@ import com.utn.meraki.entity.*;
 import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.ExperienciaModel;
 import com.utn.meraki.model.RubroMasDemandadoModel;
+import com.utn.meraki.model.RubroMasOfrecidoModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,5 +173,25 @@ public class RubroServiceImpl implements RubroService{
 			}
 		}
 		return rubrosDemandados;
+	}
+
+	@Override //ME MUESTRA LOS RUBROS MAS OFRECIDOS ENTRE 2 FECHAS DETERMINADAS
+	public List<RubroMasOfrecidoModel> rubrosMasOfrecidos(Date fechaDesde, Date fechaHasta) {
+		List<RubroMasOfrecidoModel> rubrosOfrecidos = new ArrayList<>();
+		for(Rubro rubro : rubroRepository.findAll()) {
+			RubroMasOfrecidoModel rubroMasOfrecidoModel = new RubroMasOfrecidoModel();
+			rubroMasOfrecidoModel.setNombreRubro(rubro.getNombreRubro());
+			Integer cantidad = 0;
+			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
+				if(usuarioRubro.getFechaAsignacion().after(fechaDesde)&&usuarioRubro.getFechaAsignacion().before(fechaHasta)) {
+					cantidad += 1;
+					rubroMasOfrecidoModel.setCantidadSolicitudes(cantidad);
+				}
+			}
+			if(cantidad>0) {
+				rubrosOfrecidos.add(rubroMasOfrecidoModel);
+			}
+		}
+		return rubrosOfrecidos;
 	}
 }

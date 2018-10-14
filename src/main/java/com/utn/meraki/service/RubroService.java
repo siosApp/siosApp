@@ -6,6 +6,7 @@ import java.util.List;
 import com.utn.meraki.model.CertificadoModel;
 import com.utn.meraki.model.ExperienciaModel;
 import com.utn.meraki.model.RubroMasDemandadoModel;
+import com.utn.meraki.model.RubroMasOfrecidoModel;
 import com.utn.meraki.model.RubroModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 
@@ -34,5 +35,7 @@ public interface RubroService {
 	public abstract UsuarioRubroModel anadirOrEliminarExperiencia(String idUsuarioRubro, ExperienciaModel experienciaModel);
 	
 	public abstract List<RubroMasDemandadoModel> rubrosMasDemandados(Date fechaDesde, Date fechaHasta);
+	
+	public abstract List<RubroMasOfrecidoModel> rubrosMasOfrecidos(Date fechaDesde, Date fechaHasta);
 	
 }
