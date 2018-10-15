@@ -1,7 +1,12 @@
 package com.utn.meraki.service.impl;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.utn.meraki.entity.EstadoSolicitud;
+import com.utn.meraki.entity.Usuario;
+import com.utn.meraki.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
@@ -24,7 +29,8 @@ public class SolicitudServiceImpl implements SolicitudService{
 	SolicitudEstadoRepository solicitudEstadoRepository;
 	@Autowired
 	EstadoSolicitudRepository estadoSolicitudRepository;
-	
+	@Autowired
+	UsuarioRepository usuarioRepository;
 	//CONVERTER
 	@Autowired
 	SolicitudConverter solicitudConverter;
@@ -78,6 +84,20 @@ public class SolicitudServiceImpl implements SolicitudService{
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
+	@Override
+	public List<SolicitudModel> getSolicitudesPendientesPorUsuario(String idUsuario) {
+		List<SolicitudModel> solicitudModels=new ArrayList<>();
+		Usuario usuario=usuarioRepository.findUsuarioById(idUsuario);
+		EstadoSolicitud estadoSolicitud=estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Creada");
+		List<Solicitud> solicitudList=solicitudRepository.findSolicitudByUsuarioOferente(usuario);
+		for(Solicitud solicitud: solicitudList){
+			if(this.ultimoEstadoSolicitud(solicitud.getId()).getEstadoSolicitud().equals(estadoSolicitud)){
+				solicitudModels.add(solicitudConverter.convertSolicitudToSolicitudModel(solicitud));
+			}
+		}
+		return solicitudModels;
 	}
 
 }
