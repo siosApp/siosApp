@@ -20,6 +20,8 @@ public class UsuarioDestacadoModel {
 
 	private String imagen;
 
+	private String username;
+
 	//CONSTRUCTOR
 	public UsuarioDestacadoModel() {
 		
@@ -79,5 +81,13 @@ public class UsuarioDestacadoModel {
 
 	public String getImagen() {
 		return imagen;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }
