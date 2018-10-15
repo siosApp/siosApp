@@ -72,7 +72,7 @@ public class UsuarioDestacadoConverter {
 	public Destacado convertDestacadoModelToDestacado(DestacadoModel destacadoModel) {
 		Destacado destacado = new Destacado();
 		destacado.setFechaDestacado(new Date(System.currentTimeMillis()));
-		destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado("Vigente"));
+		destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado(destacadoModel.getNombreEstado()));
 		destacado.setMedioPago(medioPagoRepository.findMedioPagoByNombreMedioPago(destacadoModel.getNombreMedioPago()));
 		destacado.setMonto(destacadoModel.getMonto());
 		destacado.setUsuario(usuarioRepository.findUsuarioByUsername(destacadoModel.getNombreUsuario()));
