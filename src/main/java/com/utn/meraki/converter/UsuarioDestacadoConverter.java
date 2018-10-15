@@ -61,6 +61,7 @@ public class UsuarioDestacadoConverter {
 		usuarioDestacadoModel.setApellido(usuario.getApellido());
 		usuarioDestacadoModel.setExperiencia(getExperienciaString(usuario));
 		usuarioDestacadoModel.setImagen(usuario.getImagen());
+		usuarioDestacadoModel.setUsername(usuario.getUsername());
 		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(usuario.getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
