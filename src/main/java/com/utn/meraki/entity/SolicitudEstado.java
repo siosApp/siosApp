@@ -1,6 +1,6 @@
 package com.utn.meraki.entity;
 
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "solicitudes_estados")
 
-public class SolicitudEstado {
+public class SolicitudEstado implements Comparable<SolicitudEstado>{
 	
 	//ATRIBUTOS
 	@Id
@@ -65,5 +65,9 @@ public class SolicitudEstado {
 	public void setEstadoSolicitud(EstadoSolicitud estadoSolicitud) {
 		this.estadoSolicitud = estadoSolicitud;
 	}
-	
+
+	@Override
+	public int compareTo(SolicitudEstado o) {
+		return getFechaCambioEstado().compareTo(o.getFechaCambioEstado());
+	}
 }

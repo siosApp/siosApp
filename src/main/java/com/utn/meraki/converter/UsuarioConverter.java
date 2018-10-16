@@ -75,6 +75,7 @@ public class UsuarioConverter {
         usuarioModel.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioModel.setFechaUltIngreso(usuario.getFechaUltIngreso());
         usuarioModel.setFechaBaja(usuario.getFechaBaja());
+        usuarioModel.setExperiencia(getExperienciaString(usuario));
         if(usuario.getOferente()!=null) {
         	usuarioModel.setOferente(usuario.getOferente());
         }
@@ -90,6 +91,12 @@ public class UsuarioConverter {
             usuarioModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
         }
         return usuarioModel;
+    }
+    public String getExperienciaString(Usuario usuario){
+        if(usuario.getUsuarioRubros()!=null && !usuario.getUsuarioRubros().isEmpty() && !usuario.getUsuarioRubros().get(0).getExperiencias().isEmpty()){
+            return usuario.getUsuarioRubros().get(0).getPrimerExperiencia().getDescripcion();
+        }
+        return "Sin experiencia previa";
     }
     public List<UsuarioRubroModel> getUsuariosRubrosModel(List<UsuarioRubro> usuarioRubros){
         List<UsuarioRubroModel> usuarioRubroModels= new ArrayList<>();

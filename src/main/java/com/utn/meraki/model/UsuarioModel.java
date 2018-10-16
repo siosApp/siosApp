@@ -37,6 +37,8 @@ public class UsuarioModel {
 
     private List<UsuarioRubroModel> usuarioRubros = new ArrayList<>();
 
+    private String experiencia;
+
     //CONSTRUCTOR
     public UsuarioModel() {
     }
@@ -165,5 +167,12 @@ public class UsuarioModel {
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
-    
+
+    public void setExperiencia(String experiencia) {
+        this.experiencia = experiencia;
+    }
+
+    public String getExperiencia() {
+        return experiencia;
+    }
 }
