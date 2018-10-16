@@ -1,12 +1,13 @@
 package com.utn.meraki.service.impl;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.utn.meraki.entity.EstadoSolicitud;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.repository.UsuarioRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
@@ -37,24 +38,16 @@ public class SolicitudServiceImpl implements SolicitudService{
 	
 	@Override
 	public SolicitudEstado ultimoEstadoSolicitud(String idSolicitud) {
-		Date fechaEstado = null;
-		for(SolicitudEstado solicitudEstado : solicitudRepository.findSolicitudById(idSolicitud).getSolicitudEstados()) {
-			if(fechaEstado==null) {
-				fechaEstado = solicitudEstado.getFechaCambioEstado();
-			}else {
-				if(fechaEstado.before(solicitudEstado.getFechaCambioEstado())) {
-					fechaEstado = solicitudEstado.getFechaCambioEstado();
-				}
-			}
-		}
-		return solicitudEstadoRepository.findSolicitudEstadoByFechaCambioEstado(fechaEstado);
+		List<SolicitudEstado> solicitudEstados= solicitudRepository.findSolicitudById(idSolicitud).getSolicitudEstados();
+		Collections.sort(solicitudEstados);
+		return solicitudEstados.get(0);
 	}
 
 	@Override
 	public SolicitudModel solicitarServicio(SolicitudModel solicitudModel) {
 		Solicitud solicitud = solicitudConverter.convertSolicitudModelToSolicitud(solicitudModel);
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
-		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setFechaCambioEstado(new Date());
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Creada"));
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
