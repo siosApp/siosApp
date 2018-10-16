@@ -24,8 +24,12 @@ public class Archivo {
 	private String urlArchivo;
 	
 	//CONSTRUCTOR
+
+	public Archivo(){
+
+	}
+
 	public Archivo(String urlArchivo) {
-		super();
 		this.urlArchivo = urlArchivo;
 	}
 

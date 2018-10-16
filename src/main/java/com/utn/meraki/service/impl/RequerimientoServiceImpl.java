@@ -60,7 +60,7 @@ public class RequerimientoServiceImpl implements RequerimientoService{
 	public List<RequerimientoModel> getRequerimientosActivos() {
 		List<RequerimientoModel> listRequerimientos = new ArrayList<>();
 		for(Requerimiento requerimiento : requerimientoRepository.findAll()) {
-			if(requerimiento.getEstadoRequerimiento().equals("Activo")) {
+			if(requerimiento.getEstadoRequerimiento().getNombreEstado().equals("Activo")) {
 				listRequerimientos.add(requerimientoConverter.convertRequerimientoToRequerimientoModel(requerimiento));
 			}
 		}
