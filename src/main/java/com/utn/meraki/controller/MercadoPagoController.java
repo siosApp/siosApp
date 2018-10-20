@@ -1,5 +1,6 @@
 package com.utn.meraki.controller;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServlet;
@@ -16,7 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadopago.MP;
 import com.utn.meraki.entity.CredencialesMercadoPago;
+import com.utn.meraki.entity.Destacado;
 import com.utn.meraki.model.DatoPagoMercadoPagoModel;
+import com.utn.meraki.model.EstadoDestacadoModel;
+import com.utn.meraki.repository.DestacadoRepository;
+import com.utn.meraki.repository.EstadoDestacadoRepository;
+import com.utn.meraki.repository.MedioPagoRepository;
+import com.utn.meraki.repository.UsuarioRepository;
 import com.utn.meraki.service.impl.CredencialesMercadoPagoServiceImpl;
 
 @CrossOrigin
@@ -28,6 +35,14 @@ public class MercadoPagoController extends HttpServlet{
 	@Autowired
 	@Qualifier("credencialesMercadoPagoService")
 	CredencialesMercadoPagoServiceImpl credencialesMercadoPagoServiceImpl;
+	@Autowired
+	UsuarioRepository usuarioRepository;
+	@Autowired
+	MedioPagoRepository medioPagoRepository;
+	@Autowired
+	EstadoDestacadoRepository estadoDestacadoRepository;
+	@Autowired
+	DestacadoRepository destacadoRepository;
 	
 	@PostMapping("/pago/mercadopago")
 	public String realizarPago(@RequestBody DatoPagoMercadoPagoModel datoPagoMercadoPagoModel) throws JSONException, Exception{
@@ -51,6 +66,15 @@ public class MercadoPagoController extends HttpServlet{
 		
 		String initPoint = preference.getJSONObject("response").getString("init_point");
 		System.out.println("initPoint" + initPoint);
+		
+		//Pone al usuario como destacado
+		Destacado destacado = new Destacado();
+		destacado.setMonto(datoPagoMercadoPagoModel.getUnit_price());
+		destacado.setUsuario(usuarioRepository.findUsuarioById(datoPagoMercadoPagoModel.getIdUsuario()));
+		destacado.setMedioPago(medioPagoRepository.findMedioPagoById(datoPagoMercadoPagoModel.getIdMedioPago()));
+		destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado("Destacado"));
+		destacado.setFechaDestacado(new Date(System.currentTimeMillis()));
+		destacadoRepository.save(destacado);
 		
 		return initPoint;
 					

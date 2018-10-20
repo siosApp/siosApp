@@ -26,7 +26,7 @@ public class Destacado {
 	private String id;
 	
 	@Column(name = "monto")
-	private Float monto;
+	private Double monto;
 	
 	@Column(name = "fecha_destacado")
 	private Date fechaDestacado;
@@ -56,11 +56,11 @@ public class Destacado {
 		this.id = id;
 	}
 
-	public Float getMonto() {
+	public Double getMonto() {
 		return monto;
 	}
 
-	public void setMonto(Float monto) {
+	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
 

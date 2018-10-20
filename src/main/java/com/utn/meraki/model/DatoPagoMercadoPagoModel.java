@@ -11,6 +11,10 @@ public class DatoPagoMercadoPagoModel {
 	
 	private double unit_price; //monto destacado
 	
+	private String idUsuario;
+	
+	private String idMedioPago;
+	
 	//CONSTRUCTOR
 	public DatoPagoMercadoPagoModel() {
 		super();
@@ -47,5 +51,22 @@ public class DatoPagoMercadoPagoModel {
 	public void setUnit_price(double unit_price) {
 		this.unit_price = unit_price;
 	}
+
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+
+	public String getIdMedioPago() {
+		return idMedioPago;
+	}
+
+	public void setIdMedioPago(String idMedioPago) {
+		this.idMedioPago = idMedioPago;
+	}
+	
 	
 }
