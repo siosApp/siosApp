@@ -7,7 +7,7 @@ public class DestacadoModel {
 	//ATRIBUTOS
 	private String id;
 	
-	private Float monto;
+	private Double monto;
 	
 	private Date fechaDestacado;
 	
@@ -31,11 +31,11 @@ public class DestacadoModel {
 		this.id = id;
 	}
 
-	public Float getMonto() {
+	public Double getMonto() {
 		return monto;
 	}
 
-	public void setMonto(Float monto) {
+	public void setMonto(Double monto) {
 		this.monto = monto;
 	}
 
