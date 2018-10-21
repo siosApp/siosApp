@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "solicitudes_estados")
 
-public class SolicitudEstado implements Comparable<SolicitudEstado>{
+public class SolicitudEstado{
 	
 	//ATRIBUTOS
 	@Id
@@ -30,7 +30,10 @@ public class SolicitudEstado implements Comparable<SolicitudEstado>{
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_estado_solicitud")
 	private EstadoSolicitud estadoSolicitud;
-	
+
+	@Column
+	private boolean activo;
+
 	//CONSTRUCTOR
 	public SolicitudEstado() {
 	}
@@ -66,8 +69,12 @@ public class SolicitudEstado implements Comparable<SolicitudEstado>{
 		this.estadoSolicitud = estadoSolicitud;
 	}
 
-	@Override
-	public int compareTo(SolicitudEstado o) {
-		return getFechaCambioEstado().compareTo(o.getFechaCambioEstado());
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
 }

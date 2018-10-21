@@ -4,19 +4,13 @@ package com.utn.meraki.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.utn.meraki.entity.EstadoSolicitud;
-import com.utn.meraki.entity.Usuario;
-import com.utn.meraki.repository.UsuarioRepository;
+import com.utn.meraki.entity.*;
+import com.utn.meraki.repository.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
-import com.utn.meraki.entity.Solicitud;
-import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
-import com.utn.meraki.repository.EstadoSolicitudRepository;
-import com.utn.meraki.repository.SolicitudEstadoRepository;
-import com.utn.meraki.repository.SolicitudRepository;
 import com.utn.meraki.service.SolicitudService;
 
 @Service("solicitudServiceImpl")
@@ -35,12 +29,18 @@ public class SolicitudServiceImpl implements SolicitudService{
 	//CONVERTER
 	@Autowired
 	SolicitudConverter solicitudConverter;
-	
+	@Autowired
+	ComentarioRepository comentarioRepository;
+	@Autowired
+	CalificacionRepository calificacionRepository;
+
 	@Override
 	public SolicitudEstado ultimoEstadoSolicitud(String idSolicitud) {
-		List<SolicitudEstado> solicitudEstados= solicitudRepository.findSolicitudById(idSolicitud).getSolicitudEstados();
-		Collections.sort(solicitudEstados);
-		return solicitudEstados.get(0);
+		for (SolicitudEstado solicitudEstado:solicitudRepository.findSolicitudById(idSolicitud).getSolicitudEstados())
+			if(solicitudEstado.isActivo()){
+				return solicitudEstado;
+			}
+		return new SolicitudEstado();
 	}
 
 	@Override
@@ -49,6 +49,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
 		solicitudEstado.setFechaCambioEstado(new Date());
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Creada"));
+		solicitudEstado.setActivo(true);
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
@@ -58,9 +59,11 @@ public class SolicitudServiceImpl implements SolicitudService{
 	@Override
 	public SolicitudModel rechazarSolicitud(String idSolicitud) {
 		Solicitud solicitud = solicitudRepository.findSolicitudById(idSolicitud);
+		this.disabledAllSolicitudEstado(solicitud);
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
 		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Rechazada"));
+		solicitudEstado.setActivo(true);
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
@@ -70,9 +73,11 @@ public class SolicitudServiceImpl implements SolicitudService{
 	@Override
 	public SolicitudModel aceptarSolicitud(String idSolicitud) {
 		Solicitud solicitud = solicitudRepository.findSolicitudById(idSolicitud);
+		this.disabledAllSolicitudEstado(solicitud);
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
-		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
+		solicitudEstado.setFechaCambioEstado(new Date());
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Aceptada"));
+		solicitudEstado.setActivo(true);
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
@@ -91,6 +96,55 @@ public class SolicitudServiceImpl implements SolicitudService{
 			}
 		}
 		return solicitudModels;
+	}
+
+	@Override
+	public List<SolicitudModel> getSolicitudesPorUsuario(String idUsuario) {
+		List<SolicitudModel> solicitudModels=new ArrayList<>();
+		Usuario usuario=usuarioRepository.findUsuarioById(idUsuario);
+		List<Solicitud> solicitudList=solicitudRepository.findSolicitudByUsuarioOferente(usuario);
+		for(Solicitud solicitud: solicitudList){
+			solicitudModels.add(solicitudConverter.convertSolicitudToSolicitudModel(solicitud));
+		}
+		return solicitudModels;
+	}
+
+	@Override
+	public List<SolicitudEstado> disabledAllSolicitudEstado(Solicitud solicitud) {
+		List<SolicitudEstado> solicitudEstados =solicitud.getSolicitudEstados();
+		for(SolicitudEstado solicitudEstado:solicitudEstados){
+			solicitudEstado.setActivo(false);
+			solicitudEstadoRepository.save(solicitudEstado);
+		}
+		return solicitudEstados;
+	}
+
+	@Override
+	public SolicitudModel finalizarSolicitud(String idSolicitud, int calificacion, String comentario) {
+		Solicitud solicitud= solicitudRepository.findSolicitudById(idSolicitud);
+		disabledAllSolicitudEstado(solicitud);
+		EstadoSolicitud estadoSolicitud=estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Finalizada");
+		SolicitudEstado solicitudEstado=new SolicitudEstado();
+		solicitudEstado.setActivo(true);
+		solicitudEstado.setEstadoSolicitud(estadoSolicitud);
+		solicitudEstado.setFechaCambioEstado(new Date());
+		//Creacion comentario.
+		Comentario comment= new Comentario();
+		comment.setDescripcion(comentario);
+		comentarioRepository.save(comment);
+		//Creacion calificacion
+		Calificacion califcation= new Calificacion();
+		califcation.setCalificacion(calificacion);
+		califcation.setComentarios(Arrays.asList(comment));
+		califcation.setSolicitud(solicitud);
+		califcation.setFechaCalificacion(new java.sql.Date(System.currentTimeMillis()));
+		califcation.setUsuario(solicitud.getUsuarioDemandante());
+		calificacionRepository.save(califcation);
+		//Guardando solicitud
+		solicitudEstadoRepository.save(solicitudEstado);
+		solicitud.getSolicitudEstados().add(solicitudEstado);
+		solicitudRepository.save(solicitud);
+		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.utn.meraki.service;
 
+import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
 
@@ -16,5 +17,11 @@ public interface SolicitudService {
 	public SolicitudModel aceptarSolicitud(String idSolicitud);
 
 	public List<SolicitudModel> getSolicitudesPendientesPorUsuario(String idUsuario);
-	
+
+	public List<SolicitudModel> getSolicitudesPorUsuario(String idUsuario);
+
+	public List<SolicitudEstado> disabledAllSolicitudEstado(Solicitud solicitud);
+
+	public SolicitudModel finalizarSolicitud(String idSolicitud, int calificacion, String comentario);
+
 }
