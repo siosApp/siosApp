@@ -366,7 +366,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return listUsuariosByRubro;
 	}
 
-	private boolean tieneRubros(Usuario usuario){
+    @Override
+    public UsuarioModel getUsuarioByUsername(String username) {
+        return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioByUsername(username));
+    }
+
+    private boolean tieneRubros(Usuario usuario){
         if(usuario.getUsuarioRubros()==null || usuario.getUsuarioRubros().isEmpty()){
             return false;
         }

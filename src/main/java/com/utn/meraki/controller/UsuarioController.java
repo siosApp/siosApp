@@ -101,4 +101,9 @@ public class UsuarioController {
     public List<UsuariosByRubro> cantidadUsuariosByRubro(){
     	return usuarioService.cantidadUsuariosByRubro();
     }
+
+    @GetMapping("/username")
+    public UsuarioModel getUsuarioByUsername(@RequestParam(value = "username") String username){
+        return usuarioService.getUsuarioByUsername(username);
+    }
 }

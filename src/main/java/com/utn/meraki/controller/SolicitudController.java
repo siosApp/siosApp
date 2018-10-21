@@ -38,4 +38,19 @@ public class SolicitudController {
 	public List<SolicitudModel> getSolicitudesPendientesPorUsuario(@RequestParam(value="idUsuario") String idUsuario){
 		return solicitudService.getSolicitudesPendientesPorUsuario(idUsuario);
 	}
+	@GetMapping("/cantidadSolicitudesPendientesPorUsuario")
+	public int getCantidadSolicitudesPendientesPorUsuario(@RequestParam(value="idUsuario") String idUsuario){
+		return solicitudService.getSolicitudesPendientesPorUsuario(idUsuario).size();
+	}
+	@GetMapping("/solicitudesPorUsuario")
+	public List<SolicitudModel> getSolicitudesPorUsuario(@RequestParam(value="idUsuario") String idUsuario){
+		return solicitudService.getSolicitudesPorUsuario(idUsuario);
+	}
+
+	@PutMapping("/finalizarSolicitud")
+	public SolicitudModel aceptarSolicitud(@RequestParam(value="idSolicitud",required=true)String idSolicitud,
+										   @RequestParam(value="calificacion",required=true)int calificacion,
+										   @RequestParam(value="comentario",required=true)String comentario) {
+		return solicitudService.finalizarSolicitud(idSolicitud,calificacion,comentario);
+	}
 }
