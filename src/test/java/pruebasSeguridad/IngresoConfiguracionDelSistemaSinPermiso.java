@@ -4,13 +4,14 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class IngresoConfiguracionDelSistemaSinPermiso extends PruebaSeguridad {
+public class IngresoConfiguracionDelSistemaSinPermiso extends ConfiguracionGeneralPruebas {
 
 	@Test
 	public void testIngresarAlSistemaSinPermiso() {
@@ -21,12 +22,12 @@ public class IngresoConfiguracionDelSistemaSinPermiso extends PruebaSeguridad {
 		List<String> navigationItemsTexts = new ArrayList<>();
 
 		driver.get("http://localhost:4200/login");
-		driver.manage().window().maximize();
+		driver.manage().window().setSize(new Dimension(1440, 900));
 		
 		// Ingresa al sistema con un usuario que no es administrador
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("usuarioprueba");
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("dante");
 		
-		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
+		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("dante12345");
 		
 		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
 		

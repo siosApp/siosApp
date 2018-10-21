@@ -4,30 +4,30 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class SolicitudSinRegistracion {
+import configuracionPruebas.ConfiguracionGeneralPruebas;
+
+public class SolicitudSinRegistracion extends ConfiguracionGeneralPruebas{
 
 	@Test
 	public void realizarSolicitudSinEstarRegistrado() {
 		
-		String projectLocation = System.getProperty("user.dir");
 		
-		System.setProperty("webdriver.chrome.driver", projectLocation+"/chromeDriver/chromedriver");
+		WebDriver driver = super.configurarSeleniumWebDriver();
 
-		WebDriver driver = new ChromeDriver();
 		driver.get("http://localhost:4200/sios/home");
-		driver.manage().window().maximize();
+		driver.manage().window().setSize(new Dimension(1440, 900));
 		
 		String botonBuscarPath = "/html/body/app-root/app-layout/div/div/app-home/div[1]/div/div/form/div[3]/div/button";
-		String oferentePath = "/html/body/app-root/app-layout/div/div/app-home/div[2]/div/div/div/div/button";
+		String SolicitudPath = "/html/body/app-root/app-layout/div/div/app-home/div[2]/div[2]/div[1]/div/div/div[4]/a";
 		
 		driver.findElement(By.xpath(botonBuscarPath)).click();
 		
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 		
-		driver.findElement(By.xpath(oferentePath)).click();
+		driver.findElement(By.xpath(SolicitudPath)).click();
 	}
 
 }
