@@ -4,6 +4,7 @@ import com.utn.meraki.entity.Solicitud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
 import com.utn.meraki.service.SolicitudService;
@@ -58,5 +59,10 @@ public class SolicitudController {
 	@GetMapping("/listSolicitudesFinalizadas")
 	public List<SolicitudTerminadaModel> listSolicitudesFinalizadas(){
 		return solicitudService.listSolicitudesTerminadas();
+	}
+	
+	@GetMapping("/listCalificacionesByUsuario")
+	public List<SolicitudCalificacionesModel> listCalificacionesByUsuario(@RequestParam(value="idUsuario") String idUsuario){
+		return solicitudService.listCalificacionesByUsuario(idUsuario);
 	}
 }

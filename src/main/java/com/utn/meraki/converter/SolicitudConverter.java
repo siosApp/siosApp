@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 
 import com.utn.meraki.entity.Archivo;
 import com.utn.meraki.entity.Calificacion;
+import com.utn.meraki.entity.Comentario;
 import com.utn.meraki.entity.OfertaRequerimiento;
 import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
+import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
 import com.utn.meraki.repository.ArchivoRepository;
@@ -114,6 +116,26 @@ public class SolicitudConverter {
 			}
 		}
 		return solicitudTerminadaModel;
+	}
+	
+	public SolicitudCalificacionesModel convertSolicitudToSolicitudCalificacionesModel(Solicitud solicitud) {
+		SolicitudCalificacionesModel solicitudCalificacionesModel = new SolicitudCalificacionesModel();
+		solicitudCalificacionesModel.setDescripcion(solicitud.getDescripcion());
+		solicitudCalificacionesModel.setFechaSolicitud(solicitud.getFechaSolicitud());
+		solicitudCalificacionesModel.setMail(solicitud.getUsuarioDemandante().getMail());
+		solicitudCalificacionesModel.setNombreUsuario(solicitud.getUsuarioDemandante().getNombre());
+		solicitudCalificacionesModel.setNombreApellido(solicitud.getUsuarioDemandante().getApellido());
+		for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+			if(solicitudEstado.isActivo()) {
+				solicitudCalificacionesModel.setFechaFinalizacion(solicitudEstado.getFechaCambioEstado());
+			}
+		}
+		Calificacion calificacion = calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, solicitud.getUsuarioOferente());
+		solicitudCalificacionesModel.setCalificacion(calificacion.getCalificacion());
+		for(Comentario comentario : calificacion.getComentarios()) {
+			solicitudCalificacionesModel.getComentarios().add(comentario.getDescripcion());
+		}
+		return solicitudCalificacionesModel;
 	}
 
 }

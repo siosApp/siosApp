@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
+import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
 import com.utn.meraki.service.SolicitudService;
@@ -162,6 +163,19 @@ public class SolicitudServiceImpl implements SolicitudService{
 			}
 		}
 		return solicitudesTerminadas;
+	}
+
+	@Override
+	public List<SolicitudCalificacionesModel> listCalificacionesByUsuario(String idUsuario) {
+		List<SolicitudCalificacionesModel> solicitudCalificaciones = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()&&solicitudEstado.getEstadoSolicitud().equals("Finalizado")) {
+					solicitudCalificaciones.add(solicitudConverter.convertSolicitudToSolicitudCalificacionesModel(solicitud));
+				}
+			}
+		}
+		return solicitudCalificaciones;
 	}
 
 }
