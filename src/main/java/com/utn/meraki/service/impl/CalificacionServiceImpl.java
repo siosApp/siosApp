@@ -62,22 +62,24 @@ public class CalificacionServiceImpl implements CalificacionService{
 		Integer votoCuatro = 0;
 		Integer votoCinco = 0;
 		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuario)) {
-			switch (calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()) {
-				case 1:
+			if(!calificacionRepository.findCalificacionBySolicitud(solicitud).isEmpty()) {
+				System.out.println("La solicitud tiene calificaciones realizadas");
+				if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==1) {
 					votoUno += 1;
 					calificacionUno.getUsernameUsuarios().add(usuario.getUsername());
-				case 2:
+				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==2) {
 					votoDos += 1;
 					calificacionDos.getUsernameUsuarios().add(usuario.getUsername());
-				case 3:
+				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==3) {
 					votoTres += 1;
 					calificacionTres.getUsernameUsuarios().add(usuario.getUsername());
-				case 4:
+				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==4) {
 					votoCuatro += 1;
 					calificacionCuatro.getUsernameUsuarios().add(usuario.getUsername());
-				case 5:
+				}else {
 					votoCinco += 1;
 					calificacionCinco.getUsernameUsuarios().add(usuario.getUsername());
+				}
 			}
 		}
 		calificacionUno.setCantidadVotos(votoUno);
@@ -93,4 +95,5 @@ public class CalificacionServiceImpl implements CalificacionService{
 		return calificaciones;
 	}
 
+	
 }
