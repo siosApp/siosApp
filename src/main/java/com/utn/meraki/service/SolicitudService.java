@@ -3,6 +3,7 @@ package com.utn.meraki.service;
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.model.SolicitudTerminadaModel;
 
 import java.util.List;
 
@@ -23,5 +24,7 @@ public interface SolicitudService {
 	public List<SolicitudEstado> disabledAllSolicitudEstado(Solicitud solicitud);
 
 	public SolicitudModel finalizarSolicitud(String idSolicitud, int calificacion, String comentario);
+	
+	public List<SolicitudTerminadaModel> listSolicitudesTerminadas();
 
 }

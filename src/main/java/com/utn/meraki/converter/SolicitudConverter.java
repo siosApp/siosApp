@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.utn.meraki.entity.Archivo;
+import com.utn.meraki.entity.Calificacion;
 import com.utn.meraki.entity.OfertaRequerimiento;
 import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.model.SolicitudTerminadaModel;
 import com.utn.meraki.repository.ArchivoRepository;
+import com.utn.meraki.repository.CalificacionRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
 import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.repository.RequerimientoRepository;
@@ -30,6 +33,8 @@ public class SolicitudConverter {
 	@Autowired
 	SolicitudEstadoRepository solicitudEstadoRepository;
 	@Autowired
+	CalificacionRepository calificacionRepository;
+	@Autowired
 	UsuarioRepository usuarioRepository;
 	@Autowired
 	EstadoSolicitudRepository estadoSolicitudRepository;
@@ -41,6 +46,10 @@ public class SolicitudConverter {
 	RequerimientoRepository requerimientoRepository;
 	@Autowired
 	SolicitudService solicitudService;
+	
+	//CONVERTER
+	@Autowired
+	CalificacionConverter calificacionConverter;
 	
 	public Solicitud convertOfertaRequerimientoToSolicitud(OfertaRequerimiento ofertaRequerimiento) {
 		Requerimiento requerimiento = ofertaRequerimiento.getRequerimiento();
@@ -87,6 +96,24 @@ public class SolicitudConverter {
 			solicitud.getArchivos().add(archivo);
 		}
 		return solicitud;
+	}
+	
+	public SolicitudTerminadaModel convertSolicitudToSolicitudTerminadaModel(Solicitud solicitud) {
+		SolicitudTerminadaModel solicitudTerminadaModel = new SolicitudTerminadaModel();
+		solicitudTerminadaModel.setIdSolicitud(solicitud.getId());
+		solicitudTerminadaModel.setDescripcion(solicitud.getDescripcion());
+		solicitudTerminadaModel.setFechaSolicitud(solicitud.getFechaSolicitud());
+		solicitudTerminadaModel.setUsernameDemandante(solicitud.getUsuarioDemandante().getUsername());
+		solicitudTerminadaModel.setUsernameOferente(solicitud.getUsuarioOferente().getUsername());
+		for(Calificacion calificacion : calificacionRepository.findCalificacionBySolicitud(solicitud)) {
+			solicitudTerminadaModel.getCalificaciones().add(calificacionConverter.convertCalificacionToCalificacionModel(calificacion));
+		}
+		for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+			if(solicitudEstado.isActivo()) {
+				solicitudTerminadaModel.setFechaFinalizacion(solicitudEstado.getFechaCambioEstado());
+			}
+		}
+		return solicitudTerminadaModel;
 	}
 
 }

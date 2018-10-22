@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.model.SolicitudTerminadaModel;
 import com.utn.meraki.service.SolicitudService;
 
 @Service("solicitudServiceImpl")
@@ -145,6 +146,22 @@ public class SolicitudServiceImpl implements SolicitudService{
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
+	@Override
+	public List<SolicitudTerminadaModel> listSolicitudesTerminadas() {
+		List<SolicitudTerminadaModel> solicitudesTerminadas = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findAll()) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()) {
+					System.out.println("último estado de la solicitud");
+					if(solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Finalizada")) {
+						solicitudesTerminadas.add(solicitudConverter.convertSolicitudToSolicitudTerminadaModel(solicitud));
+					}
+				}
+			}
+		}
+		return solicitudesTerminadas;
 	}
 
 }
