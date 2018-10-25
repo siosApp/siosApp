@@ -116,4 +116,9 @@ public class UsuarioController {
     public UsuarioModel registrarUsuarioDeslogueado(@RequestParam(value="idUsuario",required=true)String idUsuario) {
     	return usuarioService.registrarUsuarioDeslogueado(idUsuario);
     }
+    
+    @GetMapping("/calcularCantidadUsuariosLinea")
+    public Integer calcularCantidadUsuariosLinea() {
+    	return usuarioService.calcularCantidadUsuariosLinea();
+    }
 }

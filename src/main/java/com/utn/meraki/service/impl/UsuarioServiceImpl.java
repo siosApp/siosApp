@@ -96,11 +96,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioModel getUsuarioById(String id) {
-        if(id !=null){
-        	System.out.println(id);
-            return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
-        }
-        return new UsuarioModel();
+//        if(id !=null){
+//        	System.out.println(id);
+//            return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
+//        }
+//        return new UsuarioModel();
+    	Usuario usuario = usuarioRepository.findUsuarioById(id);
+    	return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
     }
 
     @Override
@@ -413,5 +415,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuario.setLogueado(false);
 		usuarioRepository.save(usuario);
 		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
+
+	@Override
+	public Integer calcularCantidadUsuariosLinea() {
+		Integer cantidadUsuarios = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.isLogueado()) {
+				cantidadUsuarios += 1;
+			}
+		}
+		return cantidadUsuarios;
 	}
 }

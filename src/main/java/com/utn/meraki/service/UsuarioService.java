@@ -49,5 +49,7 @@ public interface UsuarioService {
     public abstract UsuarioModel registrarUsuarioLogueado(String idUsuario);
     
     public abstract UsuarioModel registrarUsuarioDeslogueado(String idUsuario);
+    
+    public abstract Integer calcularCantidadUsuariosLinea();
 
 }
