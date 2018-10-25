@@ -1,6 +1,8 @@
 package com.utn.meraki.converter;
 
 import java.sql.Date;
+import java.time.Month;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -72,7 +74,17 @@ public class UsuarioDestacadoConverter {
 	
 	public Destacado convertDestacadoModelToDestacado(DestacadoModel destacadoModel) {
 		Destacado destacado = new Destacado();
-		destacado.setFechaDestacado(new Date(System.currentTimeMillis()));
+		//Setea fecha actual del sistema
+		Date fechaDestacado = new Date(System.currentTimeMillis());
+		destacado.setFechaDestacado(fechaDestacado);
+		System.out.println("FECHA DESTACADO = " +fechaDestacado);
+		//Setea fecha de vencimiento del usuario destacado
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(calendar.MONTH, 1);
+		Date fechaVto = new Date(calendar.getTime().getTime());
+		destacado.setFechaVtoDestacado(fechaVto);
+		System.out.println("FECHA VTO DESTACADO = " +fechaVto);
+		//Seteo resto de los datos
 		destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado(destacadoModel.getNombreEstado()));
 		destacado.setMedioPago(medioPagoRepository.findMedioPagoByNombreMedioPago(destacadoModel.getNombreMedioPago()));
 		destacado.setMonto(destacadoModel.getMonto());

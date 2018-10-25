@@ -31,6 +31,9 @@ public class Destacado {
 	@Column(name = "fecha_destacado")
 	private Date fechaDestacado;
 	
+	@Column(name = "fecha_vto_destacado")
+	private Date fechaVtoDestacado;
+	
 	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
@@ -94,6 +97,14 @@ public class Destacado {
 
 	public void setMedioPago(MedioPago medioPago) {
 		this.medioPago = medioPago;
+	}
+
+	public Date getFechaVtoDestacado() {
+		return fechaVtoDestacado;
+	}
+
+	public void setFechaVtoDestacado(Date fechaVtoDestacado) {
+		this.fechaVtoDestacado = fechaVtoDestacado;
 	}
 	
 }
