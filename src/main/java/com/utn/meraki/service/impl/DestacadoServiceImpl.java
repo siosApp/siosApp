@@ -11,6 +11,7 @@ import com.utn.meraki.entity.Destacado;
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.repository.DestacadoRepository;
+import com.utn.meraki.repository.EstadoDestacadoRepository;
 import com.utn.meraki.service.DestacadoService;
 
 @Service("destacadoService")
@@ -20,6 +21,8 @@ public class DestacadoServiceImpl implements DestacadoService{
 	//REPOSITORY
 	@Autowired
 	DestacadoRepository destacadoRepository;
+	@Autowired
+	EstadoDestacadoRepository estadoDestacadoRepository;
 	
 	//CONVERTER
 	@Autowired
@@ -32,8 +35,14 @@ public class DestacadoServiceImpl implements DestacadoService{
 		for(Destacado destacado : destacadoRepository.findAll()) {
 			if(destacado.getFechaDestacado().getMonth()==fechaActual.getMonth()&&
 					destacado.getFechaDestacado().getYear()==fechaActual.getYear()) {
-				UsuarioDestacadoModel usuarioDestacadoModel = usuarioDestacadoConverter.convertDestacadoToUsuarioDestacadoModel(destacado);
-				usuariosDestacados.add(usuarioDestacadoModel);
+				if(destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+					if(destacado.getFechaVtoDestacado().after(fechaActual)) {
+						destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado("No destacado"));
+						destacadoRepository.save(destacado);
+					}else {
+						UsuarioDestacadoModel usuarioDestacadoModel = usuarioDestacadoConverter.convertDestacadoToUsuarioDestacadoModel(destacado);
+						usuariosDestacados.add(usuarioDestacadoModel);
+				}
 			}
 		}
 		return usuariosDestacados;
