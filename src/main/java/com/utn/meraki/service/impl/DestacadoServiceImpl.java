@@ -42,6 +42,7 @@ public class DestacadoServiceImpl implements DestacadoService{
 					}else {
 						UsuarioDestacadoModel usuarioDestacadoModel = usuarioDestacadoConverter.convertDestacadoToUsuarioDestacadoModel(destacado);
 						usuariosDestacados.add(usuarioDestacadoModel);
+					}
 				}
 			}
 		}
