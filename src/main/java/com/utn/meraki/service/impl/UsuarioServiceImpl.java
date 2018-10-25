@@ -166,6 +166,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         //Seteo atributos el filtro
         String rubro = filtroModel.getNombreRubro();
         String tipoRubro = filtroModel.getNombreTipoRubro();
+        System.out.println("TIPO RUBRO SELECCIONADO = " +tipoRubro);
         String localidad = filtroModel.getNombreLocalidad();
         String departamento = filtroModel.getNombreDepartamento();
         String provincia = filtroModel.getNombreProvincia();
@@ -173,6 +174,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(tipoRubro==null&&provincia==null) {
             for(Usuario usuario : usuarioRepository.findAll()) {
                 if(usuario.getOferente()) {
+                	System.out.println("USUARIO ENCONTRADO = " +usuario.getUsername());
                     listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                 }
             }
@@ -186,15 +188,18 @@ public class UsuarioServiceImpl implements UsuarioService {
                                         findUsuarioByUsuarioRubros(usuarioRubro)));
                             }
                         }
+                        break;
                     }
                 }else {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
                             for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
                                 if(usuarioRubro.getRubro().getTipoRubro().getNombreTipoRubro().equals(tipoRubro)) {
+                                	System.out.println("USUARIO ENCONTRADO = " +usuario.getUsername());
                                     listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuarioRepository.
                                             findUsuarioByUsuarioRubros(usuarioRubro)));
                                 }
+                                break;
                             }
                         }
                     }
@@ -204,9 +209,11 @@ public class UsuarioServiceImpl implements UsuarioService {
                     for(Usuario usuario : usuarioRepository.findAll()) {
                         if(usuario.getOferente()) {
                             if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
+                            	System.out.println("USUARIO ENCONTRADO = " +usuario.getUsername());
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
+                        
                     }
                 }else if(departamento!=null&&localidad==null){
                     for(Usuario usuario : usuarioRepository.findAll()) {
@@ -223,15 +230,23 @@ public class UsuarioServiceImpl implements UsuarioService {
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
                         }
-                    }
+                   }
+                    
                 }
             }else {
+            	System.out.println("FILTRO DONDE SELECCIONO TIPO DE RUBRO Y PROVINCIA");
+            	System.out.println("TIPO RUBRO = " +tipoRubro +" Y PROVINCIA = " +provincia);
                 if(rubro==null&&departamento==null) {
                     for(Usuario usuario : usuarioRepository.findAll()) {
-                        if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
+                    	if(usuario.getOferente()&&usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
                             for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
                                 if(usuarioRubro.getRubro().getTipoRubro().getNombreTipoRubro().equals(tipoRubro)) {
-
+                                	System.out.println("USUARIO ENCONTRADO = " +usuario.getUsername());
+                                	UsuarioDestacadoModel usuarioDestacadoModel = usuarioDestacadoConverter.
+                                			convertUsuarioToUsuarioDestacadoModel(usuario);
+                                	if(!listUsuario.contains(usuarioDestacadoModel)) {
+                                		listUsuario.add(usuarioDestacadoModel);
+                                	}break;
                                 }
                             }
                         }
@@ -255,10 +270,15 @@ public class UsuarioServiceImpl implements UsuarioService {
                         if(usuario.getOferente()) {
                             for(UsuarioRubro usuarioRubro : usuario.getUsuarioRubros()) {
                                 if(usuarioRubro.getRubro().getNombreRubro().equals(rubro)) {
-                                    listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                                	UsuarioDestacadoModel usuarioDestacadoModel = usuarioDestacadoConverter.
+                                			convertUsuarioToUsuarioDestacadoModel(usuario);
+                                	if(!listUsuario.add(usuarioDestacadoModel)) {
+                                		listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
+                                	}
                                 }
                             }
                         }
+                        
                     }
                 }else {
                     if(localidad!=null) {
@@ -270,6 +290,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                                     }
                                 }
                             }
+                            
                         }
                     }else {
                         for(Usuario usuario : usuarioRepository.findAll()) {
