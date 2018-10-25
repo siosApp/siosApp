@@ -60,6 +60,9 @@ public class Usuario {
 	
 	@Column(name = "imagen")
 	private String imagen;
+	
+	@Column(name = "logueado")
+	private boolean logueado;
 
 	@Column
 	private String codigoValidacion;
@@ -224,7 +227,17 @@ public class Usuario {
 	public void addRubro(UsuarioRubro usuarioRubro){
 		usuarioRubros.add(usuarioRubro);
 	}
+	
 	public void eliminarRubro(UsuarioRubro usuarioRubro){
 		usuarioRubros.remove(usuarioRubro);
 	}
+
+	public boolean isLogueado() {
+		return logueado;
+	}
+
+	public void setLogueado(boolean logueado) {
+		this.logueado = logueado;
+	}
+	
 }

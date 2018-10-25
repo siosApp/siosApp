@@ -106,4 +106,14 @@ public class UsuarioController {
     public UsuarioModel getUsuarioByUsername(@RequestParam(value = "username") String username){
         return usuarioService.getUsuarioByUsername(username);
     }
+    
+    @PutMapping("/registrarUsuarioLogueado")
+    public UsuarioModel registrarUsuarioLogueado(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+    	return usuarioService.registrarUsuarioLogueado(idUsuario);
+    }
+    
+    @PutMapping("/registrarUsuarioDeslogueado")
+    public UsuarioModel registrarUsuarioDeslogueado(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+    	return usuarioService.registrarUsuarioDeslogueado(idUsuario);
+    }
 }

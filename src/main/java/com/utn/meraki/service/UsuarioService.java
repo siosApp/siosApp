@@ -45,5 +45,9 @@ public interface UsuarioService {
     public abstract List<UsuariosByRubro> cantidadUsuariosByRubro();
 
     public abstract UsuarioModel getUsuarioByUsername(String username);
+    
+    public abstract UsuarioModel registrarUsuarioLogueado(String idUsuario);
+    
+    public abstract UsuarioModel registrarUsuarioDeslogueado(String idUsuario);
 
 }

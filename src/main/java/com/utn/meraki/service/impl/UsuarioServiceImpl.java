@@ -377,4 +377,20 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         return true;
     }
+
+	@Override
+	public UsuarioModel registrarUsuarioLogueado(String idUsuario) {
+		Usuario usuario = usuarioRepository.findUsuarioById(idUsuario);
+		usuario.setLogueado(true);
+		usuarioRepository.save(usuario);
+		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
+
+	@Override
+	public UsuarioModel registrarUsuarioDeslogueado(String idUsuario) {
+		Usuario usuario = usuarioRepository.findUsuarioById(idUsuario);
+		usuario.setLogueado(false);
+		usuarioRepository.save(usuario);
+		return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+	}
 }
