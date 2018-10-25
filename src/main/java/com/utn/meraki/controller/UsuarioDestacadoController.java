@@ -3,6 +3,7 @@ package com.utn.meraki.controller;
 import java.util.List;
 
 import com.utn.meraki.model.FiltroModel;
+import com.utn.meraki.model.ListDestacadosModel;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,10 @@ public class UsuarioDestacadoController {
 		filtroModel.setNombreRubro(rubro.equals("null")? null:rubro);
 		filtroModel.setNombreTipoRubro(tipoRubro.equals("null")?null:tipoRubro);
 		return usuarioService.filtrarUsuarios(filtroModel);
+	}
+	
+	@PutMapping("/verCantidadDestacados")
+	public ListDestacadosModel verCantidadDestacados() {
+		return destacadoService.verCantidadDestacados();
 	}
 }

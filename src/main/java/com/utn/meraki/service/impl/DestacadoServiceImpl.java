@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.entity.Destacado;
 import com.utn.meraki.model.DestacadoModel;
+import com.utn.meraki.model.ListDestacadosModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.repository.DestacadoRepository;
 import com.utn.meraki.repository.EstadoDestacadoRepository;
@@ -23,10 +25,12 @@ public class DestacadoServiceImpl implements DestacadoService{
 	DestacadoRepository destacadoRepository;
 	@Autowired
 	EstadoDestacadoRepository estadoDestacadoRepository;
-	
+		
 	//CONVERTER
 	@Autowired
 	UsuarioDestacadoConverter usuarioDestacadoConverter;
+	@Autowired
+	UsuarioConverter usuarioConverter;
 	
 	@Override
 	public List<UsuarioDestacadoModel> listUltimosDestacados() {
@@ -54,6 +58,24 @@ public class DestacadoServiceImpl implements DestacadoService{
 		Destacado destacado = usuarioDestacadoConverter.convertDestacadoModelToDestacado(destacadoModel);
 		destacadoRepository.save(destacado);
 		return usuarioDestacadoConverter.convertDestacadoToDestacadoModel(destacado);
+	}
+
+	@Override
+	public ListDestacadosModel verCantidadDestacados() {
+		ListDestacadosModel listDestacadosModel = new ListDestacadosModel();
+		Date fechaActual = new Date(System.currentTimeMillis());
+		Integer cantidadDestacados = 0;
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaVtoDestacado().after(fechaActual)) {
+				destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado("No destacado"));
+				destacadoRepository.save(destacado);
+			}else {
+				cantidadDestacados += 1;
+				listDestacadosModel.getUsuariosDestacados().add(usuarioConverter.convertUsuarioToUsuarioModel(destacado.getUsuario()));
+			}
+		}
+		listDestacadosModel.setCantidadDestacados(cantidadDestacados);
+		return listDestacadosModel;
 	}
 
 	
