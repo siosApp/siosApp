@@ -439,13 +439,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 		Integer registrados = 0;
 		Integer destacados = 0;
 		for(Usuario usuario : usuarioRepository.findAll()) {
-			if(usuario.getFechaRegistro().after(fechaDesde)&&usuario.getFechaRegistro().before(fechaHasta)) {
-				registrados += 1;
+			if(usuario.getFechaRegistro()!=null) {
+				if(usuario.getFechaRegistro().after(fechaDesde)&&usuario.getFechaRegistro().before(fechaHasta)) {
+					registrados += 1;
+				}
 			}
 		}
 		for(Destacado destacado : destacadoRepository.findAll()) {
-			if(destacado.getFechaDestacado().after(fechaDesde)&&destacado.getFechaDestacado().before(fechaHasta)) {
-				destacados += 1;
+			if(destacado.getFechaDestacado()!=null) {
+				if(destacado.getFechaDestacado().after(fechaDesde)&&destacado.getFechaDestacado().before(fechaHasta)) {
+					destacados += 1;
+				}
 			}
 		}
 		usuariosRegistrados.setDestacados(destacados);
