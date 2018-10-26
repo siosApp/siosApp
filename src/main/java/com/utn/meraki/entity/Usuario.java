@@ -34,6 +34,9 @@ public class Usuario {
 	@Column(name = "apellido")
 	private String apellido;
 	
+	@Column(name = "fecha_registro")
+	private Date fechaRegistro;
+	
 	@Column(name = "fecha_baja")
 	private Date fechaBaja;
 	
@@ -238,6 +241,14 @@ public class Usuario {
 
 	public void setLogueado(boolean logueado) {
 		this.logueado = logueado;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 	
 }
