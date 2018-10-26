@@ -3,10 +3,12 @@ package com.utn.meraki.controller;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuariosByRubro;
+import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/usuario")
@@ -120,5 +122,11 @@ public class UsuarioController {
     @GetMapping("/calcularCantidadUsuariosLinea")
     public Integer calcularCantidadUsuariosLinea() {
     	return usuarioService.calcularCantidadUsuariosLinea();
+    }
+    
+    @GetMapping("/cantidadUsuariosRegistradosDestacados")
+    public UsuariosRegistradosDestacadosModel cantidadUsuariosRegistradosDestacados(
+    		@RequestParam(value="fechaDesde",required=true)Date fechaDesde,@RequestParam(value="fechaHasta",required=true)Date fechaHasta) {
+    	return usuarioService.cantidadUsuariosRegistradosDestacados(fechaDesde, fechaHasta);
     }
 }

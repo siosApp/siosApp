@@ -14,6 +14,8 @@ import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.model.UsuariosByRubro;
+import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
+import com.utn.meraki.repository.DestacadoRepository;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -50,6 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private TipoRubroRepository tipoRubroRepository;
     @Autowired
     private RubroRepository rubroRepository;
+    @Autowired
+    private DestacadoRepository destacadoRepository;
     @Autowired
     private MailService mailService;
     @Autowired
@@ -427,6 +431,26 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 		}
 		return cantidadUsuarios;
+	}
+
+	@Override
+	public UsuariosRegistradosDestacadosModel cantidadUsuariosRegistradosDestacados(Date fechaDesde, Date fechaHasta) {
+		UsuariosRegistradosDestacadosModel usuariosRegistrados = new UsuariosRegistradosDestacadosModel();
+		Integer registrados = 0;
+		Integer destacados = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.getFechaRegistro().after(fechaDesde)&&usuario.getFechaRegistro().before(fechaHasta)) {
+				registrados += 1;
+			}
+		}
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaDestacado().after(fechaDesde)&&destacado.getFechaDestacado().before(fechaHasta)) {
+				destacados += 1;
+			}
+		}
+		usuariosRegistrados.setDestacados(destacados);
+		usuariosRegistrados.setRegistrados(registrados);
+		return usuariosRegistrados;
 	}
 
 	
