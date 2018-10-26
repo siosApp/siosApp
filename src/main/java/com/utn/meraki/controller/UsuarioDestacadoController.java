@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
+import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.service.DestacadoService;
 
 @RequestMapping("/usuarioDestacado")
@@ -53,4 +54,10 @@ public class UsuarioDestacadoController {
 	public ListDestacadosModel verCantidadDestacados() {
 		return destacadoService.verCantidadDestacados();
 	}
+	
+	@GetMapping("/usuariosPorVencerDestacado")
+	public List<UsuarioModel> usuariosPorVencerDestacado(){
+		return destacadoService.usuariosPorVencerDestacado();
+	}
+	
 }

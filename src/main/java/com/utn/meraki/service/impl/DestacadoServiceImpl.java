@@ -2,6 +2,7 @@ package com.utn.meraki.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.entity.Destacado;
+import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.ListDestacadosModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
+import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.repository.DestacadoRepository;
 import com.utn.meraki.repository.EstadoDestacadoRepository;
 import com.utn.meraki.service.DestacadoService;
@@ -76,6 +79,25 @@ public class DestacadoServiceImpl implements DestacadoService{
 		}
 		listDestacadosModel.setCantidadDestacados(cantidadDestacados);
 		return listDestacadosModel;
+	}
+
+	@Override
+	public List<UsuarioModel> usuariosPorVencerDestacado() {
+		List<UsuarioModel> usuarioModels = new ArrayList<>();
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			Date fechaVto = destacado.getFechaVtoDestacado();
+			Date fechaActual = new Date(System.currentTimeMillis());
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(fechaActual);
+			calendar.add(calendar.WEEK_OF_MONTH, -1);
+			Date fechaPorVencer = new Date(calendar.getTime().getTime());			
+			if(destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+				if(fechaVto.after(fechaPorVencer)) {
+					usuarioModels.add(usuarioConverter.convertUsuarioToUsuarioModel(destacado.getUsuario()));
+				}
+			}
+		}
+		return usuarioModels;
 	}
 
 	

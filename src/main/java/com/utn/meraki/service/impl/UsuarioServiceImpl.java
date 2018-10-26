@@ -4,6 +4,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.converter.UsuarioRubroConverter;
+import com.utn.meraki.entity.Destacado;
 import com.utn.meraki.entity.Rubro;
 import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.entity.Usuario;
@@ -427,4 +428,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 		return cantidadUsuarios;
 	}
+
+	
 }

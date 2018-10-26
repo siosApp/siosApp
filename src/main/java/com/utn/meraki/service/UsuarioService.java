@@ -51,5 +51,7 @@ public interface UsuarioService {
     public abstract UsuarioModel registrarUsuarioDeslogueado(String idUsuario);
     
     public abstract Integer calcularCantidadUsuariosLinea();
+    
+    
 
 }
