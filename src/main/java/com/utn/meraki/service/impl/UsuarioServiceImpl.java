@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -455,6 +456,92 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuariosRegistrados.setDestacados(destacados);
 		usuariosRegistrados.setRegistrados(registrados);
 		return usuariosRegistrados;
+	}
+
+	@Override
+	public List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses() {
+		List<UsuariosRegistradosDestacadosModel> listaModel = new ArrayList<>();
+		//Setéo de fechas para filtrar por los últimos 3 meses
+		Date fechaActual = new Date(System.currentTimeMillis());
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fechaActual);
+		calendar.add(calendar.MONTH, -1);
+		Date fechaAnterior1 = new Date(calendar.getTime().getTime());
+		Calendar calendar2 = Calendar.getInstance();
+		calendar.setTime(fechaActual);
+		calendar.add(calendar.MONTH, -2);
+		Date fechaAnterior2 = new Date(calendar.getTime().getTime());
+		//Filtro y conteo por mes
+		//Mes actual
+		UsuariosRegistradosDestacadosModel lista1 = new UsuariosRegistradosDestacadosModel();
+		Integer registrados1 = 0;
+		Integer destacados1 = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.getFechaRegistro()!=null) {
+				if(fechaActual.getMonth()==usuario.getFechaRegistro().getMonth()
+						&&fechaActual.getYear()==usuario.getFechaRegistro().getYear()) {
+					registrados1 += 1;
+				}
+			}
+		}
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaDestacado()!=null) {
+				if(fechaActual.getMonth()==destacado.getFechaDestacado().getMonth()
+						&&fechaActual.getYear()==destacado.getFechaDestacado().getYear()) {
+					destacados1 += 1;
+				}
+			}
+		}
+		lista1.setDestacados(destacados1);
+		lista1.setRegistrados(registrados1);
+		listaModel.add(lista1);
+		//Mes anterior
+		UsuariosRegistradosDestacadosModel lista2 = new UsuariosRegistradosDestacadosModel();
+		Integer registrados2 = 0;
+		Integer destacados2 = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.getFechaRegistro()!=null) {
+				if(fechaAnterior1.getMonth()==usuario.getFechaRegistro().getMonth()
+						&&fechaAnterior1.getYear()==usuario.getFechaRegistro().getYear()) {
+					registrados2 += 1;
+				}
+			}
+		}
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaDestacado()!=null) {
+				if(fechaAnterior1.getMonth()==destacado.getFechaDestacado().getMonth()
+						&&fechaAnterior1.getYear()==destacado.getFechaDestacado().getYear()) {
+					destacados2 += 1;
+				}
+			}
+		}
+		lista2.setDestacados(destacados2);
+		lista2.setRegistrados(registrados2);
+		listaModel.add(lista2);
+		//Hace 3 meses
+		UsuariosRegistradosDestacadosModel lista3 = new UsuariosRegistradosDestacadosModel();
+		Integer registrados3 = 0;
+		Integer destacados3 = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.getFechaRegistro()!=null) {
+				if(fechaAnterior2.getMonth()==usuario.getFechaRegistro().getMonth()
+						&&fechaAnterior2.getYear()==usuario.getFechaRegistro().getYear()) {
+					registrados3 += 1;
+				}
+			}
+		}
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaDestacado()!=null) {
+				if(fechaAnterior2.getMonth()==destacado.getFechaDestacado().getMonth()
+						&&fechaAnterior2.getYear()==destacado.getFechaDestacado().getYear()) {
+					destacados3 += 1;
+				}
+			}
+		}
+		lista3.setDestacados(destacados3);
+		lista3.setRegistrados(registrados3);
+		listaModel.add(lista3);
+		return listaModel;
 	}
 
 	

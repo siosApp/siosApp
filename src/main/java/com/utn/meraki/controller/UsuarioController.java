@@ -129,4 +129,9 @@ public class UsuarioController {
     		@RequestParam(value="fechaDesde",required=true)Date fechaDesde,@RequestParam(value="fechaHasta",required=true)Date fechaHasta) {
     	return usuarioService.cantidadUsuariosRegistradosDestacados(fechaDesde, fechaHasta);
     }
+    
+    @GetMapping("/registradosDestacadosUltimosMeses")
+    public List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses(){
+    	return usuarioService.registradosDestacadosUltimosMeses();
+    }
 }
