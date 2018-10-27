@@ -5,6 +5,7 @@ import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
+import com.utn.meraki.model.TrabajosOferenteModel;
 
 import java.util.List;
 
@@ -29,5 +30,7 @@ public interface SolicitudService {
 	public List<SolicitudTerminadaModel> listSolicitudesTerminadas();
 	
 	public List<SolicitudCalificacionesModel> listCalificacionesByUsuario(String idUsuario);
+	
+	public List<TrabajosOferenteModel> trabajosOferente(String idUsuario);
 
 }

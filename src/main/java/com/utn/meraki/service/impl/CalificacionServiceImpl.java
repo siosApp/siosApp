@@ -67,18 +67,23 @@ public class CalificacionServiceImpl implements CalificacionService{
 				if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==1) {
 					votoUno += 1;
 					calificacionUno.getUsernameUsuarios().add(usuario.getUsername());
+					calificacionUno.getDatosUsuarios().add(calificacionConverter.convertSolicitudToCalificacionRecibidaModel(solicitud));
 				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==2) {
 					votoDos += 1;
 					calificacionDos.getUsernameUsuarios().add(usuario.getUsername());
+					calificacionDos.getDatosUsuarios().add(calificacionConverter.convertSolicitudToCalificacionRecibidaModel(solicitud));
 				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==3) {
 					votoTres += 1;
 					calificacionTres.getUsernameUsuarios().add(usuario.getUsername());
+					calificacionTres.getDatosUsuarios().add(calificacionConverter.convertSolicitudToCalificacionRecibidaModel(solicitud));
 				}else if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, usuario).getCalificacion()==4) {
 					votoCuatro += 1;
 					calificacionCuatro.getUsernameUsuarios().add(usuario.getUsername());
+					calificacionCuatro.getDatosUsuarios().add(calificacionConverter.convertSolicitudToCalificacionRecibidaModel(solicitud));
 				}else {
 					votoCinco += 1;
 					calificacionCinco.getUsernameUsuarios().add(usuario.getUsername());
+					calificacionCinco.getDatosUsuarios().add(calificacionConverter.convertSolicitudToCalificacionRecibidaModel(solicitud));
 				}
 			}
 		}

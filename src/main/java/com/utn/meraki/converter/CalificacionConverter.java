@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.utn.meraki.entity.Calificacion;
 import com.utn.meraki.entity.Comentario;
+import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.model.CalificacionModel;
+import com.utn.meraki.model.CalificacionRecibidaModel;
+import com.utn.meraki.repository.CalificacionRepository;
 import com.utn.meraki.repository.ComentarioRepository;
 import com.utn.meraki.repository.SolicitudRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -19,6 +22,8 @@ public class CalificacionConverter {
 	SolicitudRepository solicitudRepository;
 	@Autowired
 	UsuarioRepository usuarioRepository;
+	@Autowired
+	CalificacionRepository calificacionRepository;
 	@Autowired
 	ComentarioRepository comentarioRepository;
 	
@@ -42,6 +47,22 @@ public class CalificacionConverter {
 		calificacionModel.setIdSolicitud(calificacion.getSolicitud().getId());
 		//calificacionModel.setComentario(calificacion.getComentarios());
 		return calificacionModel;
+	}
+	
+	public CalificacionRecibidaModel convertSolicitudToCalificacionRecibidaModel(Solicitud solicitud) {
+		CalificacionRecibidaModel calificacionRecibidaModel = new CalificacionRecibidaModel();
+		Calificacion calificacionDemandante = calificacionRepository.findCalificacionBySolicitudAndUsuario
+				(solicitud, solicitud.getUsuarioDemandante());
+		calificacionRecibidaModel.setCalificacion(calificacionDemandante.getCalificacion());
+		calificacionRecibidaModel.setDescripcionTrabajo(solicitud.getDescripcion());
+		calificacionRecibidaModel.setNombreRubro(solicitud.getRubro().getNombreRubro());
+		calificacionRecibidaModel.setUsername(solicitud.getUsuarioDemandante().getUsername());
+		if(calificacionDemandante.getComentarios()!=null) {
+			for(Comentario comentario : calificacionDemandante.getComentarios()) {
+				calificacionRecibidaModel.getComentarios().add(comentario.getDescripcion());
+			}
+		}
+		return calificacionRecibidaModel;
 	}
 
 }

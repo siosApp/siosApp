@@ -15,8 +15,10 @@ import com.utn.meraki.entity.SolicitudEstado;
 import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
+import com.utn.meraki.model.TrabajosOferenteModel;
 import com.utn.meraki.repository.ArchivoRepository;
 import com.utn.meraki.repository.CalificacionRepository;
+import com.utn.meraki.repository.ComentarioRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
 import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.repository.RequerimientoRepository;
@@ -41,6 +43,8 @@ public class SolicitudConverter {
 	UsuarioRepository usuarioRepository;
 	@Autowired
 	EstadoSolicitudRepository estadoSolicitudRepository;
+	@Autowired
+	ComentarioRepository comentarioRepository;
 	@Autowired
 	ArchivoRepository archivoRepository;
 	@Autowired
@@ -146,6 +150,21 @@ public class SolicitudConverter {
 			solicitudCalificacionesModel.getComentarios().add(comentario.getDescripcion());
 		}
 		return solicitudCalificacionesModel;
+	}
+	
+	public TrabajosOferenteModel convertSolicitudToTrabajoOferenteModel(Solicitud solicitud) {
+		TrabajosOferenteModel trabajosOferenteModel = new TrabajosOferenteModel();
+		trabajosOferenteModel.setDescripcion(solicitud.getDescripcion());
+		trabajosOferenteModel.setMailDemandante(solicitud.getUsuarioDemandante().getMail());
+		trabajosOferenteModel.setNombreRubro(solicitud.getRubro().getNombreRubro());
+		Calificacion calificacion = calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, solicitud.getUsuarioDemandante());
+		if(calificacion!=null && calificacion.getComentarios()!=null){
+			for(Comentario comentario : calificacionRepository.findCalificacionBySolicitudAndUsuario
+					(solicitud, solicitud.getUsuarioOferente()).getComentarios()) {
+				trabajosOferenteModel.getComentarios().add(comentario.getDescripcion());
+			}
+		}
+		return trabajosOferenteModel;
 	}
 
 }

@@ -13,6 +13,7 @@ import com.utn.meraki.converter.SolicitudConverter;
 import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.model.SolicitudTerminadaModel;
+import com.utn.meraki.model.TrabajosOferenteModel;
 import com.utn.meraki.service.SolicitudService;
 
 @Service("solicitudServiceImpl")
@@ -176,6 +177,19 @@ public class SolicitudServiceImpl implements SolicitudService{
 			}
 		}
 		return solicitudCalificaciones;
+	}
+
+	@Override
+	public List<TrabajosOferenteModel> trabajosOferente(String idUsuario) {
+		List<TrabajosOferenteModel> trabajosOferenteModels = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()&&solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Finalizada")) {
+					trabajosOferenteModels.add(solicitudConverter.convertSolicitudToTrabajoOferenteModel(solicitud));
+				}
+			}
+		}
+		return trabajosOferenteModels;
 	}
 
 }
