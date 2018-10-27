@@ -10,6 +10,7 @@ import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.model.RequerimientoModel;
 import com.utn.meraki.repository.ArchivoRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
+import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 
 @Component("requerimientoConverter")
@@ -23,6 +24,8 @@ public class RequerimientoConverter {
 	UsuarioRepository usuarioRepository;
 	@Autowired
 	ArchivoRepository archivoRepository;
+	@Autowired
+	RubroRepository rubroRepository;
 	
 	public Requerimiento convertRequerimientoModelToRequerimiento(RequerimientoModel requerimientoModel) {
 		Requerimiento requerimiento = new Requerimiento();
@@ -33,6 +36,7 @@ public class RequerimientoConverter {
 		requerimiento.setTiempoEstimado(requerimientoModel.getTiempoEstimado());
 		requerimiento.setTitulo(requerimientoModel.getTitulo());
 		requerimiento.setUsuario(usuarioRepository.findUsuarioById(requerimientoModel.getIdUsuario()));
+		requerimiento.setRubro(rubroRepository.findRubroByNombreRubro(requerimientoModel.getNombreRubro()));
 		for(String urlArchivo : requerimientoModel.getUrlArchivos()) {
 			Archivo archivo = new Archivo(urlArchivo);
 			archivoRepository.save(archivo);
@@ -51,6 +55,7 @@ public class RequerimientoConverter {
 		requerimientoModel.setTiempoEstimado(requerimiento.getTiempoEstimado());
 		requerimientoModel.setIdUsuario(requerimiento.getUsuario().getId());
 		requerimientoModel.setNombreEstadoRequerimiento(requerimiento.getEstadoRequerimiento().getNombreEstado());
+		requerimientoModel.setNombreRubro(requerimiento.getRubro().getNombreRubro());
 		for(Archivo archivo : requerimiento.getArchivos()) {
 			requerimientoModel.getUrlArchivos().add(archivo.getUrlArchivo());
 		}

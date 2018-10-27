@@ -20,6 +20,7 @@ import com.utn.meraki.repository.CalificacionRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
 import com.utn.meraki.repository.EstadoSolicitudRepository;
 import com.utn.meraki.repository.RequerimientoRepository;
+import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.SolicitudEstadoRepository;
 import com.utn.meraki.repository.SolicitudRepository;
 import com.utn.meraki.repository.UsuarioRepository;
@@ -47,11 +48,15 @@ public class SolicitudConverter {
 	@Autowired
 	RequerimientoRepository requerimientoRepository;
 	@Autowired
-	SolicitudService solicitudService;
-	
+	RubroRepository rubroRepository;
+		
 	//CONVERTER
 	@Autowired
 	CalificacionConverter calificacionConverter;
+	
+	//SERVICE
+	@Autowired
+	SolicitudService solicitudService;
 	
 	public Solicitud convertOfertaRequerimientoToSolicitud(OfertaRequerimiento ofertaRequerimiento) {
 		Requerimiento requerimiento = ofertaRequerimiento.getRequerimiento();
@@ -62,7 +67,10 @@ public class SolicitudConverter {
 		solicitud.setFechaSolicitud(new Date(System.currentTimeMillis()));
 		solicitud.setUsuarioOferente(requerimiento.getUsuario());
 		solicitud.setUsuarioDemandante(ofertaRequerimiento.getUsuario());
-		//solicitud.setArchivos(archivos);
+		solicitud.setRubro(rubroRepository.findRubroByNombreRubro(ofertaRequerimiento.getRequerimiento().getRubro().getNombreRubro()));
+		for(Archivo archivo : ofertaRequerimiento.getRequerimiento().getArchivos()) {
+			solicitud.getArchivos().add(archivo);
+		}
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Aceptada"));
 		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
@@ -76,6 +84,7 @@ public class SolicitudConverter {
 		solicitudModel.setId(solicitud.getId());
 		solicitudModel.setDescripcion(solicitud.getDescripcion());
 		solicitudModel.setFechaSolicitud(solicitud.getFechaSolicitud());
+		solicitudModel.setNombreRubro(solicitud.getRubro().getNombreRubro());
 		solicitudModel.setUsuarioDemandante(solicitud.getUsuarioDemandante().getUsername());
 		solicitudModel.setUsuarioOferente(solicitud.getUsuarioOferente().getUsername());
 		solicitudModel.setNombreEstadoSolicitud(solicitudService.ultimoEstadoSolicitud(solicitud.getId())
@@ -92,6 +101,7 @@ public class SolicitudConverter {
 		solicitud.setFechaSolicitud(new Date(System.currentTimeMillis()));
 		solicitud.setUsuarioDemandante(usuarioRepository.findUsuarioByUsername(solicitudModel.getUsuarioDemandante()));
 		solicitud.setUsuarioOferente(usuarioRepository.findUsuarioByUsername(solicitudModel.getUsuarioOferente()));
+		solicitud.setRubro(rubroRepository.findRubroByNombreRubro(solicitudModel.getNombreRubro()));
 		for(String urlArchivo : solicitudModel.getUrlArchivos()) {
 			Archivo archivo = new Archivo(urlArchivo);
 			archivoRepository.save(archivo);
