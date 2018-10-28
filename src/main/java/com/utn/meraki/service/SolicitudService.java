@@ -2,6 +2,7 @@ package com.utn.meraki.service;
 
 import com.utn.meraki.entity.Solicitud;
 import com.utn.meraki.entity.SolicitudEstado;
+import com.utn.meraki.model.SolicitudDemandanteModel;
 import com.utn.meraki.model.SolicitudModel;
 
 import java.util.List;
@@ -24,4 +25,9 @@ public interface SolicitudService {
 
 	public SolicitudModel finalizarSolicitud(String idSolicitud, int calificacion, String comentario);
 
+	public List<SolicitudDemandanteModel> getSolicitudesEfectuadasPorUsuario(String idUsuario);
+
+	public int cantidadSolicitudesComoOferenteSinCalificar(String id);
+
+	public int cantidadSolicitudesComoDemandanteSinCalificar(String id);
 }
