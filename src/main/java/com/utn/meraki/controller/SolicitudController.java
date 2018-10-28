@@ -1,6 +1,7 @@
 package com.utn.meraki.controller;
 
 import com.utn.meraki.entity.Solicitud;
+import com.utn.meraki.model.SolicitudDemandanteModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,6 +57,20 @@ public class SolicitudController {
 										   @RequestParam(value="comentario",required=true)String comentario) {
 		return solicitudService.finalizarSolicitud(idSolicitud,calificacion,comentario);
 	}
+
+	@GetMapping("/solicitudesEfectuadasPorUsuario")
+	public List<SolicitudDemandanteModel> solicitudesEfectuadasPorUsuario(@RequestParam(value="id",required=true)String id){
+		return solicitudService.getSolicitudesEfectuadasPorUsuario(id);
+	}
+
+	@GetMapping("/cantidadSolicitudesComoDemandanteSinCalificar")
+	public int cantidadSolicitudesComoDemandanteSinCalificar(@RequestParam(value="id",required=true)String id){
+		return solicitudService.cantidadSolicitudesComoDemandanteSinCalificar(id);
+	}
+
+	@GetMapping("/cantidadSolicitudesComoOferenteSinCalificar")
+	public int cantidadSolicitudesComoOferenteSinCalificar(@RequestParam(value="id",required=true)String id){
+		return solicitudService.cantidadSolicitudesComoOferenteSinCalificar(id);
 	
 	@GetMapping("/listSolicitudesFinalizadas")
 	public List<SolicitudTerminadaModel> listSolicitudesFinalizadas(){
