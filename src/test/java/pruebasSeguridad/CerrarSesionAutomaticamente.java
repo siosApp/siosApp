@@ -1,43 +1,39 @@
 package pruebasSeguridad;
 
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class CerrarSesionAutomaticamente extends PruebaSeguridad {
+public class CerrarSesionAutomaticamente extends ConfiguracionGeneralPruebas {
+	
+	private String botonPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/a";
 
 	@Test
-	public void testCerrarSesionAutomaticamente() {
-	
+	public void intentarUsarSistemaDespuesDeDiezSegundos() {
+
 		WebDriver driver = super.configurarSeleniumWebDriver();
-		
 		driver.get("http://localhost:4200/login");
-		driver.manage().window().maximize();
+		driver.manage().window().setSize(new Dimension(1440, 900));
 		
-		String botonPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/ul/li/a";
-		String usuario = "/html/body/app-root/app-login/div[3]/div[1]/div[2]/form/div[1]/div/input";
-		String contraseña = "/html/body/app-root/app-login/div[3]/div[1]/div[2]/form/div[2]/div/input";
-		String botonMantenerSesionActiva = "//*[@id=\"checkbox-signup\"]";
-		String botonIngresarAlSistema = "/html/body/app-root/app-login/div[3]/div[1]/div[2]/form/div[4]/div/button";
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
 		
-		// Ingreso al sistema con un usuario que no es administrador
-		driver.findElement(By.xpath(usuario)).sendKeys("dante");
+		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
+				
+		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
 		
-		driver.findElement(By.xpath(contraseña)).sendKeys("dante12345");
+		// duerme al hilo que se esta ejecutando 10 segundos
+	    try {
+	        Thread.sleep(10*1000);
+	    } catch (InterruptedException e) {
+	        e.printStackTrace();
+	    }
 		
-		driver.findElement(By.xpath(botonMantenerSesionActiva)).click();
-		
-		driver.findElement(By.xpath(botonIngresarAlSistema)).click();
-		
-		// espero 10 segundos para que pueda cargar la nueva pagina web
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
-		// Intento seleccionar el boton para ingresar al perfil
+	    // Intenta seleccionar el boton de perfil
 		driver.findElement(By.xpath(botonPerfil)).click();
-		
 		
 	}
 
 }
+

@@ -25,7 +25,7 @@ public class SolicitudSinRegistracion extends ConfiguracionGeneralPruebas{
 		
 		driver.findElement(By.xpath(botonBuscarPath)).click();
 		
-		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(150, TimeUnit.SECONDS);
 		
 		driver.findElement(By.xpath(SolicitudPath)).click();
 	}

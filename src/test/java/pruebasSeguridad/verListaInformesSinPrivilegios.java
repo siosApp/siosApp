@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class IngresarAConfiguracionMedianteURL extends ConfiguracionGeneralPruebas {
+public class verListaInformesSinPrivilegios extends ConfiguracionGeneralPruebas {
 
 	@Test
 	public void testIngresarAConfiguracionMedianteURL() {
@@ -29,11 +29,9 @@ public class IngresarAConfiguracionMedianteURL extends ConfiguracionGeneralPrueb
 		
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		
-		// Intento acceder a el ABM Tipo Rubro de la configuración a través de la URL
-		driver.get("http://localhost:4200/sios/estadoSolicitud");		
-		
-		//driver.quit();
-		
+		// Intento acceder a los reportes del administrador a través de la URL
+		driver.get("http://localhost:4200/sios/dashboard");		
+				
 	}
 
 }
