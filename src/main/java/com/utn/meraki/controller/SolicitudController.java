@@ -69,9 +69,9 @@ public class SolicitudController {
 	}
 
 	@GetMapping("/cantidadSolicitudesComoOferenteSinCalificar")
-	public int cantidadSolicitudesComoOferenteSinCalificar(@RequestParam(value="id",required=true)String id){
+	public int cantidadSolicitudesComoOferenteSinCalificar(@RequestParam(value="id",required=true)String id) {
 		return solicitudService.cantidadSolicitudesComoOferenteSinCalificar(id);
-	
+	}
 	@GetMapping("/listSolicitudesFinalizadas")
 	public List<SolicitudTerminadaModel> listSolicitudesFinalizadas(){
 		return solicitudService.listSolicitudesTerminadas();
