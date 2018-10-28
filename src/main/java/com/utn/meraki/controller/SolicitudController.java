@@ -5,7 +5,10 @@ import com.utn.meraki.model.SolicitudDemandanteModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.model.SolicitudTerminadaModel;
+import com.utn.meraki.model.TrabajosOferenteModel;
 import com.utn.meraki.service.SolicitudService;
 
 import java.util.List;
@@ -68,5 +71,19 @@ public class SolicitudController {
 	@GetMapping("/cantidadSolicitudesComoOferenteSinCalificar")
 	public int cantidadSolicitudesComoOferenteSinCalificar(@RequestParam(value="id",required=true)String id){
 		return solicitudService.cantidadSolicitudesComoOferenteSinCalificar(id);
+	
+	@GetMapping("/listSolicitudesFinalizadas")
+	public List<SolicitudTerminadaModel> listSolicitudesFinalizadas(){
+		return solicitudService.listSolicitudesTerminadas();
+	}
+	
+	@GetMapping("/listCalificacionesByUsuario")
+	public List<SolicitudCalificacionesModel> listCalificacionesByUsuario(@RequestParam(value="idUsuario") String idUsuario){
+		return solicitudService.listCalificacionesByUsuario(idUsuario);
+	}
+	
+	@GetMapping("/trabajosOferente")
+	public List<TrabajosOferenteModel> trabajosOferente(@RequestParam(value="idUsuario") String idUsuario){
+		return solicitudService.trabajosOferente(idUsuario);
 	}
 }

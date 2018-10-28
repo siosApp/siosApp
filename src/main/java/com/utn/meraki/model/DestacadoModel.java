@@ -11,6 +11,8 @@ public class DestacadoModel {
 	
 	private Date fechaDestacado;
 	
+	private Date fechaVtoDestacado;
+	
 	private String nombreUsuario;
 	
 	private String nombreEstado;
@@ -69,6 +71,14 @@ public class DestacadoModel {
 
 	public void setNombreMedioPago(String nombreMedioPago) {
 		this.nombreMedioPago = nombreMedioPago;
+	}
+
+	public Date getFechaVtoDestacado() {
+		return fechaVtoDestacado;
+	}
+
+	public void setFechaVtoDestacado(Date fechaVtoDestacado) {
+		this.fechaVtoDestacado = fechaVtoDestacado;
 	}
 	
 }

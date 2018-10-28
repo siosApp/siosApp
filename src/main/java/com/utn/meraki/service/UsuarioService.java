@@ -5,7 +5,9 @@ import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuariosByRubro;
+import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UsuarioService {
@@ -45,5 +47,17 @@ public interface UsuarioService {
     public abstract List<UsuariosByRubro> cantidadUsuariosByRubro();
 
     public abstract UsuarioModel getUsuarioByUsername(String username);
+    
+    public abstract UsuarioModel registrarUsuarioLogueado(String idUsuario);
+    
+    public abstract UsuarioModel registrarUsuarioDeslogueado(String idUsuario);
+    
+    public abstract Integer calcularCantidadUsuariosLinea();
+    
+    public abstract UsuariosRegistradosDestacadosModel cantidadUsuariosRegistradosDestacados(Date fechaDesde, Date fechaHasta);
+    
+    public abstract List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses();
+    
+    
 
 }

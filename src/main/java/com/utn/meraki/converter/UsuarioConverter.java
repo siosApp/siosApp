@@ -10,6 +10,7 @@ import com.utn.meraki.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component("usuarioConverter")
@@ -33,6 +34,7 @@ public class UsuarioConverter {
             usuario.setTipoUsuario(tipoUsuarioRepository.findByNombreTipoUsuario(usuarioModel.getTipoUsuario()));
         }else {
             usuario = new Usuario();
+            usuario.setFechaRegistro(new Date(System.currentTimeMillis()));
             usuario.setTipoUsuario(tipoUsuarioRepository.findByNombreTipoUsuario("Modo Usuario"));
         }
         usuario.setNombre(usuarioModel.getNombre());
@@ -65,6 +67,7 @@ public class UsuarioConverter {
     public UsuarioModel convertUsuarioToUsuarioModel(Usuario usuario) {
         UsuarioModel usuarioModel = new UsuarioModel();
         usuarioModel.setId(usuario.getId());
+        usuarioModel.setFechaRegistro(usuario.getFechaRegistro());
         usuarioModel.setApellido(usuario.getApellido());
         usuarioModel.setUsername(usuario.getUsername());
         usuarioModel.setImagen(usuario.getImagen());

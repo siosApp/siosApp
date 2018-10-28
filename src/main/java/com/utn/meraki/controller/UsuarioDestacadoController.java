@@ -3,12 +3,14 @@ package com.utn.meraki.controller;
 import java.util.List;
 
 import com.utn.meraki.model.FiltroModel;
+import com.utn.meraki.model.ListDestacadosModel;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
+import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.service.DestacadoService;
 
 @RequestMapping("/usuarioDestacado")
@@ -47,4 +49,15 @@ public class UsuarioDestacadoController {
 		filtroModel.setNombreTipoRubro(tipoRubro.equals("null")?null:tipoRubro);
 		return usuarioService.filtrarUsuarios(filtroModel);
 	}
+	
+	@PutMapping("/verCantidadDestacados")
+	public ListDestacadosModel verCantidadDestacados() {
+		return destacadoService.verCantidadDestacados();
+	}
+	
+	@GetMapping("/usuariosPorVencerDestacado")
+	public List<UsuarioModel> usuariosPorVencerDestacado(){
+		return destacadoService.usuariosPorVencerDestacado();
+	}
+	
 }

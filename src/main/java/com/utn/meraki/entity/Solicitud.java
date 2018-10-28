@@ -49,6 +49,10 @@ public class Solicitud {
 	@JoinColumn(name = "id_demandante")
 	private Usuario usuarioDemandante;
 	
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "id_rubro")
+	private Rubro rubro;
+	
 	//CONSTRUCTOR
 	public Solicitud() {
 	}
@@ -108,6 +112,14 @@ public class Solicitud {
 
 	public void setArchivos(List<Archivo> archivos) {
 		this.archivos = archivos;
+	}
+
+	public Rubro getRubro() {
+		return rubro;
+	}
+
+	public void setRubro(Rubro rubro) {
+		this.rubro = rubro;
 	}
 	
 }

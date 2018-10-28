@@ -52,6 +52,10 @@ public class Requerimiento {
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
+	@ManyToOne(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "id_rubro")
+	private Rubro rubro;
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "id_requerimiento")
 	private List<Archivo> archivos = new ArrayList<>();
@@ -131,6 +135,14 @@ public class Requerimiento {
 
 	public void setArchivos(List<Archivo> archivos) {
 		this.archivos = archivos;
+	}
+
+	public Rubro getRubro() {
+		return rubro;
+	}
+
+	public void setRubro(Rubro rubro) {
+		this.rubro = rubro;
 	}
 	
 }

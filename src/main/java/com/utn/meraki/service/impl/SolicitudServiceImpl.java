@@ -11,7 +11,10 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.utn.meraki.converter.SolicitudConverter;
+import com.utn.meraki.model.SolicitudCalificacionesModel;
 import com.utn.meraki.model.SolicitudModel;
+import com.utn.meraki.model.SolicitudTerminadaModel;
+import com.utn.meraki.model.TrabajosOferenteModel;
 import com.utn.meraki.service.SolicitudService;
 
 @Service("solicitudServiceImpl")
@@ -149,6 +152,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 	}
 
 	@Override
+
 	public List<SolicitudDemandanteModel> getSolicitudesEfectuadasPorUsuario(String idUsuario) {
 		Usuario usuario=usuarioRepository.findUsuarioById(idUsuario);
 		List<SolicitudDemandanteModel> solicitudModels= new ArrayList<>();
@@ -210,4 +214,45 @@ public class SolicitudServiceImpl implements SolicitudService{
 	private boolean estaCalificadaLaSolicitud(Solicitud solicitud,Usuario usuario){
 		return calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud,usuario) != null ? true:false;
 	}
+	public List<SolicitudTerminadaModel> listSolicitudesTerminadas() {
+		List<SolicitudTerminadaModel> solicitudesTerminadas = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findAll()) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()) {
+					System.out.println("último estado de la solicitud");
+					if(solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Finalizada")) {
+						solicitudesTerminadas.add(solicitudConverter.convertSolicitudToSolicitudTerminadaModel(solicitud));
+					}
+				}
+			}
+		}
+		return solicitudesTerminadas;
+	}
+
+	@Override
+	public List<SolicitudCalificacionesModel> listCalificacionesByUsuario(String idUsuario) {
+		List<SolicitudCalificacionesModel> solicitudCalificaciones = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()&&solicitudEstado.getEstadoSolicitud().equals("Finalizado")) {
+					solicitudCalificaciones.add(solicitudConverter.convertSolicitudToSolicitudCalificacionesModel(solicitud));
+				}
+			}
+		}
+		return solicitudCalificaciones;
+	}
+
+	@Override
+	public List<TrabajosOferenteModel> trabajosOferente(String idUsuario) {
+		List<TrabajosOferenteModel> trabajosOferenteModels = new ArrayList<>();
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo()&&solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Finalizada")) {
+					trabajosOferenteModels.add(solicitudConverter.convertSolicitudToTrabajoOferenteModel(solicitud));
+				}
+			}
+		}
+		return trabajosOferenteModels;
+	}
+
 }

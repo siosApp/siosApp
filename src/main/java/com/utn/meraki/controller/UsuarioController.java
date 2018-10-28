@@ -3,10 +3,12 @@ package com.utn.meraki.controller;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuariosByRubro;
+import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("/usuario")
@@ -105,5 +107,31 @@ public class UsuarioController {
     @GetMapping("/username")
     public UsuarioModel getUsuarioByUsername(@RequestParam(value = "username") String username){
         return usuarioService.getUsuarioByUsername(username);
+    }
+    
+    @PutMapping("/registrarUsuarioLogueado")
+    public UsuarioModel registrarUsuarioLogueado(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+    	return usuarioService.registrarUsuarioLogueado(idUsuario);
+    }
+    
+    @PutMapping("/registrarUsuarioDeslogueado")
+    public UsuarioModel registrarUsuarioDeslogueado(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+    	return usuarioService.registrarUsuarioDeslogueado(idUsuario);
+    }
+    
+    @GetMapping("/calcularCantidadUsuariosLinea")
+    public Integer calcularCantidadUsuariosLinea() {
+    	return usuarioService.calcularCantidadUsuariosLinea();
+    }
+    
+    @GetMapping("/cantidadUsuariosRegistradosDestacados")
+    public UsuariosRegistradosDestacadosModel cantidadUsuariosRegistradosDestacados(
+    		@RequestParam(value="fechaDesde",required=true)Date fechaDesde,@RequestParam(value="fechaHasta",required=true)Date fechaHasta) {
+    	return usuarioService.cantidadUsuariosRegistradosDestacados(fechaDesde, fechaHasta);
+    }
+    
+    @GetMapping("/registradosDestacadosUltimosMeses")
+    public List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses(){
+    	return usuarioService.registradosDestacadosUltimosMeses();
     }
 }

@@ -20,6 +20,8 @@ public class UsuarioModel {
     private Date fechaUltIngreso;
 
     private String mail;
+    
+    private Date fechaRegistro;
 
     private boolean oferente;
     
@@ -175,4 +177,13 @@ public class UsuarioModel {
     public String getExperiencia() {
         return experiencia;
     }
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+    
 }

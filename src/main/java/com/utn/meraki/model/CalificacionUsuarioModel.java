@@ -12,6 +12,8 @@ public class CalificacionUsuarioModel {
 	
 	private List<String> usernameUsuarios = new ArrayList<>();
 	
+	private List<CalificacionRecibidaModel> datosUsuarios = new ArrayList<>();
+	
 	//CONSTRUCTOR
 	public CalificacionUsuarioModel() {
 		
@@ -40,6 +42,14 @@ public class CalificacionUsuarioModel {
 
 	public void setUsernameUsuarios(List<String> usernameUsuarios) {
 		this.usernameUsuarios = usernameUsuarios;
+	}
+
+	public List<CalificacionRecibidaModel> getDatosUsuarios() {
+		return datosUsuarios;
+	}
+
+	public void setDatosUsuarios(List<CalificacionRecibidaModel> datosUsuarios) {
+		this.datosUsuarios = datosUsuarios;
 	}
 	
 }

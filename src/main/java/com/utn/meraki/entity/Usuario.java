@@ -34,6 +34,9 @@ public class Usuario {
 	@Column(name = "apellido")
 	private String apellido;
 	
+	@Column(name = "fecha_registro")
+	private Date fechaRegistro;
+	
 	@Column(name = "fecha_baja")
 	private Date fechaBaja;
 	
@@ -60,6 +63,9 @@ public class Usuario {
 	
 	@Column(name = "imagen")
 	private String imagen;
+	
+	@Column(name = "logueado")
+	private boolean logueado;
 
 	@Column
 	private String codigoValidacion;
@@ -224,7 +230,25 @@ public class Usuario {
 	public void addRubro(UsuarioRubro usuarioRubro){
 		usuarioRubros.add(usuarioRubro);
 	}
+	
 	public void eliminarRubro(UsuarioRubro usuarioRubro){
 		usuarioRubros.remove(usuarioRubro);
 	}
+
+	public boolean isLogueado() {
+		return logueado;
+	}
+
+	public void setLogueado(boolean logueado) {
+		this.logueado = logueado;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+	
 }

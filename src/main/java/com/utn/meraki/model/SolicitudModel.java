@@ -24,6 +24,8 @@ public class SolicitudModel {
 
 
 	
+	private String nombreRubro;
+	
 	//CONSTRUCTOR
 	public SolicitudModel() {
 		
@@ -84,6 +86,14 @@ public class SolicitudModel {
 
 	public void setUsuarioDemandante(String usuarioDemandante) {
 		this.usuarioDemandante = usuarioDemandante;
+	}
+
+	public String getNombreRubro() {
+		return nombreRubro;
+	}
+
+	public void setNombreRubro(String nombreRubro) {
+		this.nombreRubro = nombreRubro;
 	}
 	
 }
