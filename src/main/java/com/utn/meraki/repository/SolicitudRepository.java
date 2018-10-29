@@ -20,4 +20,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud, Serializab
 	
 	public List<Solicitud> findSolicitudByRubro(Rubro rubro);
 
+
+	public List<Solicitud> findSolicitudByUsuarioDemandante(Usuario usuario);
+
 }

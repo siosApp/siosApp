@@ -21,6 +21,8 @@ public class SolicitudModel {
 	private String usuarioOferente;
 	
 	private String usuarioDemandante;
+
+
 	
 	private String nombreRubro;
 	

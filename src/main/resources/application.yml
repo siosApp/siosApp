@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/merakis?useSSL=false
     username: root 
-    password: leyenda_10
+    password: dante.canizo
   jpa:
     show-sql: false 
     hibernate:

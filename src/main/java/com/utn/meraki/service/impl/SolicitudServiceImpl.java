@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.utn.meraki.entity.*;
+import com.utn.meraki.model.SolicitudDemandanteModel;
 import com.utn.meraki.repository.*;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,68 @@ public class SolicitudServiceImpl implements SolicitudService{
 	}
 
 	@Override
+
+	public List<SolicitudDemandanteModel> getSolicitudesEfectuadasPorUsuario(String idUsuario) {
+		Usuario usuario=usuarioRepository.findUsuarioById(idUsuario);
+		List<SolicitudDemandanteModel> solicitudModels= new ArrayList<>();
+		for(Solicitud solicitud:solicitudRepository.findSolicitudByUsuarioDemandante(usuario)){
+			SolicitudDemandanteModel solicitudDemandanteModel = new SolicitudDemandanteModel();
+			solicitudDemandanteModel.setId(solicitud.getId());
+			solicitudDemandanteModel.setDescripcion(solicitud.getDescripcion());
+			solicitudDemandanteModel.setFechaSolicitud(solicitud.getFechaSolicitud());
+			solicitudDemandanteModel.setUsuarioDemandante(solicitud.getUsuarioDemandante().getUsername());
+			solicitudDemandanteModel.setUsuarioOferente(solicitud.getUsuarioOferente().getUsername());
+			solicitudDemandanteModel.setNombreEstadoSolicitud(ultimoEstadoSolicitud(solicitud.getId())
+					.getEstadoSolicitud().getNombreEstadoSolicitud());
+			for(Archivo archivo : solicitud.getArchivos()) {
+				solicitudDemandanteModel.getUrlArchivos().add(archivo.getUrlArchivo());
+			}
+			solicitudDemandanteModel.setEstaCalificada(estaCalificadaLaSolicitud(solicitud,usuario));
+			solicitudModels.add(solicitudDemandanteModel);
+		}
+		return solicitudModels;
+	}
+
+	/**
+	 * Retorna la cantidad de solicitudes en las que no calificó a su empleador.
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public int cantidadSolicitudesComoOferenteSinCalificar(String id) {
+		Usuario usuario=usuarioRepository.findUsuarioById(id);
+		//Filtrando las que están realizadas y devolviendo cantidad
+		return  getSolicitudesRealizadas(solicitudRepository.findSolicitudByUsuarioOferente(usuario)).size();
+	}
+
+	/**
+	 * Retorna la cantidad de solicitudes en las que no calificó al trabajador(oferente)
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public int cantidadSolicitudesComoDemandanteSinCalificar(String id) {
+		Usuario usuario=usuarioRepository.findUsuarioById(id);
+		return getSolicitudesRealizadas(solicitudRepository.findSolicitudByUsuarioDemandante(usuario)).size();
+	}
+
+	private List<Solicitud> getSolicitudesRealizadas(List<Solicitud> solicituds ){
+		List<Solicitud> listaFiltrada=new ArrayList<>();
+		EstadoSolicitud estadoSolicitud= estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Realizada");
+		for(Solicitud solicitud:solicituds){
+			for (SolicitudEstado solicitudEstado:solicitud.getSolicitudEstados()){
+				if(solicitudEstado.isActivo() && solicitudEstado.getEstadoSolicitud().equals(estadoSolicitud)){
+					listaFiltrada.add(solicitud);
+					break;
+				}
+			}
+		}
+		return listaFiltrada;
+	}
+
+	private boolean estaCalificadaLaSolicitud(Solicitud solicitud,Usuario usuario){
+		return calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud,usuario) != null ? true:false;
+	}
 	public List<SolicitudTerminadaModel> listSolicitudesTerminadas() {
 		List<SolicitudTerminadaModel> solicitudesTerminadas = new ArrayList<>();
 		for(Solicitud solicitud : solicitudRepository.findAll()) {
