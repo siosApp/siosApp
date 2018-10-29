@@ -99,6 +99,17 @@ public class DestacadoServiceImpl implements DestacadoService{
 		}
 		return usuarioModels;
 	}
-
 	
+	@Override
+	public Integer cantidadUsuariosDestacados() {
+		Integer cantidad = 0;
+		if(destacadoRepository.findAll()!=null) {
+			for(Destacado destacado : destacadoRepository.findAll()) {
+				if(destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+					cantidad += 1;
+				}
+			}
+		}
+		return cantidad;
+	}	
 }

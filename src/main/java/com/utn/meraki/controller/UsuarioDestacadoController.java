@@ -60,4 +60,9 @@ public class UsuarioDestacadoController {
 		return destacadoService.usuariosPorVencerDestacado();
 	}
 	
+	@GetMapping("/cantidadUsuariosDestacados")
+	public Integer cantidadUsuariosDestacados() {
+		return destacadoService.cantidadUsuariosDestacados();
+	}
+	
 }

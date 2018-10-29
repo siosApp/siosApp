@@ -13,7 +13,9 @@ public interface DestacadoService {
 	public abstract DestacadoModel destacarPerfil(DestacadoModel destacadoModel);
 	
 	public abstract ListDestacadosModel verCantidadDestacados();
-	
+
 	public abstract List<UsuarioModel> usuariosPorVencerDestacado();
+	
+    public abstract Integer cantidadUsuariosDestacados();
 
 }
