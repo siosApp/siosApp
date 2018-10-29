@@ -66,7 +66,7 @@ public class UsuarioDestacadoController {
 		return destacadoService.cantidadUsuariosDestacados();
 	}
 	
-	@GetMapping("verDestacadosByFechas")
+	@GetMapping("/verDestacadosByFechas")
 	public List<DestacadoModel> verDestacadosByFechas(@RequestParam(value="fechaDesde",required=true)Date fechaDesde,
 			@RequestParam(value="fechaHasta",required=true)Date fechaHasta){
 		return destacadoService.verDestacadosByFechas(fechaDesde, fechaHasta);
