@@ -1,5 +1,6 @@
 package com.utn.meraki.service;
 
+import java.util.Date;
 import java.util.List;
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.ListDestacadosModel;
@@ -17,5 +18,7 @@ public interface DestacadoService {
 	public abstract List<UsuarioModel> usuariosPorVencerDestacado();
 	
     public abstract Integer cantidadUsuariosDestacados();
+    
+    public abstract List<DestacadoModel> verDestacadosByFechas(Date fechaDesde, Date fechaHasta);
 
 }

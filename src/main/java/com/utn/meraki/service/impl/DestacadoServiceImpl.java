@@ -111,5 +111,17 @@ public class DestacadoServiceImpl implements DestacadoService{
 			}
 		}
 		return cantidad;
+	}
+
+	@Override
+	public List<DestacadoModel> verDestacadosByFechas(java.util.Date fechaDesde, java.util.Date fechaHasta) {
+		List<DestacadoModel> destacados = new ArrayList<>();
+		for(Destacado destacado : destacadoRepository.findAll()) {
+			if(destacado.getFechaDestacado().after(fechaDesde) && destacado.getFechaDestacado().before(fechaHasta)
+					&& destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+				destacados.add(usuarioDestacadoConverter.convertDestacadoToDestacadoModel(destacado));
+			}
+		}
+		return destacados;
 	}	
 }
