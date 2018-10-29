@@ -173,11 +173,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         List<UsuarioDestacadoModel> listUsuario = new ArrayList<>();
         //Seteo atributos el filtro
         String rubro = filtroModel.getNombreRubro();
+//        System.out.println("RUBRO SELECCIONADO = " +rubro);
         String tipoRubro = filtroModel.getNombreTipoRubro();
-        System.out.println("TIPO RUBRO SELECCIONADO = " +tipoRubro);
+//        System.out.println("TIPO RUBRO SELECCIONADO = " +tipoRubro);
         String localidad = filtroModel.getNombreLocalidad();
+//        System.out.println("LOCALIDAD SELECCIONADA = " +localidad);
         String departamento = filtroModel.getNombreDepartamento();
+//        System.out.println("DEPARTAMENTO SELECCIONADO = " +departamento);
         String provincia = filtroModel.getNombreProvincia();
+//        System.out.println("PROVINCIA SELECCIONADA = " +provincia);
         //Filtro según elementos de búsqueda
         if(tipoRubro==null&&provincia==null) {
             for(Usuario usuario : usuarioRepository.findAll()) {
@@ -213,10 +217,15 @@ public class UsuarioServiceImpl implements UsuarioService {
                     }
                 }
             }else if(tipoRubro==null&&provincia!=null) {
+            	System.out.println("TIPO RUBRO NULL && PROVINCIA SELECCIONADA");
                 if(localidad==null&&departamento==null) {
+                	System.out.println("LOCALIDAD NULL && DEPARTAMENTO NULL");
                     for(Usuario usuario : usuarioRepository.findAll()) {
+                    	System.out.println("USUARIO OFERNTE? = " +usuario.getOferente());
+                    	System.out.println("PROVINCIA DEL USUARIO = " +usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia());
                         if(usuario.getOferente()) {
-                            if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
+                        	System.out.println("EL USUARIO ES OFERENTE");
+                        	if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {
                             	System.out.println("USUARIO ENCONTRADO = " +usuario.getUsername());
                                 listUsuario.add(usuarioDestacadoConverter.convertUsuarioToUsuarioDestacadoModel(usuario));
                             }
