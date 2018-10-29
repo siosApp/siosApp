@@ -1,5 +1,7 @@
 package com.utn.meraki.entity;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +24,9 @@ public class OfertaRequerimiento {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid")
 	private String id;
+	
+	@Column(name = "fecha_oferta")
+	private Date fechaOferta;
 	
 	@Column(name = "asignado")
 	private Boolean asignado;
@@ -91,6 +96,14 @@ public class OfertaRequerimiento {
 
 	public void setRequerimiento(Requerimiento requerimiento) {
 		this.requerimiento = requerimiento;
+	}
+
+	public Date getFechaOferta() {
+		return fechaOferta;
+	}
+
+	public void setFechaOferta(Date fechaOferta) {
+		this.fechaOferta = fechaOferta;
 	}
 	
 }

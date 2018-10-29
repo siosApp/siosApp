@@ -52,5 +52,12 @@ public class RequerimientoController {
 			String idOfertaRequerimiento) {
 		return requerimientoService.aceptarOfertaRequerimiento(idOfertaRequerimiento);
 	}
+	
+	@GetMapping("/misRequerimientos")
+	public List<RequerimientoModel> misRequerimientos(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+		return requerimientoService.misRequerimientos(idUsuario);
+	}
+	
+	
 
 }

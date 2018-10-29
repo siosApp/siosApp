@@ -18,6 +18,7 @@ import com.utn.meraki.model.SolicitudModel;
 import com.utn.meraki.repository.OfertaRequerimientoRepository;
 import com.utn.meraki.repository.RequerimientoRepository;
 import com.utn.meraki.repository.SolicitudRepository;
+import com.utn.meraki.repository.UsuarioRepository;
 import com.utn.meraki.service.RequerimientoService;
 
 @Service("requerimientoService")
@@ -31,6 +32,8 @@ public class RequerimientoServiceImpl implements RequerimientoService{
 	SolicitudRepository solicitudRepository;
 	@Autowired
 	OfertaRequerimientoRepository ofertaRequerimientoRepository;
+	@Autowired
+	UsuarioRepository usuarioRepository;
 	
 	//CONVERTER
 	@Autowired
@@ -81,6 +84,16 @@ public class RequerimientoServiceImpl implements RequerimientoService{
 		Solicitud solicitud = solicitudConverter.convertOfertaRequerimientoToSolicitud(ofertaRequerimiento);
 		solicitudRepository.save(solicitud);
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
+	}
+
+	@Override
+	public List<RequerimientoModel> misRequerimientos(String idUsuario) {
+		List<RequerimientoModel> requerimientos = new ArrayList<>();
+		for(Requerimiento requerimiento : requerimientoRepository.findRequerimientoByUsuario
+				(usuarioRepository.findUsuarioById(idUsuario))) {
+			requerimientos.add(requerimientoConverter.convertRequerimientoToRequerimientoModel(requerimiento));
+		}
+		return requerimientos;
 	}
 
 }

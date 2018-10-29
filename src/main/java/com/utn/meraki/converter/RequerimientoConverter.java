@@ -30,6 +30,8 @@ public class RequerimientoConverter {
 	RubroRepository rubroRepository;
 	@Autowired
 	OfertaRequerimientoRepository ofertaRequerimientoRepository;
+	@Autowired
+	OfertaRequerimientoConverter ofertaRequerimientoConverter;
 	
 	public Requerimiento convertRequerimientoModelToRequerimiento(RequerimientoModel requerimientoModel) {
 		Requerimiento requerimiento = new Requerimiento();
@@ -63,6 +65,7 @@ public class RequerimientoConverter {
 		if(ofertaRequerimientoRepository.findOfertaRequerimientoByRequerimiento(requerimiento)!=null) {
 			Integer cantidadOfertas = 0;
 			for(OfertaRequerimiento oferta : ofertaRequerimientoRepository.findOfertaRequerimientoByRequerimiento(requerimiento)) {
+				requerimientoModel.getOfertas().add(ofertaRequerimientoConverter.convertOfertaRequerimientoToOfertaRequerimientoModel(oferta));
 				cantidadOfertas += 1;
 			}
 			requerimientoModel.setCantidadOfertas(cantidadOfertas);

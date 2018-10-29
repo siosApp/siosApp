@@ -1,5 +1,7 @@
 package com.utn.meraki.converter;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ public class OfertaRequerimientoConverter {
 		ofertaRequerimiento.setPrecioOfertado(ofertaRequerimientoModel.getPrecioOfertado());
 		ofertaRequerimiento.setAsignado(false);
 		ofertaRequerimiento.setRespuesta(ofertaRequerimientoModel.getRespuesta());
+		ofertaRequerimiento.setFechaOferta(new Date(System.currentTimeMillis()));
 		return ofertaRequerimiento;
 	}
 	
@@ -35,6 +38,7 @@ public class OfertaRequerimientoConverter {
 		ofertaRequerimientoModel.setAsignado(ofertaRequerimiento.getAsignado());
 		ofertaRequerimientoModel.setPrecioOfertado(ofertaRequerimiento.getPrecioOfertado());
 		ofertaRequerimientoModel.setRespuesta(ofertaRequerimiento.getRespuesta());
+		ofertaRequerimientoModel.setFechaOferta(ofertaRequerimiento.getFechaOferta());
 		return ofertaRequerimientoModel;
 	}
 

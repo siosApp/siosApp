@@ -1,5 +1,7 @@
 package com.utn.meraki.model;
 
+import java.util.Date;
+
 public class OfertaRequerimientoModel {
 	
 	//ATRIBUTOS
@@ -14,6 +16,8 @@ public class OfertaRequerimientoModel {
 	private String idRequerimiento;
 	
 	private String idUsuario;
+	
+	private Date fechaOferta;
 	
 	//CONSTRUCTOR
 	public OfertaRequerimientoModel() {
@@ -66,6 +70,14 @@ public class OfertaRequerimientoModel {
 
 	public void setIdUsuario(String idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public Date getFechaOferta() {
+		return fechaOferta;
+	}
+
+	public void setFechaOferta(Date fechaOferta) {
+		this.fechaOferta = fechaOferta;
 	}
 	
 }

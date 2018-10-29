@@ -17,5 +17,7 @@ public interface RequerimientoService {
 	public RequerimientoModel findRequerimientoById(String idRequerimiento);
 	
 	public SolicitudModel aceptarOfertaRequerimiento(String idOfertaRequerimiento);
+	
+	public List<RequerimientoModel> misRequerimientos(String idUsuario);
 
 }

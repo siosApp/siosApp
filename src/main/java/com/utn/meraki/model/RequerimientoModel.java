@@ -29,6 +29,8 @@ public class RequerimientoModel {
 	
 	private List<String> urlArchivos = new ArrayList<>();
 	
+	private List<OfertaRequerimientoModel> ofertas = new ArrayList<>();
+	
 	public int getTiempoEstimado() {
 		return tiempoEstimado;
 	}
@@ -121,6 +123,14 @@ public class RequerimientoModel {
 
 	public void setCantidadOfertas(Integer cantidadOfertas) {
 		this.cantidadOfertas = cantidadOfertas;
+	}
+
+	public List<OfertaRequerimientoModel> getOfertas() {
+		return ofertas;
+	}
+
+	public void setOfertas(List<OfertaRequerimientoModel> ofertas) {
+		this.ofertas = ofertas;
 	}
 	
 }
