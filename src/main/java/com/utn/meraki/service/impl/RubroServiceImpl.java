@@ -156,19 +156,15 @@ public class RubroServiceImpl implements RubroService{
 	public List<RubroMasDemandadoModel> rubrosMasDemandados(Date fechaDesde, Date fechaHasta) {
 		List<RubroMasDemandadoModel> rubrosDemandados = new ArrayList<>();
 		for(Rubro rubro : rubroRepository.findAll()) {
-			RubroMasDemandadoModel rubroMasDemandadoModel = new RubroMasDemandadoModel();
-			rubroMasDemandadoModel.setNombreRubro(rubro.getNombreRubro());
-			Integer cantidad = 0;
-			for(UsuarioRubro usuarioRubro : usuarioRubroRepository.findByRubro(rubro)) {
-				Usuario usuario = usuarioRepository.findUsuarioByUsuarioRubros(usuarioRubro);
-				for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuario)) {
-					if(solicitud.getFechaSolicitud().after(fechaDesde)&&solicitud.getFechaSolicitud().before(fechaHasta)) {
-						cantidad += 1;
-						rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
-					}
+			if(solicitudRepository.findSolicitudByRubro(rubro)!=null) {
+				RubroMasDemandadoModel rubroMasDemandadoModel = new RubroMasDemandadoModel();
+				rubroMasDemandadoModel.setNombreRubro(rubro.getNombreRubro());
+				Integer cantidad = 0;
+				rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
+				for(Solicitud solicitud : solicitudRepository.findSolicitudByRubro(rubro)) {
+					cantidad += 1;
+					rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
 				}
-			}
-			if(cantidad>0) {
 				rubrosDemandados.add(rubroMasDemandadoModel);
 			}
 		}
