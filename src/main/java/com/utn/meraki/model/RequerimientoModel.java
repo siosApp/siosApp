@@ -25,6 +25,8 @@ public class RequerimientoModel {
 	
 	private String nombreRubro;
 	
+	private Integer cantidadOfertas;
+	
 	private List<String> urlArchivos = new ArrayList<>();
 	
 	public int getTiempoEstimado() {
@@ -112,7 +114,13 @@ public class RequerimientoModel {
 	public void setNombreRubro(String nombreRubro) {
 		this.nombreRubro = nombreRubro;
 	}
-	
-	
 
+	public Integer getCantidadOfertas() {
+		return cantidadOfertas;
+	}
+
+	public void setCantidadOfertas(Integer cantidadOfertas) {
+		this.cantidadOfertas = cantidadOfertas;
+	}
+	
 }

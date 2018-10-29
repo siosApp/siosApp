@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.utn.meraki.entity.Archivo;
+import com.utn.meraki.entity.OfertaRequerimiento;
 import com.utn.meraki.entity.Requerimiento;
 import com.utn.meraki.model.RequerimientoModel;
 import com.utn.meraki.repository.ArchivoRepository;
 import com.utn.meraki.repository.EstadoRequerimientoRepository;
+import com.utn.meraki.repository.OfertaRequerimientoRepository;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.UsuarioRepository;
 
@@ -26,6 +28,8 @@ public class RequerimientoConverter {
 	ArchivoRepository archivoRepository;
 	@Autowired
 	RubroRepository rubroRepository;
+	@Autowired
+	OfertaRequerimientoRepository ofertaRequerimientoRepository;
 	
 	public Requerimiento convertRequerimientoModelToRequerimiento(RequerimientoModel requerimientoModel) {
 		Requerimiento requerimiento = new Requerimiento();
@@ -56,6 +60,15 @@ public class RequerimientoConverter {
 		requerimientoModel.setIdUsuario(requerimiento.getUsuario().getId());
 		requerimientoModel.setNombreEstadoRequerimiento(requerimiento.getEstadoRequerimiento().getNombreEstado());
 		requerimientoModel.setNombreRubro(requerimiento.getRubro().getNombreRubro());
+		if(ofertaRequerimientoRepository.findOfertaRequerimientoByRequerimiento(requerimiento)!=null) {
+			Integer cantidadOfertas = 0;
+			for(OfertaRequerimiento oferta : ofertaRequerimientoRepository.findOfertaRequerimientoByRequerimiento(requerimiento)) {
+				cantidadOfertas += 1;
+			}
+			requerimientoModel.setCantidadOfertas(cantidadOfertas);
+		}else {
+			requerimientoModel.setCantidadOfertas(0);
+		}
 		for(Archivo archivo : requerimiento.getArchivos()) {
 			requerimientoModel.getUrlArchivos().add(archivo.getUrlArchivo());
 		}
