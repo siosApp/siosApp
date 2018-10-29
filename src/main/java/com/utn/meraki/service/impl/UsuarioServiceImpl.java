@@ -544,5 +544,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return listaModel;
 	}
 
+	@Override
+	public Integer cantidadUsuariosRegistrados() {
+		Integer cantidad = 0;
+		for(Usuario usuario : usuarioRepository.findAll()) {
+			if(usuario.getFechaBaja()==null) {
+				cantidad += 1;
+			}
+		}
+		return cantidad;
+	}
+
 	
 }

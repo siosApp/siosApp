@@ -134,4 +134,9 @@ public class UsuarioController {
     public List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses(){
     	return usuarioService.registradosDestacadosUltimosMeses();
     }
+    
+    @GetMapping("/cantidadUsuariosRegistrados")
+    public Integer cantidadUsuariosRegistrados() {
+    	return usuarioService.cantidadUsuariosRegistrados();
+    }
 }

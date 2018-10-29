@@ -58,6 +58,5 @@ public interface UsuarioService {
     
     public abstract List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses();
     
-    
-
+    public abstract Integer cantidadUsuariosRegistrados();
 }
