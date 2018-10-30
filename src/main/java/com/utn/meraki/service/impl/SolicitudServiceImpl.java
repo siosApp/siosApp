@@ -142,7 +142,7 @@ public class SolicitudServiceImpl implements SolicitudService{
 		califcation.setComentarios(Arrays.asList(comment));
 		califcation.setSolicitud(solicitud);
 		califcation.setFechaCalificacion(new java.sql.Date(System.currentTimeMillis()));
-		califcation.setUsuario(solicitud.getUsuarioDemandante());
+		califcation.setUsuario(solicitud.getUsuarioOferente());
 		calificacionRepository.save(califcation);
 		//Guardando solicitud
 		solicitudEstadoRepository.save(solicitudEstado);
