@@ -85,7 +85,6 @@ public class Usuario {
 	@JoinColumn(name = "id_usuario")
 	private List<UsuarioRubro> usuarioRubros = new ArrayList<>();
 
-
 	//CONSTRUCTOR
 	public Usuario() {
 	}

@@ -102,13 +102,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioModel getUsuarioById(String id) {
-//        if(id !=null){
-//        	System.out.println(id);
-//            return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
-//        }
-//        return new UsuarioModel();
-    	Usuario usuario = usuarioRepository.findUsuarioById(id);
-    	return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
+//        if(id != null){
+    	if(usuarioRepository.findUsuarioById(id)!=null){
+        	System.out.println(id);
+            return usuarioConverter.convertUsuarioToUsuarioModel(usuarioRepository.findUsuarioById(id));
+        }else {
+        	return new UsuarioModel();
+        }
+//        Usuario usuario = usuarioRepository.findUsuarioById(id);
+//    	return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
     }
 
     @Override
