@@ -25,9 +25,12 @@ public class SolicitudSinRegistracion extends ConfiguracionGeneralPruebas{
 		
 		driver.findElement(By.xpath(botonBuscarPath)).click();
 		
-		driver.manage().timeouts().implicitlyWait(150, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		//until project finishes
+		driver.get("http://localhost:4200/login");
 		
-		driver.findElement(By.xpath(SolicitudPath)).click();
+		//driver.findElement(By.xpath(SolicitudPath)).click();
 	}
 
 }

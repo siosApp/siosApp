@@ -25,9 +25,9 @@ public class IngresoConfiguracionDelSistemaSinPermiso extends ConfiguracionGener
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
 		// Ingresa al sistema con un usuario que no es administrador
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("dante");
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
 		
-		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("dante12345");
+		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
 		
 		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
 		

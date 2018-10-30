@@ -11,7 +11,7 @@ public class RegistrarseComoOferenteSinUbicacion extends ConfiguracionGeneralPru
 	
 	private String botonPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/a";
 	private String botonVerPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a[1]";
-	private String botonOfecerServicios = "/html/body/app-root/app-layout/div/div/app-perfil/div[1]/div[1]/div/div[1]/button";
+	private String botonOfecerServicios = "/html/body/app-root/app-layout/div/div/app-perfil/div[1]/div[2]/div/div/div/div/form/div[10]/div/button";
 
 	private String usuarioCalle = "/html/body/app-root/app-layout/div/div/app-perfil/div[1]/div[2]/div/div/div/div/form/div[8]/div[1]/div/input";
 	
@@ -30,17 +30,17 @@ public class RegistrarseComoOferenteSinUbicacion extends ConfiguracionGeneralPru
 		
 		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
 		
-		driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
 		driver.findElement(By.xpath(botonPerfil)).click();
 		
 		driver.findElement(By.xpath(botonVerPerfil)).click();
 		
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		
+		driver.findElement(By.xpath(usuarioCalle)).sendKeys("123456");
+		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
-		driver.findElement(By.xpath(usuarioCalle)).click();
-		
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		//Intenta darse de alta como oferente seleccionando el boton ofecer servicios
 		driver.findElement(By.xpath(botonOfecerServicios)).click();
 	
