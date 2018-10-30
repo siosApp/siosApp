@@ -11,7 +11,7 @@ public class CalificacionNoPermitida extends ConfiguracionGeneralPruebas {
 	
 	private String botonSolicitudesNuevas = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[1]/a";
 	private String botonVerSolicitudes = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[1]/ul/li[2]/div/a";
-	private String botonFinalizarSolicitud = "/html/body/app-root/app-layout/div/div/app-ver-solicitud/div[2]/div[1]/div[1]/div/div[4]/div/a";
+	private String botonFinalizarSolicitud = "/html/body/app-root/app-layout/div/div/app-ver-solicitud/div[2]/div[1]/div[3]/div/div[4]/div/a";
 
 	@Test
 	public void intentarCalificarSinHaberFinalizadoElTRabajo() {
@@ -20,9 +20,9 @@ public class CalificacionNoPermitida extends ConfiguracionGeneralPruebas {
 		driver.get("http://localhost:4200/login");
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("seba.lruiz");
 		
-		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
+		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("Ratones12");
 		
 		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
 		

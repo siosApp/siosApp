@@ -17,25 +17,25 @@ public class IntentarDestacarPerfilSinPagar extends ConfiguracionGeneralPruebas 
 	public void intentarDestacarPerfilSinPagar() {
 
 		WebDriver driver = super.configurarSeleniumWebDriver();
-		driver.get("http://localhost:4200/login");
+		driver.get("http://localhost:4200/sios/perfil");
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
-		
-		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
-		
-		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
-		
-		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
-		
-		driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-		
-		driver.findElement(By.xpath(botonPerfil)).click();
-		
-		driver.findElement(By.xpath(botonVerPerfil)).click();
-		
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
+//		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
+//		
+//		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
+//		
+//		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
+//		
+//		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
+//		
+//		driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+//		
+//		driver.findElement(By.xpath(botonPerfil)).click();
+//		
+//		driver.findElement(By.xpath(botonVerPerfil)).click();
+//		
+//		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//		
 		driver.findElement(By.xpath(botonDestacarPerfil)).click();
 	
 	}
