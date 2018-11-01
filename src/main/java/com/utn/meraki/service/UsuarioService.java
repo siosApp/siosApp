@@ -59,5 +59,7 @@ public interface UsuarioService {
     public abstract List<UsuariosRegistradosDestacadosModel> registradosDestacadosUltimosMeses();
     
     public abstract Integer cantidadUsuariosRegistrados();
+
+    public abstract List<UsuarioModel> listUsuarioEnLinea();
     
 }

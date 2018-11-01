@@ -139,4 +139,9 @@ public class UsuarioController {
     public Integer cantidadUsuariosRegistrados() {
     	return usuarioService.cantidadUsuariosRegistrados();
     }
+
+    @GetMapping("/usuariosEnLinea")
+    public List<UsuarioModel> getUsuariosEnLinea() {
+        return usuarioService.listUsuarioEnLinea();
+    }
 }

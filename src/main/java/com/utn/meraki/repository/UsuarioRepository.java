@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Repository("usuarioRepository")
 public interface UsuarioRepository extends JpaRepository<Usuario,Serializable> {
@@ -23,5 +24,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Serializable> {
     public Usuario findUsuarioByMail(String mail);
 
     public Usuario findUsuarioByUsuarioRubros(UsuarioRubro usuarioRubro);
+
+    public List<Usuario> findByLogueado(boolean isLogueado);
 
 }

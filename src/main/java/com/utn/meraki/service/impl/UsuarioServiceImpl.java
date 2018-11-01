@@ -566,4 +566,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return cantidad;
 	}
 
+    @Override
+    public List<UsuarioModel> listUsuarioEnLinea() {
+        List<UsuarioModel> usuarioModels= new ArrayList<>();
+        for (Usuario usuario:usuarioRepository.findByLogueado(true)){
+            usuarioModels.add(usuarioConverter.convertUsuarioToUsuarioModel(usuario));
+        }
+        return usuarioModels;
+    }
+
 }
