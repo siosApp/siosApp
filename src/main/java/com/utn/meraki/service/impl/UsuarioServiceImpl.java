@@ -223,8 +223,8 @@ public class UsuarioServiceImpl implements UsuarioService {
                 if(localidad==null&&departamento==null) {
                 	System.out.println("LOCALIDAD NULL && DEPARTAMENTO NULL");
                     for(Usuario usuario : usuarioRepository.findAll()) {
-                    	System.out.println("USUARIO OFERNTE? = " +usuario.getOferente());
-                    	System.out.println("PROVINCIA DEL USUARIO = " +usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia());
+//                    	System.out.println("USUARIO OFERNTE? = " +usuario.getOferente());
+//                    	System.out.println("PROVINCIA DEL USUARIO = " +usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia());
                         if(usuario.getOferente()) {
                         	System.out.println("EL USUARIO ES OFERENTE");
                         	if(usuario.getDomicilio().getLocalidad().getDepartamento().getProvincia().getNombreProvincia().equals(provincia)) {

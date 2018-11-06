@@ -94,9 +94,12 @@ public class SolicitudServiceImpl implements SolicitudService{
 		Usuario usuario=usuarioRepository.findUsuarioById(idUsuario);
 		EstadoSolicitud estadoSolicitud=estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Creada");
 		List<Solicitud> solicitudList=solicitudRepository.findSolicitudByUsuarioOferente(usuario);
-		for(Solicitud solicitud: solicitudList){
-			if(this.ultimoEstadoSolicitud(solicitud.getId()).getEstadoSolicitud().equals(estadoSolicitud)){
-				solicitudModels.add(solicitudConverter.convertSolicitudToSolicitudModel(solicitud));
+		if(solicitudList!=null) {
+			for(Solicitud solicitud: solicitudList){
+				System.out.println(estadoSolicitud.getNombreEstadoSolicitud());
+				if(this.ultimoEstadoSolicitud(solicitud.getId()).getEstadoSolicitud().equals(estadoSolicitud)){
+					solicitudModels.add(solicitudConverter.convertSolicitudToSolicitudModel(solicitud));
+				}
 			}
 		}
 		return solicitudModels;

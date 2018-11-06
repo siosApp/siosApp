@@ -92,6 +92,8 @@ public class DestacadoServiceImpl implements DestacadoService{
 			calendar.add(calendar.WEEK_OF_MONTH, -1);
 			Date fechaPorVencer = new Date(calendar.getTime().getTime());			
 			if(destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+				System.out.println("Fecha vto = " +fechaVto);
+				System.out.println("Fecha por vencer = " +fechaPorVencer);
 				if(fechaVto.after(fechaPorVencer)) {
 					usuarioModels.add(usuarioConverter.convertUsuarioToUsuarioModel(destacado.getUsuario()));
 				}
