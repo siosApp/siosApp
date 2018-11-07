@@ -36,6 +36,8 @@ public class UsuarioModel {
     private DomicilioModel domicilio;
 
     private String tipoUsuario;
+    
+    private Integer promedioCalificacion;
 
     private List<UsuarioRubroModel> usuarioRubros = new ArrayList<>();
 
@@ -185,5 +187,14 @@ public class UsuarioModel {
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
-    
+
+	public Integer getPromedioCalificacion() {
+		return promedioCalificacion;
+	}
+
+	public void setPromedioCalificacion(Integer promedioCalificacion) {
+		this.promedioCalificacion = promedioCalificacion;
+	}
+	
+	
 }

@@ -7,6 +7,8 @@ import com.utn.meraki.model.UsuarioRubroModel;
 import com.utn.meraki.repository.DomicilioRepository;
 import com.utn.meraki.repository.TipoUsuarioRepository;
 import com.utn.meraki.repository.UsuarioRepository;
+import com.utn.meraki.service.CalificacionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -16,16 +18,23 @@ import java.util.List;
 @Component("usuarioConverter")
 public class UsuarioConverter {
 
+	//REPOSITORY
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
     TipoUsuarioRepository tipoUsuarioRepository;
     @Autowired
     DomicilioRepository domicilioRepository;
+    
+    //CONVERTER
     @Autowired
     UsuarioRubroConverter usuarioRubroConverter;
     @Autowired
     DomicilioConverter domicilioConverter;
+    
+    //REPOSITORY
+    @Autowired
+    CalificacionService calificacionService;
 
     public Usuario convertUsuarioModelToUsuario(UsuarioModel usuarioModel) {
         Usuario usuario = null;
@@ -79,6 +88,7 @@ public class UsuarioConverter {
         usuarioModel.setFechaUltIngreso(usuario.getFechaUltIngreso());
         usuarioModel.setFechaBaja(usuario.getFechaBaja());
         usuarioModel.setExperiencia(getExperienciaString(usuario));
+        usuarioModel.setPromedioCalificacion(calificacionService.promedioCalificacionByUsuario(usuario.getId()));
         if(usuario.getOferente()!=null) {
         	usuarioModel.setOferente(usuario.getOferente());
         }
