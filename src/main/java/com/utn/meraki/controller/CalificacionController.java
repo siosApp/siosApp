@@ -34,5 +34,10 @@ public class CalificacionController {
 	public List<CalificacionUsuarioModel> calificacionUsuario(@RequestParam(value="idUsuario",required=true)String idUsuario){
 		return calificacionService.calificacionesUsuario(idUsuario);
 	}
+	
+	@GetMapping("/promedioCalificacionByUsuario")
+	public Integer promedioCalificacionByUsuario(@RequestParam(value="idUsuario",required=true)String idUsuario) {
+		return calificacionService.promedioCalificacionByUsuario(idUsuario);
+	}
 
 }

@@ -100,5 +100,26 @@ public class CalificacionServiceImpl implements CalificacionService{
 		return calificaciones;
 	}
 
+	@Override
+	public Integer promedioCalificacionByUsuario(String idUsuario) {
+		Integer promedio = 0;
+		Integer cantidadCalificaciones = 0;
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			if(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, solicitud.getUsuarioDemandante())!=null) {
+				cantidadCalificaciones += 1;
+				System.out.println(calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, solicitud.getUsuarioDemandante()).getCalificacion());
+				promedio += calificacionRepository.findCalificacionBySolicitudAndUsuario(solicitud, solicitud.getUsuarioDemandante()).getCalificacion();
+			}
+		}
+		System.out.println("SUMA ESTRELLAS = " +promedio);
+		System.out.println("CANTIDAD CALIFICACIONES " +cantidadCalificaciones);
+		if(promedio!=0 && cantidadCalificaciones!=0) {
+			promedio = (Integer)(promedio/cantidadCalificaciones);
+		}else {
+			promedio = 0;
+		}		
+		return promedio;
+	}
+
 	
 }

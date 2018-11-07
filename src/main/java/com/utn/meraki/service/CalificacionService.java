@@ -10,5 +10,7 @@ public interface CalificacionService {
 	public abstract CalificacionModel realizarCalificacion(CalificacionModel calificacionModel);
 	
 	public List<CalificacionUsuarioModel> calificacionesUsuario(String idUsuario);
+	
+	public Integer promedioCalificacionByUsuario(String idUsuario);
 
 }
