@@ -86,4 +86,16 @@ public class SolicitudController {
 	public List<TrabajosOferenteModel> trabajosOferente(@RequestParam(value="idUsuario") String idUsuario){
 		return solicitudService.trabajosOferente(idUsuario);
 	}
+	
+	@GetMapping("/trabajosRealizados")
+	public Integer trabajosRealizados(@RequestParam(value="idUsuario") String idUsuario) {
+		return solicitudService.trabajosRealizados(idUsuario);
+	}
+	
+	@GetMapping("/trabajosEnCurso")
+	public Integer trabajosEnCurso(@RequestParam(value="idUsuario") String idUsuario) {
+		return solicitudService.trabajosEnCurso(idUsuario);
+	}
+	
+	
 }

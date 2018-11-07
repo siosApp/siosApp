@@ -39,4 +39,8 @@ public interface SolicitudService {
 	public int cantidadSolicitudesComoOferenteSinCalificar(String id);
 
 	public int cantidadSolicitudesComoDemandanteSinCalificar(String id);
+	
+	public Integer trabajosRealizados(String idUsuario);
+	
+	public Integer trabajosEnCurso(String idUsuario);
 }

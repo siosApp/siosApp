@@ -258,4 +258,30 @@ public class SolicitudServiceImpl implements SolicitudService{
 		return trabajosOferenteModels;
 	}
 
+	@Override
+	public Integer trabajosRealizados(String idUsuario) {
+		Integer cantidad = 0;
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo() && solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Finalizada")) {
+					cantidad += 1;
+				}
+			}
+		}
+		return cantidad;
+	}
+
+	@Override
+	public Integer trabajosEnCurso(String idUsuario) {
+		Integer cantidad = 0;
+		for(Solicitud solicitud : solicitudRepository.findSolicitudByUsuarioOferente(usuarioRepository.findUsuarioById(idUsuario))) {
+			for(SolicitudEstado solicitudEstado : solicitud.getSolicitudEstados()) {
+				if(solicitudEstado.isActivo() && solicitudEstado.getEstadoSolicitud().getNombreEstadoSolicitud().equals("Aceptada")) {
+					cantidad += 1;
+				}
+			}
+		}
+		return cantidad;
+	}
+
 }
