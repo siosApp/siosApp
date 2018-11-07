@@ -2,6 +2,9 @@ package com.utn.meraki.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import com.utn.meraki.converter.CertificadoConverter;
@@ -187,6 +190,15 @@ public class RubroServiceImpl implements RubroService{
 			if(cantidad>0) {
 				rubrosOfrecidos.add(rubroMasOfrecidoModel);
 			}
+		}
+		//ORDENAMIENTO
+		Iterator listaOfrecidos = rubrosOfrecidos.iterator();
+		while (listaOfrecidos.hasNext()) {
+			RubroMasOfrecidoModel elementoLista = (RubroMasOfrecidoModel)listaOfrecidos.next();
+        }
+		Collections.sort(rubrosOfrecidos);
+		for(RubroMasOfrecidoModel rubros : rubrosOfrecidos) {
+			System.out.println("RUBRO " +rubros.getNombreRubro() + " CANTIDAD " +rubros.getCantidadSolicitudes());
 		}
 		return rubrosOfrecidos;
 	}
