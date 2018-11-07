@@ -168,8 +168,20 @@ public class RubroServiceImpl implements RubroService{
 					cantidad += 1;
 					rubroMasDemandadoModel.setCantidadSolicitudes(cantidad);
 				}
-				rubrosDemandados.add(rubroMasDemandadoModel);
+				if(cantidad>0) {
+					rubrosDemandados.add(rubroMasDemandadoModel);
+				}
+				
 			}
+		}
+		//ORDENAMIENTO
+		Iterator listaDemandados = rubrosDemandados.iterator();
+		while (listaDemandados.hasNext()) {
+			RubroMasDemandadoModel elementoLista = (RubroMasDemandadoModel)listaDemandados.next();
+		}
+		Collections.sort(rubrosDemandados);
+		for(RubroMasDemandadoModel rubros : rubrosDemandados) {
+			System.out.println("RUBRO " +rubros.getNombreRubro() + " CANTIDAD " +rubros.getCantidadSolicitudes());
 		}
 		return rubrosDemandados;
 	}
