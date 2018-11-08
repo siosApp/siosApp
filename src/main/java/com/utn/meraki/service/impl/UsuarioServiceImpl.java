@@ -10,6 +10,7 @@ import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
 import com.utn.meraki.model.FiltroModel;
+import com.utn.meraki.model.RubroMasOfrecidoModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuarioRubroModel;
@@ -33,7 +34,9 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service("usuarioService")
@@ -325,6 +328,15 @@ public class UsuarioServiceImpl implements UsuarioService {
                 }
             }
         }
+      //ORDENAMIENTO
+      Iterator lista = listUsuario.iterator();
+      while (lista.hasNext()) {
+    	  UsuarioDestacadoModel elementoLista = (UsuarioDestacadoModel)lista.next();
+            }
+      Collections.sort(listUsuario);
+      for(UsuarioDestacadoModel rubros : listUsuario) {
+      	System.out.println("RUBRO " +rubros.getDestacado() + " CANTIDAD " +rubros.getUsername());
+      }
         return listUsuario;
     }
 

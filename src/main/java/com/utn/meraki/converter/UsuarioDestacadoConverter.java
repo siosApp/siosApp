@@ -12,6 +12,7 @@ import com.utn.meraki.entity.UsuarioRubro;
 import com.utn.meraki.model.DestacadoModel;
 import com.utn.meraki.model.RubroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
+import com.utn.meraki.repository.DestacadoRepository;
 import com.utn.meraki.repository.EstadoDestacadoRepository;
 import com.utn.meraki.repository.MedioPagoRepository;
 import com.utn.meraki.repository.TarifaRepository;
@@ -30,6 +31,8 @@ public class UsuarioDestacadoConverter {
 	TarifaRepository tarifaRepository;
 	@Autowired
 	MedioPagoRepository medioPagoRepository;
+	@Autowired
+	DestacadoRepository destacadoRepository;
 	
 	//CONVERTER
 	@Autowired
@@ -64,7 +67,21 @@ public class UsuarioDestacadoConverter {
 		usuarioDestacadoModel.setExperiencia(getExperienciaString(usuario));
 		usuarioDestacadoModel.setImagen(usuario.getImagen());
 		usuarioDestacadoModel.setUsername(usuario.getUsername());
-		usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
+		
+		if(destacadoRepository.findDestacadoByUsuario(usuario)!=null) {
+			Destacado destacado = destacadoRepository.findDestacadoByUsuario(usuario);
+			if(destacado.getEstadoDestacado().getNombreEstadoDestacado().equals("Destacado")) {
+				usuarioDestacadoModel.setDestacado(true);
+			}else {
+				usuarioDestacadoModel.setDestacado(false);
+			}
+		}else {
+			usuarioDestacadoModel.setDestacado(false);
+		}
+		if(usuario.getDomicilio()!=null) {
+			usuarioDestacadoModel.setDomicilio(domicilioConverter.convertDomicilioToDomicilioModel(usuario.getDomicilio()));
+		}
+		
 		for(UsuarioRubro usuarioRubro : usuarioRepository.findUsuarioById(usuario.getId()).getUsuarioRubros()) {
 			RubroModel rubroModel = rubroConverter.convertRubroToRubroModel(usuarioRubro.getRubro());
 			usuarioDestacadoModel.getRubros().add(rubroModel);

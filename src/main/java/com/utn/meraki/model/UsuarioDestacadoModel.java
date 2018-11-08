@@ -3,7 +3,7 @@ package com.utn.meraki.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDestacadoModel {
+public class UsuarioDestacadoModel implements Comparable<UsuarioDestacadoModel>{
 	
 	//ATRIBUTOS
 	private String idUsuario;
@@ -21,6 +21,8 @@ public class UsuarioDestacadoModel {
 	private String imagen;
 
 	private String username;
+	
+	private Boolean destacado;
 
 	//CONSTRUCTOR
 	public UsuarioDestacadoModel() {
@@ -90,4 +92,20 @@ public class UsuarioDestacadoModel {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public Boolean getDestacado() {
+		return destacado;
+	}
+
+	public void setDestacado(Boolean destacado) {
+		this.destacado = destacado;
+	}
+	
+	@Override
+	public int compareTo(UsuarioDestacadoModel o) {
+		 String a=new String(String.valueOf(this.getDestacado())+this.getUsername());
+	     String b=new String(String.valueOf(o.getDestacado())+o.getUsername());
+	     return b.compareTo(a);
+	}
+	
 }
