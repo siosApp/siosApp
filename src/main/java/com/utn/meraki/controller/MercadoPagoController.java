@@ -1,6 +1,7 @@
 package com.utn.meraki.controller;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServlet;
@@ -73,7 +74,16 @@ public class MercadoPagoController extends HttpServlet{
 		destacado.setUsuario(usuarioRepository.findUsuarioById(datoPagoMercadoPagoModel.getIdUsuario()));
 		destacado.setMedioPago(medioPagoRepository.findMedioPagoById(datoPagoMercadoPagoModel.getIdMedioPago()));
 		destacado.setEstadoDestacado(estadoDestacadoRepository.findEstadoDestacadoByNombreEstadoDestacado("Destacado"));
-		destacado.setFechaDestacado(new Date(System.currentTimeMillis()));
+		
+		Date fechaDestacado = new Date(System.currentTimeMillis());
+		destacado.setFechaDestacado(fechaDestacado);
+		
+		Calendar vto = Calendar.getInstance();
+		vto.setTime(fechaDestacado);
+		vto.add(Calendar.MONTH, 1);
+		Date fechaVto = new Date(vto.getTime().getTime());
+		destacado.setFechaVtoDestacado(fechaVto);
+		
 		destacadoRepository.save(destacado);
 		
 		return initPoint;
