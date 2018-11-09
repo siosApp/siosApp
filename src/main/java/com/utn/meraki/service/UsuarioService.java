@@ -1,6 +1,5 @@
 package com.utn.meraki.service;
 
-import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.FiltroModel;
 import com.utn.meraki.model.UsuarioDestacadoModel;
 import com.utn.meraki.model.UsuarioModel;
@@ -61,5 +60,6 @@ public interface UsuarioService {
     public abstract Integer cantidadUsuariosRegistrados();
 
     public abstract List<UsuarioModel> listUsuarioEnLinea();
-    
+
+    List<UsuarioModel> getUsuariosRegistradosFiltered(String sexo, Integer edadDesde, Integer edadHasta, String provincia, String departamento, String localidad, String tipoRubro, String rubro);
 }

@@ -5,9 +5,11 @@ import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Repository("usuarioRepository")
@@ -23,8 +25,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Serializable> {
 
     public Usuario findUsuarioByMail(String mail);
 
-    public Usuario findUsuarioByUsuarioRubros(UsuarioRubro usuarioRubro);
+    public Usuario findUsuarioByUsuarioRubros(UsuarioRubro UsuarioRubro);
 
     public List<Usuario> findByLogueado(boolean isLogueado);
-
+    
 }

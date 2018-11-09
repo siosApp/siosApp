@@ -1,6 +1,5 @@
 package com.utn.meraki.service.impl;
 
-import com.fasterxml.jackson.datatype.jsr310.ser.MonthDaySerializer;
 import com.utn.meraki.converter.UsuarioConverter;
 import com.utn.meraki.converter.UsuarioDestacadoConverter;
 import com.utn.meraki.converter.UsuarioRubroConverter;
@@ -23,14 +22,15 @@ import com.utn.meraki.repository.UsuarioRubroRepository;
 import com.utn.meraki.service.GeneracionCodigo;
 import com.utn.meraki.service.MailService;
 import com.utn.meraki.service.UsuarioService;
-import org.joda.time.Days;
+import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,6 +59,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private MailService mailService;
     @Autowired
     private GeneracionCodigo generacionCodigo;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public UsuarioModel crearUsuario(UsuarioModel usuarioModel) {
@@ -575,4 +577,82 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioModels;
     }
 
+    @Override
+    public List<UsuarioModel> getUsuariosRegistradosFiltered(String sexo, Integer edadDesde, Integer edadHasta, String provincia, String departamento,
+                                                             String localidad, String tipoRubro, String rubro) {
+        Calendar calendar=Calendar.getInstance();
+        //calendar.set(new Date().getYear()-edadDesde,new Date().getMonth(),new Date().getDay());
+
+        calendar.add(Calendar.YEAR,-edadDesde);
+        Date fechaDesde= calendar.getTime();
+        Calendar calendarHasta=Calendar.getInstance();
+        calendarHasta.add(Calendar.YEAR,-edadHasta);
+        //calendarHasta.set(new Date().getYear()-edadHasta,new Date().getMonth(),new Date().getDay());
+        Date fechaHasta= calendarHasta.getTime();
+        List<UsuarioModel> usuarioModels= new ArrayList<>();
+        String hql= new String();
+        hql += "select u from Usuario u join u.usuarioRubros r where 1=1 ";
+        if(sexo!=null){
+            hql +=" and u.sexo = :sexo ";
+        }
+        if(edadDesde !=null && edadHasta !=null){
+            //Armar fecha
+            hql +="and u.fechaNacimiento between :fechaDesde and :fechaHasta ";
+        }
+        if(provincia !=null && departamento == null && localidad == null){
+            hql += "and u.domicilio.localidad.departamento.provincia.nombreProvincia = :provincia ";
+        }
+        if(departamento !=null && provincia !=null && localidad == null){
+            hql += "and u.domicilio.localidad.departamento.nombreDepartamento = :departamento and u.domicilio.localidad.departamento.provincia.nombreProvincia = :provincia ";
+        }
+        if(localidad!=null && departamento !=null && provincia !=null){
+            hql += "and u.domicilio.localidad.nombreLocalidad = :localidad and u.domicilio.localidad.departamento.nombreDepartamento = :departamento " +
+                    "and u.domicilio.localidad.departamento.provincia.nombreProvincia = :provincia ";
+        }
+        if(rubro !=null && tipoRubro != null){
+            hql += "and r.rubro.nombreRubro = :rubro and r.rubro.tipoRubro.nombreTipoRubro = :tipoRubro ";
+        }
+        if(rubro == null && tipoRubro !=null){
+            hql += "and r.rubro.tipoRubro.nombreTipoRubro = :tipoRubro ";
+        }
+        Query query = entityManager.createQuery(hql);
+        if(sexo!=null){
+            query.setParameter("sexo",sexo);
+        }
+        if(edadDesde !=null && edadHasta !=null){
+            //Armar fecha
+            query.setParameter("fechaDesde",fechaHasta).setParameter("fechaHasta",fechaDesde);
+        }
+        if(provincia !=null && departamento == null && localidad == null){
+            query.setParameter("provincia",provincia).setParameter("departamento",departamento).setParameter("localidad",localidad);
+        }
+        if(departamento !=null && provincia !=null && localidad == null){
+            query.setParameter("departamento",departamento).setParameter("provincia",provincia);
+        }
+        if(localidad!=null && departamento !=null && provincia !=null){
+            query.setParameter("localidad",localidad).setParameter("departamento",departamento).setParameter("provincia",provincia);
+        }
+        if(rubro !=null && tipoRubro != null){
+            query.setParameter("rubro",rubro).setParameter("tipoRubro",tipoRubro);
+        }
+        if(rubro == null && tipoRubro !=null){
+            query.setParameter("tipoRubro",tipoRubro);
+        }
+        List<Usuario> usuarios=query.getResultList();
+        for(Usuario usuario:usuarios){
+            if(!estaEnLaLista(usuario.getId(),usuarioModels)){
+                usuarioModels.add(usuarioConverter.convertUsuarioToUsuarioModel(usuario));
+            }
+        }
+        return usuarioModels;
+    }
+
+    private boolean estaEnLaLista(String idUsuario,List<UsuarioModel>usuarioModels){
+        for(UsuarioModel usuarioModel:usuarioModels){
+            if(usuarioModel.getId().equals(idUsuario)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
