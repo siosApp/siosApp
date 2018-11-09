@@ -144,4 +144,16 @@ public class UsuarioController {
     public List<UsuarioModel> getUsuariosEnLinea() {
         return usuarioService.listUsuarioEnLinea();
     }
+
+    @GetMapping("/listUsuariosRegistrados")
+    public List<UsuarioModel> getUsuariosRegistrados(@RequestParam(value="sexo",required=false)String sexo,
+                                                     @RequestParam(value="edadDesde",required=false)Integer edadDesde,
+                                                     @RequestParam(value="edadHasta",required=false)Integer edadHasta,
+                                                     @RequestParam(value="provincia",required=false)String provincia,
+                                                     @RequestParam(value="departamento",required=false)String departamento,
+                                                     @RequestParam(value="localidad",required=false)String localidad,
+                                                     @RequestParam(value="tipoRubro",required=false)String tipoRubro,
+                                                     @RequestParam(value="rubro",required=false)String rubro) {
+        return usuarioService.getUsuariosRegistradosFiltered(sexo,edadDesde,edadHasta,provincia,departamento,localidad,tipoRubro,rubro);
+    }
 }
