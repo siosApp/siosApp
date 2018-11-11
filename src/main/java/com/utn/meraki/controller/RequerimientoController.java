@@ -57,7 +57,5 @@ public class RequerimientoController {
 	public List<RequerimientoModel> misRequerimientos(@RequestParam(value="idUsuario",required=true)String idUsuario) {
 		return requerimientoService.misRequerimientos(idUsuario);
 	}
-	
-	
 
 }

@@ -76,6 +76,7 @@ public class SolicitudConverter {
 			solicitud.getArchivos().add(archivo);
 		}
 		SolicitudEstado solicitudEstado = new SolicitudEstado();
+		solicitudEstado.setActivo(true);
 		solicitudEstado.setEstadoSolicitud(estadoSolicitudRepository.findEstadoSolicitudByNombreEstadoSolicitud("Aceptada"));
 		solicitudEstado.setFechaCambioEstado(new Date(System.currentTimeMillis()));
 		solicitudEstadoRepository.save(solicitudEstado);
