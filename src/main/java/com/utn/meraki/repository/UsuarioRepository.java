@@ -28,5 +28,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Serializable> {
     public Usuario findUsuarioByUsuarioRubros(UsuarioRubro UsuarioRubro);
 
     public List<Usuario> findByLogueado(boolean isLogueado);
-    
+
 }

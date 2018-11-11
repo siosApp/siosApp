@@ -154,6 +154,8 @@ public class UsuarioController {
                                                      @RequestParam(value="localidad",required=false)String localidad,
                                                      @RequestParam(value="tipoRubro",required=false)String tipoRubro,
                                                      @RequestParam(value="rubro",required=false)String rubro) {
-        return usuarioService.getUsuariosRegistradosFiltered(sexo,edadDesde,edadHasta,provincia,departamento,localidad,tipoRubro,rubro);
+        return usuarioService.getUsuariosRegistradosFiltered(sexo.equals("null")?null:sexo,edadDesde.equals("null")?null:edadDesde,edadHasta.equals("null")?null:edadHasta,
+                provincia.equals("null")?null:provincia,departamento.equals("null")?null:departamento,localidad.equals("null")?null:localidad,
+                tipoRubro.equals("null")?null:tipoRubro,rubro.equals("null")?null:rubro);
     }
 }
