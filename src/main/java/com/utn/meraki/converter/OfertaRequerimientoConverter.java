@@ -33,6 +33,7 @@ public class OfertaRequerimientoConverter {
 	
 	public OfertaRequerimientoModel convertOfertaRequerimientoToOfertaRequerimientoModel(OfertaRequerimiento ofertaRequerimiento) {
 		OfertaRequerimientoModel ofertaRequerimientoModel = new OfertaRequerimientoModel();
+		ofertaRequerimientoModel.setId(ofertaRequerimiento.getId());
 		ofertaRequerimientoModel.setIdRequerimiento(ofertaRequerimiento.getRequerimiento().getId());
 		ofertaRequerimientoModel.setIdUsuario(ofertaRequerimiento.getUsuario().getId());
 		ofertaRequerimientoModel.setAsignado(ofertaRequerimiento.getAsignado());
