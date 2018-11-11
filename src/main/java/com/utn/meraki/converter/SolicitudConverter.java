@@ -69,8 +69,8 @@ public class SolicitudConverter {
 		Solicitud solicitud = new Solicitud();
 		solicitud.setDescripcion(requerimiento.getDescripcion());
 		solicitud.setFechaSolicitud(new Date(System.currentTimeMillis()));
-		solicitud.setUsuarioOferente(requerimiento.getUsuario());
-		solicitud.setUsuarioDemandante(ofertaRequerimiento.getUsuario());
+		solicitud.setUsuarioOferente(ofertaRequerimiento.getUsuario());
+		solicitud.setUsuarioDemandante(requerimiento.getUsuario());
 		solicitud.setRubro(rubroRepository.findRubroByNombreRubro(ofertaRequerimiento.getRequerimiento().getRubro().getNombreRubro()));
 		for(Archivo archivo : ofertaRequerimiento.getRequerimiento().getArchivos()) {
 			solicitud.getArchivos().add(archivo);
