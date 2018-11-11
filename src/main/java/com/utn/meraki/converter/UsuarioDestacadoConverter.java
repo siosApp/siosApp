@@ -57,7 +57,7 @@ public class UsuarioDestacadoConverter {
 		if(!usuario.getUsuarioRubros().get(0).getExperiencias().isEmpty()){
 			return usuario.getUsuarioRubros().get(0).getPrimerExperiencia().getDescripcion();
 		}
-		return "Sin experiencia previa";
+		return "Sin experiencia previa en el rubro.";
 	}
 	public UsuarioDestacadoModel convertUsuarioToUsuarioDestacadoModel(Usuario usuario) {
 		UsuarioDestacadoModel usuarioDestacadoModel = new UsuarioDestacadoModel();
