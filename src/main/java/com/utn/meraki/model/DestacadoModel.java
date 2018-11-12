@@ -18,6 +18,12 @@ public class DestacadoModel {
 	private String nombreEstado;
 	
 	private String nombreMedioPago;
+
+	private String nombre;
+
+	private String apellido;
+
+	private String idUsuario;
 	
 	//CONSTRUCTOR
 	public DestacadoModel() {
@@ -80,5 +86,28 @@ public class DestacadoModel {
 	public void setFechaVtoDestacado(Date fechaVtoDestacado) {
 		this.fechaVtoDestacado = fechaVtoDestacado;
 	}
-	
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 }

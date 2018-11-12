@@ -117,6 +117,9 @@ public class UsuarioDestacadoConverter {
 		destacadoModel.setNombreEstado(destacado.getEstadoDestacado().getNombreEstadoDestacado());
 		destacadoModel.setNombreMedioPago(destacado.getMedioPago().getNombreMedioPago());
 		destacadoModel.setNombreUsuario(destacado.getUsuario().getUsername());
+		destacadoModel.setApellido(destacado.getUsuario().getApellido());
+		destacadoModel.setNombre(destacado.getUsuario().getNombre());
+		destacadoModel.setIdUsuario(destacado.getUsuario().getId());
 		return destacadoModel;
 	}
 	
