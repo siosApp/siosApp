@@ -53,6 +53,7 @@ public class CalificacionConverter {
 		CalificacionRecibidaModel calificacionRecibidaModel = new CalificacionRecibidaModel();
 		Calificacion calificacionDemandante = calificacionRepository.findCalificacionBySolicitudAndUsuario
 				(solicitud, solicitud.getUsuarioDemandante());
+		calificacionRecibidaModel.setIdUsuario(solicitud.getUsuarioDemandante().getId());
 		calificacionRecibidaModel.setCalificacion(calificacionDemandante.getCalificacion());
 		calificacionRecibidaModel.setDescripcionTrabajo(solicitud.getDescripcion());
 		calificacionRecibidaModel.setNombreRubro(solicitud.getRubro().getNombreRubro());
