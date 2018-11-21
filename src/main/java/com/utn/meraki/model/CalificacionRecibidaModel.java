@@ -15,7 +15,9 @@ public class CalificacionRecibidaModel {
 	private String nombreRubro;
 	
 	private Integer calificacion;
-	
+
+	private String idUsuario;
+
 	//CONSTRUCTOR
 	public CalificacionRecibidaModel() {
 		
@@ -61,5 +63,12 @@ public class CalificacionRecibidaModel {
 	public void setCalificacion(Integer calificacion) {
 		this.calificacion = calificacion;
 	}
-	
+
+	public String getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario = idUsuario;
+	}
 }
