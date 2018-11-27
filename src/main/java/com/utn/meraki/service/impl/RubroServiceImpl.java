@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.utn.meraki.converter.CertificadoConverter;
 import com.utn.meraki.converter.ExperienciaConverter;
@@ -158,7 +159,7 @@ public class RubroServiceImpl implements RubroService{
 	@Override //ME TRAE LOS RUBROS DEMANDADOS ENTRE 2 FECHAS DETERMINADAS
 	public List<RubroMasDemandadoModel> rubrosMasDemandados(Date fechaDesde, Date fechaHasta) {
 		List<RubroMasDemandadoModel> rubrosDemandados = new ArrayList<>();
-		for(Rubro rubro : rubroRepository.findAll()) {
+		/*for(Rubro rubro : rubroRepository.findAll()) {
 			if(solicitudRepository.findSolicitudByRubro(rubro)!=null) {
 				RubroMasDemandadoModel rubroMasDemandadoModel = new RubroMasDemandadoModel();
 				rubroMasDemandadoModel.setNombreRubro(rubro.getNombreRubro());
@@ -174,6 +175,7 @@ public class RubroServiceImpl implements RubroService{
 				
 			}
 		}
+
 		//ORDENAMIENTO
 		Iterator listaDemandados = rubrosDemandados.iterator();
 		while (listaDemandados.hasNext()) {
@@ -183,9 +185,20 @@ public class RubroServiceImpl implements RubroService{
 		for(RubroMasDemandadoModel rubros : rubrosDemandados) {
 			System.out.println("RUBRO " +rubros.getNombreRubro() + " CANTIDAD " +rubros.getCantidadSolicitudes());
 		}
-		return rubrosDemandados;
+		*/
+		return parseResult(rubroRepository.findRubrosMasDemandados(fechaDesde,fechaHasta));
 	}
 
+	private List<RubroMasDemandadoModel> parseResult(List<Object[]> rows){
+		return rows.stream().map(row -> getOneRubroMasDemandado(row)).collect(Collectors.toList());
+	}
+
+	private RubroMasDemandadoModel getOneRubroMasDemandado(Object[] row){
+		RubroMasDemandadoModel rubroMasDemandadoModel= new RubroMasDemandadoModel();
+		rubroMasDemandadoModel.setNombreRubro(row[0].toString());
+		rubroMasDemandadoModel.setCantidadSolicitudes(Integer.valueOf(row[1].toString()));
+		return rubroMasDemandadoModel;
+	}
 	@Override //ME MUESTRA LOS RUBROS MAS OFRECIDOS ENTRE 2 FECHAS DETERMINADAS
 	public List<RubroMasOfrecidoModel> rubrosMasOfrecidos(Date fechaDesde, Date fechaHasta) {
 		List<RubroMasOfrecidoModel> rubrosOfrecidos = new ArrayList<>();
