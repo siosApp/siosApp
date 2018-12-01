@@ -1,10 +1,6 @@
 package com.utn.meraki.service;
 
-import com.utn.meraki.model.FiltroModel;
-import com.utn.meraki.model.UsuarioDestacadoModel;
-import com.utn.meraki.model.UsuarioModel;
-import com.utn.meraki.model.UsuariosByRubro;
-import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
+import com.utn.meraki.model.*;
 
 import java.util.Date;
 import java.util.List;
@@ -62,4 +58,6 @@ public interface UsuarioService {
     public abstract List<UsuarioModel> listUsuarioEnLinea();
 
     List<UsuarioModel> getUsuariosRegistradosFiltered(String sexo, Integer edadDesde, Integer edadHasta, String provincia, String departamento, String localidad, String tipoRubro, String rubro);
+
+    List<UsuarioComentariosModel> getUsuarioConComentarios(String id);
 }
