@@ -1,6 +1,7 @@
 package com.utn.meraki.controller;
 
 import com.utn.meraki.entity.Usuario;
+import com.utn.meraki.model.UsuarioComentariosModel;
 import com.utn.meraki.model.UsuarioModel;
 import com.utn.meraki.model.UsuariosByRubro;
 import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
@@ -157,5 +158,10 @@ public class UsuarioController {
         return usuarioService.getUsuariosRegistradosFiltered(sexo.equals("null")?null:sexo,edadDesde.equals("null")?null:edadDesde,edadHasta.equals("null")?null:edadHasta,
                 provincia.equals("null")?null:provincia,departamento.equals("null")?null:departamento,localidad.equals("null")?null:localidad,
                 tipoRubro.equals("null")?null:tipoRubro,rubro.equals("null")?null:rubro);
+    }
+
+    @GetMapping("/comentarios-oferente")
+    public List<UsuarioComentariosModel> getUsuarioConComentarios(@RequestParam String id) {
+        return usuarioService.getUsuarioConComentarios(id);
     }
 }

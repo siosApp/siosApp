@@ -8,13 +8,7 @@ import com.utn.meraki.entity.Rubro;
 import com.utn.meraki.entity.TipoRubro;
 import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.entity.UsuarioRubro;
-import com.utn.meraki.model.FiltroModel;
-import com.utn.meraki.model.RubroMasOfrecidoModel;
-import com.utn.meraki.model.UsuarioDestacadoModel;
-import com.utn.meraki.model.UsuarioModel;
-import com.utn.meraki.model.UsuarioRubroModel;
-import com.utn.meraki.model.UsuariosByRubro;
-import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
+import com.utn.meraki.model.*;
 import com.utn.meraki.repository.DestacadoRepository;
 import com.utn.meraki.repository.RubroRepository;
 import com.utn.meraki.repository.TipoRubroRepository;
@@ -23,7 +17,6 @@ import com.utn.meraki.repository.UsuarioRubroRepository;
 import com.utn.meraki.service.GeneracionCodigo;
 import com.utn.meraki.service.MailService;
 import com.utn.meraki.service.UsuarioService;
-import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +25,29 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("usuarioService")
 public class UsuarioServiceImpl implements UsuarioService {
-	
+
+    static final String ESTADO_SOLICITUD_FINALIZADA_QUERY = "SELECT id FROM estados_solicitudes WHERE nombre_estado_solicitud LIKE 'Finalizada'";
+
+    static final String SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY = "SELECT id FROM solicitudes WHERE id_demandante = :id AND id IN \n" +
+            "(SELECT id_solicitud FROM solicitudes_estados \n" +
+            "WHERE id_estado_solicitud = ("+ESTADO_SOLICITUD_FINALIZADA_QUERY+")) ";
+
+    static final String USUARIOS_CON_COMENTARIOS = "SELECT DISTINCT calificacion, fecha_calificacion, u.mail,u.username,com.descripcion AS 'comentario',u.imagen,u.id " +
+            "FROM calificaciones cal INNER JOIN usuarios u ON u.id = id_usuario INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
+            "WHERE id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY+") ORDER BY fecha_calificacion DESC";
+
     @Autowired
     private UsuarioConverter usuarioConverter;
     @Autowired
@@ -666,5 +672,44 @@ public class UsuarioServiceImpl implements UsuarioService {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<UsuarioComentariosModel> getUsuarioConComentarios(String id) {
+        Query query = entityManager.createNativeQuery(USUARIOS_CON_COMENTARIOS).setParameter("id",id);
+        return parseResultQuery(query.getResultList());
+    }
+
+    /**
+     * Parsea una consulta sql a una lista de usuarios que comentaron en calidad de oferente, al usuario demandante
+     *
+     * @param rows
+     * @return
+     */
+    private List<UsuarioComentariosModel> parseResultQuery(List<Object[]> rows){
+        return rows.stream().map( row -> getOneUsuarioComentariosModel(row)).collect(Collectors.toList());
+    }
+
+    /**
+     * Parsea un sólo resultado a un objeto UsuarioComentarioModel para facilitar el uso del lambda
+     *
+     * @param row
+     * @return
+     */
+    private UsuarioComentariosModel getOneUsuarioComentariosModel(Object[] row){
+
+        UsuarioComentariosModel model= new UsuarioComentariosModel();
+        model.setCalificacion(Integer.valueOf(row[0].toString()));
+        try {
+            model.setFechaCalificacion(new SimpleDateFormat("yyyy-MM-dd").parse(row[1].toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        model.setEmail(row[2].toString());
+        model.setUsername(row[3].toString());
+        model.setComentario(row[4].toString());
+        model.setImagen(row[5].toString());
+        model.setIdUsuario(row[6].toString());
+        return model;
     }
 }
