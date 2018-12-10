@@ -86,6 +86,18 @@ public class UsuarioServiceImpl implements UsuarioService {
             "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY+") " +
             "ORDER BY cal.fecha_calificacion DESC";
 
+    static final String DESTACADO_QUERY = "CASE WHEN ( SELECT de.id FROM destacados de WHERE de.id_usuario = u.id " +
+            "AND de.fecha_vto_destacado >= NOW() ) IS NOT NULL THEN TRUE ELSE FALSE END AS 'destacado'";
+    static final String CALIFICACION_QUERY = "( SELECT CASE WHEN ROUND(AVG(cal.calificacion),0) IS NULL THEN 0 ELSE ROUND(AVG(cal.calificacion),0) END AS 'calificacion' FROM calificaciones cal \n" +
+            "\tINNER JOIN solicitudes sol ON sol.id = cal.id_solicitud \n" +
+            "\tWHERE sol.id_oferente = u.id AND cal.id_usuario != u.id ) AS 'calificacion' ";
+
+    static final String OFERENTES_QUERY = "SELECT u.id,u.username,ti.nombre_tipo_rubro,r.nombre_rubro, u.nombre, u.apellido,  u.imagen ," +
+            DESTACADO_QUERY+","+CALIFICACION_QUERY+", ex.descripcion FROM usuarios u INNER JOIN domicilios dom ON dom.id = u.id_domicilio " +
+            "INNER JOIN localidades loc ON loc.id = dom.id_localidad INNER JOIN departamentos dep ON dep.id = loc.id_departamento " +
+            "LEFT JOIN experiencias ex ON ex.id_usuario_rubro = (SELECT id FROM usuarios_rubros WHERE id_usuario =u.id LIMIT 1) " +
+            "INNER JOIN provincias prov ON prov.id = dep.id_provincia INNER JOIN usuarios_rubros urub ON urub.id IN (SELECT id FROM usuarios_rubros WHERE id_usuario =u.id) " +
+            "INNER JOIN rubros r ON r.id = urub.id_rubro INNER JOIN tipos_rubros ti ON ti.id = r.id_tipo_rubro WHERE u.oferente = TRUE ";
     @Autowired
     private UsuarioConverter usuarioConverter;
     @Autowired
@@ -833,5 +845,62 @@ public class UsuarioServiceImpl implements UsuarioService {
             Integer calificacion = dto.getCantidadUsuariosUno() + 1 ;
             dto.setCantidadUsuariosUno(calificacion);
         }
+    }
+
+    @Override
+    public List<OferenteDTO> getOferentes(String tipoRubro, String rubro, String provincia, String departamento, String localidad){
+        String sqlQuery = OFERENTES_QUERY;
+        //Armo query
+        if (!tipoRubro.equals("null")){
+            sqlQuery += "AND ti.nombre_tipo_rubro like :tipoRubro ";
+        }
+        if (!rubro.equals("null")){
+            sqlQuery += "AND r.nombre_rubro like :rubro ";
+        }
+        if (!provincia.equals("null")){
+            sqlQuery += "AND prov.nombre_provincia like :provincia ";
+        }
+        if (!departamento.equals("null")){
+            sqlQuery += "AND dep.nombre_departamento like :depto ";
+        }
+        if (!localidad.equals("null")){
+            sqlQuery += "AND loc.nombre_localidad like :loc ";
+        }
+        sqlQuery += "GROUP BY u.id ORDER BY destacado DESC";
+        Query query=entityManager.createNativeQuery(sqlQuery);
+        // Seteo parametros a la query
+        if (!tipoRubro.equals("null")){
+            query.setParameter("tipoRubro","%"+tipoRubro+"%");
+        }
+        if (!rubro.equals("null")){
+            query.setParameter("rubro","%"+rubro+"%");
+        }
+        if (!provincia.equals("null")){
+            query.setParameter("provincia","%"+provincia+"%");
+        }
+        if (!departamento.equals("null")){
+            query.setParameter("depto","%"+departamento+"%");
+        }
+        if (!localidad.equals("null")){
+            query.setParameter("loc","%"+localidad+"%");
+        }
+
+        return parseResultQueryOferenteDTO(query.getResultList());
+    }
+
+    private List<OferenteDTO> parseResultQueryOferenteDTO(List<Object[]> rows){
+        return rows.stream().map(row -> parseRowToOferenteDTO(row)).collect(Collectors.toList());
+    }
+
+    private OferenteDTO parseRowToOferenteDTO(Object[] row){
+        OferenteDTO dto = new OferenteDTO();
+        dto.setId(row[0].toString());
+        dto.setNombreUsuario(row[4] != null && row[5] != null ? row[4].toString()+" "+row[5].toString():row[1].toString());
+        dto.setRubro(row[3].toString());
+        dto.setImagen(row[6].toString());
+        dto.setDestacado(row[7].toString().equals("1")? true:false);
+        dto.setCalificacion(Integer.valueOf(row[8].toString()));
+        dto.setExperiencia(row[9] != null ? row[9].toString():"Sin experiencia previa.");
+        return dto;
     }
 }

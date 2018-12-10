@@ -62,4 +62,6 @@ public interface UsuarioService {
     List<UsuarioComentariosModel> getUsuarioConComentarios(String id);
 
     ReporteCalificacionDTO getUsuariosQueMeCalificaron(String idUsuario, boolean isDemandante, boolean isOferente);
+
+    List<OferenteDTO> getOferentes(String tipoRubro, String rubro, String provincia, String departamento, String localidad);
 }

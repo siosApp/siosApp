@@ -1,6 +1,5 @@
 package com.utn.meraki.controller;
 
-import com.utn.meraki.entity.Usuario;
 import com.utn.meraki.model.*;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,5 +165,14 @@ public class UsuarioController {
     public ReporteCalificacionDTO getUsuarioConComentarios(@RequestParam String id, @RequestParam Boolean esDemandante,
                                                            @RequestParam Boolean esOferente) {
         return usuarioService.getUsuariosQueMeCalificaron(id,esDemandante,esOferente);
+    }
+
+    @GetMapping("/oferentes")
+    public List<OferenteDTO> getOferentes(@RequestParam(required = false, defaultValue = "") String tipoRubro,
+                                          @RequestParam(required = false, defaultValue = "") String rubro,
+                                          @RequestParam(required = false, defaultValue = "") String provincia,
+                                          @RequestParam(required = false, defaultValue = "") String departamento,
+                                          @RequestParam(required = false, defaultValue = "") String localidad) {
+        return usuarioService.getOferentes(tipoRubro,rubro,provincia,departamento,localidad);
     }
 }
