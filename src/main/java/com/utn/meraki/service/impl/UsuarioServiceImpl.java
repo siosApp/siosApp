@@ -56,27 +56,33 @@ public class UsuarioServiceImpl implements UsuarioService {
             "FROM calificaciones cal INNER JOIN usuarios u ON u.id = id_usuario INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
             "WHERE id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_DEMANDANTE_QUERY+") ORDER BY fecha_calificacion DESC";
 
-    static final String CALIFICACIONES_DEMANDANTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+    static final String CALIFICACIONES_DEMANDANTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud," +
+            "s.descripcion,r.nombre_rubro, com.descripcion as 'comentario',cal.id_usuario " +
             "FROM calificaciones cal " +
             "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
             "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
             "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
             "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_DEMANDANTE_QUERY+") " +
             "ORDER BY cal.fecha_calificacion DESC";
 
-    static final String CALIFICACIONES_OFERENTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+    static final String CALIFICACIONES_OFERENTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud," +
+            "s.descripcion,r.nombre_rubro, com.descripcion as 'comentario',cal.id_usuario " +
             "FROM calificaciones cal " +
             "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
             "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
             "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
             "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_OFERENTE_QUERY+") " +
             "ORDER BY cal.fecha_calificacion DESC";
 
-    static final String CALIFICACIONES_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+    static final String CALIFICACIONES_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud," +
+            "s.descripcion,r.nombre_rubro, com.descripcion as 'comentario',cal.id_usuario " +
             "FROM calificaciones cal " +
             "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
             "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
             "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
             "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY+") " +
             "ORDER BY cal.fecha_calificacion DESC";
 
@@ -794,7 +800,9 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioCalificaDTO.setFechaSolicitud(simpleDateFormat.parse(row[5].toString()));
         usuarioCalificaDTO.setDescripcionSolicitud(row[6].toString());
         usuarioCalificaDTO.setRubro(row[7].toString());
-        dto.getDtoList().add(usuarioCalificaDTO);
+        usuarioCalificaDTO.setComentario(row[8].toString());
+        usuarioCalificaDTO.setId(row[9].toString());
+        dto.getUsuariosCalificadores().add(usuarioCalificaDTO);
     }
 
     /**
@@ -805,25 +813,25 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     private void setCalificacion( String row,ReporteCalificacionDTO dto){
 
-        if (row == "5") {
-            Integer calificacion = dto.getCantidadUsuariosCinco();
-            dto.setCantidadUsuariosCinco(calificacion + Integer.valueOf(row));
+        if (row.equals("5")) {
+            Integer calificacion = dto.getCantidadUsuariosCinco() + 1 ;
+            dto.setCantidadUsuariosCinco(calificacion);
         }
-        else if (row == "4") {
-            Integer calificacion = dto.getCantidadUsuariosCuatro();
-            dto.setCantidadUsuariosCuatro(calificacion + Integer.valueOf(row));
+        else if (row.equals("4")) {
+            Integer calificacion = dto.getCantidadUsuariosCuatro() + 1 ;
+            dto.setCantidadUsuariosCuatro(calificacion);
         }
-        else if (row == "3") {
-            Integer calificacion = dto.getCantidadUsuariosTres();
-            dto.setCantidadUsuariosTres(calificacion + Integer.valueOf(row));
+        else if (row.equals("3")) {
+            Integer calificacion = dto.getCantidadUsuariosTres() + 1;
+            dto.setCantidadUsuariosTres(calificacion);
         }
-        else if (row == "2") {
-            Integer calificacion = dto.getCantidadUsuariosDos();
-            dto.setCantidadUsuariosDos(calificacion + Integer.valueOf(row));
+        else if (row.equals("2")) {
+            Integer calificacion = dto.getCantidadUsuariosDos() + 1;
+            dto.setCantidadUsuariosDos(calificacion);
         }
-        else if (row == "1") {
-            Integer calificacion = dto.getCantidadUsuariosUno();
-            dto.setCantidadUsuariosUno(calificacion + Integer.valueOf(row));
+        else if (row.equals("1")) {
+            Integer calificacion = dto.getCantidadUsuariosUno() + 1 ;
+            dto.setCantidadUsuariosUno(calificacion);
         }
     }
 }

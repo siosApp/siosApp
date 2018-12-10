@@ -12,8 +12,26 @@ public class UsuarioCalificaDTO {
     private String email;
     private String urlImagen;
     private String rubro;
+    private String comentario;
+    private String id;
 
     public UsuarioCalificaDTO() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 
     public String getDescripcionSolicitud() {

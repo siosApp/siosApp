@@ -11,10 +11,15 @@ public class ReporteCalificacionDTO {
     private Integer cantidadUsuariosTres;
     private Integer cantidadUsuariosDos;
     private Integer cantidadUsuariosUno;
-    private List<UsuarioCalificaDTO> dtoList;
+    private List<UsuarioCalificaDTO> usuariosCalificadores;
 
     public ReporteCalificacionDTO() {
-        dtoList = new ArrayList<>();
+        cantidadUsuariosCinco = 0;
+        cantidadUsuariosCuatro = 0;
+        cantidadUsuariosTres = 0;
+        cantidadUsuariosDos = 0;
+        cantidadUsuariosUno = 0;
+        usuariosCalificadores = new ArrayList<>();
     }
 
     public Integer getCantidadUsuariosCinco() {
@@ -57,11 +62,11 @@ public class ReporteCalificacionDTO {
         this.cantidadUsuariosUno = cantidadUsuariosUno;
     }
 
-    public List<UsuarioCalificaDTO> getDtoList() {
-        return dtoList;
+    public List<UsuarioCalificaDTO> getUsuariosCalificadores() {
+        return usuariosCalificadores;
     }
 
-    public void setDtoList(List<UsuarioCalificaDTO> dtoList) {
-        this.dtoList = dtoList;
+    public void setUsuariosCalificadores(List<UsuarioCalificaDTO> usuariosCalificadores) {
+        this.usuariosCalificadores = usuariosCalificadores;
     }
 }
