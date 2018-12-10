@@ -40,13 +40,45 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     static final String ESTADO_SOLICITUD_FINALIZADA_QUERY = "SELECT id FROM estados_solicitudes WHERE nombre_estado_solicitud LIKE 'Finalizada'";
 
-    static final String SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY = "SELECT id FROM solicitudes WHERE id_demandante = :id AND id IN \n" +
+    static final String SOLICITUDES_FINALIZADAS_POR_USUARIO_DEMANDANTE_QUERY = "SELECT id FROM solicitudes WHERE id_demandante = :id AND id IN \n" +
+            "(SELECT id_solicitud FROM solicitudes_estados \n" +
+            "WHERE id_estado_solicitud = ("+ESTADO_SOLICITUD_FINALIZADA_QUERY+")) ";
+
+    static final String SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY = "SELECT id FROM solicitudes WHERE (id_demandante = :id OR id_oferente = :id) AND id IN \n" +
+            "(SELECT id_solicitud FROM solicitudes_estados \n" +
+            "WHERE id_estado_solicitud = ("+ESTADO_SOLICITUD_FINALIZADA_QUERY+")) ";
+
+    static final String SOLICITUDES_FINALIZADAS_POR_USUARIO_OFERENTE_QUERY = "SELECT id FROM solicitudes WHERE id_oferente = :id AND id IN \n" +
             "(SELECT id_solicitud FROM solicitudes_estados \n" +
             "WHERE id_estado_solicitud = ("+ESTADO_SOLICITUD_FINALIZADA_QUERY+")) ";
 
     static final String USUARIOS_CON_COMENTARIOS = "SELECT DISTINCT calificacion, fecha_calificacion, u.mail,u.username,com.descripcion AS 'comentario',u.imagen,u.id " +
             "FROM calificaciones cal INNER JOIN usuarios u ON u.id = id_usuario INNER JOIN comentarios com ON com.id_calificacion = cal.id " +
-            "WHERE id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY+") ORDER BY fecha_calificacion DESC";
+            "WHERE id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_DEMANDANTE_QUERY+") ORDER BY fecha_calificacion DESC";
+
+    static final String CALIFICACIONES_DEMANDANTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+            "FROM calificaciones cal " +
+            "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
+            "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
+            "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_DEMANDANTE_QUERY+") " +
+            "ORDER BY cal.fecha_calificacion DESC";
+
+    static final String CALIFICACIONES_OFERENTE_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+            "FROM calificaciones cal " +
+            "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
+            "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
+            "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_OFERENTE_QUERY+") " +
+            "ORDER BY cal.fecha_calificacion DESC";
+
+    static final String CALIFICACIONES_QUERY = "SELECT DISTINCT cal.calificacion, cal.fecha_calificacion, u.mail,u.username,u.imagen,s.fecha_solicitud,s.descripcion,r.nombre_rubro\n" +
+            "FROM calificaciones cal " +
+            "INNER JOIN usuarios u ON u.id = cal.id_usuario " +
+            "INNER JOIN solicitudes s ON s.id = cal.id_solicitud " +
+            "INNER JOIN rubros r ON r.id = s.id_rubro " +
+            "WHERE cal.id_usuario != :id AND cal.id_solicitud IN ("+SOLICITUDES_FINALIZADAS_POR_USUARIO_QUERY+") " +
+            "ORDER BY cal.fecha_calificacion DESC";
 
     @Autowired
     private UsuarioConverter usuarioConverter;
@@ -677,7 +709,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<UsuarioComentariosModel> getUsuarioConComentarios(String id) {
         Query query = entityManager.createNativeQuery(USUARIOS_CON_COMENTARIOS).setParameter("id",id);
-        return parseResultQuery(query.getResultList());
+        return parseResultQueryUsuarioComentario(query.getResultList());
     }
 
     /**
@@ -686,7 +718,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      * @param rows
      * @return
      */
-    private List<UsuarioComentariosModel> parseResultQuery(List<Object[]> rows){
+    private List<UsuarioComentariosModel> parseResultQueryUsuarioComentario(List<Object[]> rows){
         return rows.stream().map( row -> getOneUsuarioComentariosModel(row)).collect(Collectors.toList());
     }
 
@@ -711,5 +743,87 @@ public class UsuarioServiceImpl implements UsuarioService {
         model.setImagen(row[5].toString());
         model.setIdUsuario(row[6].toString());
         return model;
+    }
+
+    @Override
+    public ReporteCalificacionDTO getUsuariosQueMeCalificaron(String idUsuario, boolean isDemandante, boolean isOferente) {
+        String sqlQuery = new String();
+        if(isDemandante && !isOferente){
+            sqlQuery=CALIFICACIONES_DEMANDANTE_QUERY;
+        }
+        else if(!isDemandante && isOferente){
+            sqlQuery=CALIFICACIONES_OFERENTE_QUERY;
+        }
+        else if(isDemandante && isOferente){
+            sqlQuery=CALIFICACIONES_QUERY;
+        }
+
+        Query query=entityManager.createNativeQuery(sqlQuery).setParameter("id",idUsuario);
+
+        return buildReporte(query.getResultList());
+    }
+
+    private ReporteCalificacionDTO buildReporte(List<Object[]> rows){
+        ReporteCalificacionDTO dto = new ReporteCalificacionDTO();
+        rows.stream().forEach( row -> setCalificacion(row[0].toString(),dto));
+        rows.stream().forEach( row -> {
+            try {
+                buildOneUsuarioCalifica(row,dto);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+        return dto;
+    }
+
+    /**
+     * Construye un usuario que calificó al usuario buscado
+     *
+     * @param row
+     * @param dto
+     * @throws ParseException
+     */
+    private void buildOneUsuarioCalifica(Object[] row, ReporteCalificacionDTO dto) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        UsuarioCalificaDTO usuarioCalificaDTO = new UsuarioCalificaDTO();
+        usuarioCalificaDTO.setCalificacion(Integer.valueOf(row[0].toString()));
+        usuarioCalificaDTO.setFechaCalificacion(simpleDateFormat.parse(row[1].toString()));
+        usuarioCalificaDTO.setEmail(row[2].toString());
+        usuarioCalificaDTO.setUsername(row[3].toString());
+        usuarioCalificaDTO.setUrlImagen(row[4].toString());
+        usuarioCalificaDTO.setFechaSolicitud(simpleDateFormat.parse(row[5].toString()));
+        usuarioCalificaDTO.setDescripcionSolicitud(row[6].toString());
+        usuarioCalificaDTO.setRubro(row[7].toString());
+        dto.getDtoList().add(usuarioCalificaDTO);
+    }
+
+    /**
+     * Barre todo el arreglo contando cada calificacion recibida y setea la cuenta al dto
+     *
+     * @param row
+     * @param dto
+     */
+    private void setCalificacion( String row,ReporteCalificacionDTO dto){
+
+        if (row == "5") {
+            Integer calificacion = dto.getCantidadUsuariosCinco();
+            dto.setCantidadUsuariosCinco(calificacion + Integer.valueOf(row));
+        }
+        else if (row == "4") {
+            Integer calificacion = dto.getCantidadUsuariosCuatro();
+            dto.setCantidadUsuariosCuatro(calificacion + Integer.valueOf(row));
+        }
+        else if (row == "3") {
+            Integer calificacion = dto.getCantidadUsuariosTres();
+            dto.setCantidadUsuariosTres(calificacion + Integer.valueOf(row));
+        }
+        else if (row == "2") {
+            Integer calificacion = dto.getCantidadUsuariosDos();
+            dto.setCantidadUsuariosDos(calificacion + Integer.valueOf(row));
+        }
+        else if (row == "1") {
+            Integer calificacion = dto.getCantidadUsuariosUno();
+            dto.setCantidadUsuariosUno(calificacion + Integer.valueOf(row));
+        }
     }
 }

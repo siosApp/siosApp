@@ -60,4 +60,6 @@ public interface UsuarioService {
     List<UsuarioModel> getUsuariosRegistradosFiltered(String sexo, Integer edadDesde, Integer edadHasta, String provincia, String departamento, String localidad, String tipoRubro, String rubro);
 
     List<UsuarioComentariosModel> getUsuarioConComentarios(String id);
+
+    ReporteCalificacionDTO getUsuariosQueMeCalificaron(String idUsuario, boolean isDemandante, boolean isOferente);
 }

@@ -1,10 +1,7 @@
 package com.utn.meraki.controller;
 
 import com.utn.meraki.entity.Usuario;
-import com.utn.meraki.model.UsuarioComentariosModel;
-import com.utn.meraki.model.UsuarioModel;
-import com.utn.meraki.model.UsuariosByRubro;
-import com.utn.meraki.model.UsuariosRegistradosDestacadosModel;
+import com.utn.meraki.model.*;
 import com.utn.meraki.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -163,5 +160,11 @@ public class UsuarioController {
     @GetMapping("/comentarios-oferente")
     public List<UsuarioComentariosModel> getUsuarioConComentarios(@RequestParam String id) {
         return usuarioService.getUsuarioConComentarios(id);
+    }
+
+    @GetMapping("/reporte-calificaciones")
+    public ReporteCalificacionDTO getUsuarioConComentarios(@RequestParam String id, @RequestParam Boolean esDemandante,
+                                                           @RequestParam Boolean esOferente) {
+        return usuarioService.getUsuariosQueMeCalificaron(id,esDemandante,esOferente);
     }
 }
