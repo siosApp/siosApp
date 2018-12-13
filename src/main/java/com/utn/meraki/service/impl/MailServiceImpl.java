@@ -1,6 +1,7 @@
 package com.utn.meraki.service.impl;
 
 import com.utn.meraki.service.MailService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -71,6 +72,7 @@ public class MailServiceImpl implements MailService {
         }
     }
     @Override
+    @Async
     public void enviarMail(String destinatario, String asunto, String cuerpo) {
         sendMail(destinatario,asunto,cuerpo);
     }

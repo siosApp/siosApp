@@ -20,6 +20,7 @@ import com.utn.meraki.service.UsuarioService;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -222,9 +223,9 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setFechaCodigoValidacion(new Date());
             usuarioRepository.save(usuario);
             //Crear atributos codigoValidacion y fechaCodigoValidacion. Que sean persistentes por 48 hs.
-            String mensaje= "<p>Hace click en el enlace de abajo para recuperar tu contraseña.\n"
+            String mensaje= "<p>Con éste código recuperaras la contraseña: "+codigo+".Haz click en el enlace de abajo para recuperar tu contraseña.\n"
                      +"</p>"
-                    +"<a href='http://localhost:4200/newPassword/"+codigo+"'>Click aqui para recuperar su contraseña</a>";
+                    +"<a href='http://localhost:4200/newPassword'>Click aqui para recuperar su contraseña</a>";
             mailService.enviarMail(mail,"Recuperacion de contraseña",mensaje);
             return usuarioConverter.convertUsuarioToUsuarioModel(usuario);
         }
