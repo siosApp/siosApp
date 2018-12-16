@@ -1,22 +1,26 @@
-package pruebasIntegracion;
+package pruebasUnitarias;
 
 import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
+
 import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class IntentarCambiarContraseñaSinVerificar extends ConfiguracionGeneralPruebas {
-	
-	private String botonPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/a";
-	private String botonVerPerfil = "//*[@id=\"topnav\"]/div[1]/div/div[2]/ul/li[2]/ul/li[2]/a[1]";
-	private String campoContraseña = "/html/body/app-root/app-layout/div/div/app-perfil/div[1]/div[2]/div/div/div/div/form/div[7]/div[1]/div/input";
-	
-	@Test
-	public void intentarCambiarContraseñaSinVerificar() {
+public class ActualizarReportesSinIndicarFechas extends ConfiguracionGeneralPruebas{
 
+	@Test
+	public void testActualizarReportesSinIndicarFechas() {
+		
+		
 		WebDriver driver = super.configurarSeleniumWebDriver();
+
+		String botonReportesPath = "//*[@id=\"navigation\"]/ul/li[3]/a";
+		String rubrosMasDemandadosPath = "//*[@id=\"navigation\"]/ul/li[3]/ul/li/ul/li/a[3]";
+		String botonActualizarPath = "/html/body/app-root/app-layout/div/div/app-rubros-mas-demandados/form/div/div/div/div/div[2]/div[3]/button";
+
 		driver.get("http://localhost:4200/login");
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
@@ -30,17 +34,16 @@ public class IntentarCambiarContraseñaSinVerificar extends ConfiguracionGeneral
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
-		driver.findElement(By.xpath(botonPerfil)).click();
-		
-		driver.findElement(By.xpath(botonVerPerfil)).click();
+		driver.findElement(By.xpath(botonReportesPath)).click();
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-		// Cambia la contraseña sin cambiar la verificacion de esta.
-		driver.findElement(By.xpath(campoContraseña)).sendKeys("12345");
 		
+		driver.findElement(By.xpath(rubrosMasDemandadosPath)).click();
+
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+		driver.findElement(By.xpath(botonActualizarPath)).click();
 	}
 
 }
-
-
