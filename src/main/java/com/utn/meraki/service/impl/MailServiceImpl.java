@@ -11,6 +11,7 @@ import java.util.Properties;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
 
+    @Async
     private void sendMail(String destinatario,String asunto,String cuerpo){
         Properties props = System.getProperties();
         props.put("mail.smtp.starttls.enable", true); // added this line
@@ -72,7 +73,6 @@ public class MailServiceImpl implements MailService {
         }
     }
     @Override
-    @Async
     public void enviarMail(String destinatario, String asunto, String cuerpo) {
         sendMail(destinatario,asunto,cuerpo);
     }
