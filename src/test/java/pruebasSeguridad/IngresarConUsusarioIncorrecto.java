@@ -1,3 +1,5 @@
+
+
 package pruebasSeguridad;
 
 import java.util.concurrent.TimeUnit;
@@ -9,29 +11,26 @@ import org.openqa.selenium.WebDriver;
 
 import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class verListaInformesSinPrivilegios extends ConfiguracionGeneralPruebas {
+public class IngresarConUsusarioIncorrecto extends ConfiguracionGeneralPruebas {
 
 	@Test
-	public void testIngresarAConfiguracionMedianteURL() {
+	public void testIngresarConUsusarioIncorrecto() {
 		
 		WebDriver driver = super.configurarSeleniumWebDriver();
 		driver.get("http://localhost:4200/login");
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
-		// Ingreso al sistema con un usuario que no es administrador
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("usuarioprueba");
+		// Ingresa un usuario incorrecto
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduard");
 		
+		// Ingresa una contraseña correcta
 		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
 		
-		driver.findElement(By.xpath(super.getBotonMantenerSesionActivaXpath())).click();
-		
+		// Intenta ingresar con un usuario incorrecto
 		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
 		
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-		
-		// Intento acceder a los reportes del administrador a través de la URL
-		driver.get("http://localhost:4200/sios/dashboard");		
-				
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			
 	}
 
 }

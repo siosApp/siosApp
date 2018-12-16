@@ -1,4 +1,4 @@
-package pruebasUnitarias;
+package pruebasIntegracion;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,10 +9,10 @@ import org.openqa.selenium.WebDriver;
 
 import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class SolicitudSinRegistracion extends ConfiguracionGeneralPruebas{
+public class SolicitudSinSesionIniciada extends ConfiguracionGeneralPruebas{
 
 	@Test
-	public void realizarSolicitudSinEstarRegistrado() {
+	public void testSolicitudSinSesionIniciada() {
 		
 		
 		WebDriver driver = super.configurarSeleniumWebDriver();
@@ -21,16 +21,16 @@ public class SolicitudSinRegistracion extends ConfiguracionGeneralPruebas{
 		driver.manage().window().setSize(new Dimension(1440, 900));
 		
 		String botonBuscarPath = "/html/body/app-root/app-layout/div/div/app-home/div[1]/div/div/form/div[3]/div/button";
-		String SolicitudPath = "/html/body/app-root/app-layout/div/div/app-home/div[2]/div[2]/div[1]/div/div/div[4]/a";
+		String SolicitudPath = "/html/body/app-root/app-layout/div/div/app-home/div[2]/div[2]/div[1]/div/div/div[4]/div/a";
 		
 		driver.findElement(By.xpath(botonBuscarPath)).click();
 		
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-		//until project finishes
+		driver.findElement(By.xpath(SolicitudPath)).click();
+
 		driver.get("http://localhost:4200/login");
 		
-		//driver.findElement(By.xpath(SolicitudPath)).click();
 	}
 
 }

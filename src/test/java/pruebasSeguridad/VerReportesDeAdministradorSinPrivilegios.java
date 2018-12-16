@@ -9,17 +9,18 @@ import org.openqa.selenium.WebDriver;
 
 import configuracionPruebas.ConfiguracionGeneralPruebas;
 
-public class IngresarAConfiguracionMedianteURL extends ConfiguracionGeneralPruebas {
+public class VerReportesDeAdministradorSinPrivilegios extends ConfiguracionGeneralPruebas {
 
 	@Test
-	public void testIngresarAConfiguracionMedianteURL() {
+	public void testVerReportesDeAdministradorSinPrivilegios() {
 		
 		WebDriver driver = super.configurarSeleniumWebDriver();
 		driver.get("http://localhost:4200/login");
 		driver.manage().window().setSize(new Dimension(1440, 900));
+
+		String dashboardPath = "//*[@id=\"navigation\"]/ul/li[5]/a";
 		
-		// Ingreso al sistema con un usuario que no es administrador
-		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("usuarioprueba");
+		driver.findElement(By.xpath(super.getUsuarioXpath())).sendKeys("eduardo");
 		
 		driver.findElement(By.xpath(super.getContraseñaXpath())).sendKeys("123456");
 		
@@ -27,13 +28,10 @@ public class IngresarAConfiguracionMedianteURL extends ConfiguracionGeneralPrueb
 		
 		driver.findElement(By.xpath(super.getBotonIngresarAlSistemaXpath())).click();
 		
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		
-		// Intento acceder a el ABM Tipo Rubro de la configuración a través de la URL
-		driver.get("http://localhost:4200/sios/estadoSolicitud");		
-		
-		//driver.quit();
-		
+		driver.findElement(By.xpath(dashboardPath)).click();
 	}
 
 }
+
