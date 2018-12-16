@@ -52,7 +52,7 @@ public class SolicitudController {
 	}
 
 	@PutMapping("/finalizarSolicitud")
-	public SolicitudModel aceptarSolicitud(@RequestParam(value="idSolicitud",required=true)String idSolicitud,
+	public SolicitudModel finalizarSolicitud(@RequestParam(value="idSolicitud",required=true)String idSolicitud,
 										   @RequestParam(value="calificacion",required=true)int calificacion,
 										   @RequestParam(value="comentario",required=true)String comentario) {
 		return solicitudService.finalizarSolicitud(idSolicitud,calificacion,comentario);

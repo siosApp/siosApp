@@ -7,6 +7,7 @@ import java.util.*;
 import com.utn.meraki.entity.*;
 import com.utn.meraki.model.SolicitudDemandanteModel;
 import com.utn.meraki.repository.*;
+import com.utn.meraki.service.MailService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class SolicitudServiceImpl implements SolicitudService{
 	ComentarioRepository comentarioRepository;
 	@Autowired
 	CalificacionRepository calificacionRepository;
+	@Autowired
+	MailService mailService;
 
 	@Override
 	public SolicitudEstado ultimoEstadoSolicitud(String idSolicitud) {
@@ -147,10 +150,16 @@ public class SolicitudServiceImpl implements SolicitudService{
 		califcation.setFechaCalificacion(new java.sql.Date(System.currentTimeMillis()));
 		califcation.setUsuario(solicitud.getUsuarioOferente());
 		calificacionRepository.save(califcation);
+		//Enviando mail
+		if(solicitud.getUsuarioDemandante().getMail() !=null){
+			mailService.enviarMail(solicitud.getUsuarioDemandante().getMail(),"Notificación solicitud finalizada - SIOS","La solicitud ha sido finalizada. Recuerde calificar al oferente.");
+		}
+
 		//Guardando solicitud
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
+
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}
 
