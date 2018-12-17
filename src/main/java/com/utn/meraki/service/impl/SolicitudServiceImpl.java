@@ -74,6 +74,9 @@ public class SolicitudServiceImpl implements SolicitudService{
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
+		if(solicitud.getUsuarioDemandante().getMail() !=null){
+			mailService.enviarMail(solicitud.getUsuarioDemandante().getMail(),"Notificación solicitud rechazada - SIOS","La solicitud ha sido rechazada. Verifique su estado en SIOS.");
+		}
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}
 
@@ -88,6 +91,9 @@ public class SolicitudServiceImpl implements SolicitudService{
 		solicitudEstadoRepository.save(solicitudEstado);
 		solicitud.getSolicitudEstados().add(solicitudEstado);
 		solicitudRepository.save(solicitud);
+		if(solicitud.getUsuarioDemandante().getMail() !=null){
+			mailService.enviarMail(solicitud.getUsuarioDemandante().getMail(),"Notificación solicitud aceptada - SIOS","La solicitud ha sido aceptada. Verifique su estado en SIOS.");
+		}
 		return solicitudConverter.convertSolicitudToSolicitudModel(solicitud);
 	}
 
